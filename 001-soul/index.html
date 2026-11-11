@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soul App 产品拆解 · 可视化摘要</title>
+<style>
+  :root{
+    --bg:#F4F1EC;
+    --card:#FFFFFF;
+    --ink:#14121F;
+    --ink2:#4A4658;
+    --ink3:#8A8598;
+    --line:#E3DED5;
+    --violet:#5B3DF5;
+    --violet-soft:#EDE9FF;
+    --coral:#F0553F;
+    --coral-soft:#FDE9E5;
+    --mint:#0E9F7E;
+    --gold:#C8963E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center;
+    padding:20px 0 44px;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--violet);font-weight:600;margin-bottom:22px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--violet);display:block;}
+  h1{
+    font-size:clamp(64px,8.5vw,112px);
+    line-height:.88;letter-spacing:-.045em;font-weight:800;
+    margin-bottom:10px;
+  }
+  h1 .dot{color:var(--violet);}
+  .subtitle{
+    font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;
+    font-size:clamp(26px,3.2vw,40px);
+    line-height:1.3;font-weight:600;letter-spacing:.01em;
+    margin-bottom:26px;color:var(--ink);
+  }
+  .subtitle em{font-style:normal;color:var(--violet);}
+  .lede{
+    font-size:16px;line-height:1.95;color:var(--ink2);max-width:560px;
+  }
+  .lede strong{color:var(--ink);font-weight:700;background:linear-gradient(transparent 62%,#DCD4FF 62%);padding:0 2px;}
+
+  .orb-wrap{display:flex;justify-content:center;align-items:center;position:relative;min-height:300px;}
+  .orb{
+    width:250px;height:250px;border-radius:50%;
+    background:radial-gradient(circle at 32% 26%,#A99BFF 0%,#6E50FF 34%,#3A22B8 68%,#1B1057 100%);
+    box-shadow:0 40px 90px -30px rgba(62,36,190,.55), inset -14px -18px 50px rgba(0,0,0,.35);
+    position:relative;
+  }
+  .orb::before{
+    content:"";position:absolute;inset:-34px;border:1px solid rgba(91,61,245,.28);border-radius:50%;
+    transform:rotate(-18deg) scaleY(.42);
+  }
+  .orb::after{
+    content:"";position:absolute;inset:-64px;border:1px solid rgba(91,61,245,.16);border-radius:50%;
+    transform:rotate(-18deg) scaleY(.42);
+  }
+  .orb-label{
+    position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+    font-size:11px;letter-spacing:.18em;color:var(--ink3);white-space:nowrap;
+  }
+
+  /* ---------- METRICS ---------- */
+  .metrics{
+    display:grid;grid-template-columns:repeat(6,1fr);
+    border-top:1px solid var(--ink);border-bottom:1px solid var(--line);
+    margin-bottom:64px;
+  }
+  .metric{padding:22px 18px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1;font-feature-settings:"tnum";}
+  .metric .v small{font-size:14px;font-weight:600;margin-left:2px;color:var(--ink2);}
+  .metric .k{font-size:11.5px;color:var(--ink3);margin-top:7px;letter-spacing:.05em;}
+  .metric .v .accent{color:var(--violet);}
+
+  /* ---------- SECTION ---------- */
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{
+    font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--violet);
+    border:1px solid var(--violet);border-radius:999px;padding:3px 9px;
+  }
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;
+  }
+  .card .tag{
+    display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);
+    margin-bottom:12px;
+  }
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.75;color:var(--ink2);}
+  .card .note{font-size:12px;color:var(--ink3);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+
+  .violet-card{background:var(--violet-soft);border-color:#DCD4FF;}
+  .violet-card .tag{color:var(--violet);}
+
+  /* position */
+  .flow{
+    margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 24px;font-size:13px;color:var(--ink2);
+    display:flex;flex-wrap:wrap;align-items:center;gap:10px;line-height:1.6;
+  }
+  .flow b{color:var(--ink);font-weight:600;}
+  .flow .arrow{color:var(--violet);font-weight:700;}
+
+  /* stack bar */
+  .stack{display:flex;height:38px;border-radius:10px;overflow:hidden;margin:6px 0 14px;}
+  .stack div{display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#fff;letter-spacing:.02em;overflow:hidden;white-space:nowrap;}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;font-size:12px;color:var(--ink2);}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .dot-c{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  /* pyramid */
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0;}
+  .pyr-row{
+    padding:11px 18px;border-radius:8px;font-size:13px;font-weight:600;color:#fff;
+    text-align:center;transition:transform .2s;
+    display:flex;align-items:center;justify-content:center;min-height:46px;
+  }
+  .pyr-row:nth-child(1){width:44%;background:#2A1B8F;}
+  .pyr-row:nth-child(2){width:60%;background:#4530D6;}
+  .pyr-row:nth-child(3){width:78%;background:#6E50FF;}
+  .pyr-row:nth-child(4){width:96%;background:#A99BFF;color:#2A1B8F;}
+
+  /* timeline */
+  .tl{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
+  .tl-item{padding:20px 20px 0 0;border-right:1px solid var(--line);position:relative;}
+  .tl-item:last-child{border-right:none;}
+  .tl-item::before{
+    content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;border-radius:50%;
+    background:var(--violet);
+  }
+  .tl-time{font-size:12px;font-weight:700;color:var(--violet);margin-bottom:6px;letter-spacing:.02em;}
+  .tl-name{font-size:15px;font-weight:700;margin-bottom:6px;}
+  .tl-desc{font-size:12.5px;color:var(--ink2);line-height:1.7;}
+
+  /* five steps */
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+  .step{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 14px;position:relative;
+  }
+  .step .n{font-size:10px;letter-spacing:.1em;color:var(--violet);font-weight:700;margin-bottom:8px;}
+  .step h4{font-size:13.5px;font-weight:700;margin-bottom:5px;line-height:1.4;}
+  .step p{font-size:11.5px;color:var(--ink2);line-height:1.6;}
+  .step::after{
+    content:"→";position:absolute;right:-11px;top:50%;transform:translateY(-50%);
+    color:var(--ink3);font-size:13px;z-index:2;background:var(--bg);padding:0 2px;
+  }
+  .step:last-child::after{display:none;}
+
+  /* judgments */
+  .judgments{background:var(--ink);color:#fff;border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{border-color:rgba(255,255,255,.35);color:#B7A6FF;}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:18px;}
+  .j-num{font-size:11px;letter-spacing:.16em;color:#B7A6FF;font-weight:700;margin-bottom:10px;}
+  .j-item h3{font-size:17px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em;line-height:1.4;}
+  .j-item p{font-size:13px;line-height:1.85;color:rgba(255,255,255,.72);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  /* risk */
+  .risk-row{
+    display:grid;grid-template-columns:200px 1fr 110px;gap:20px;align-items:center;
+    padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;
+  }
+  .risk-row:first-child{border-top:1px solid var(--ink);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12.5px;}
+  .stars{color:var(--coral);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  /* chart */
+  .bars{display:flex;align-items:flex-end;gap:26px;height:150px;padding:0 8px;margin:10px 0 0;}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+  .bar .col{width:100%;max-width:64px;background:var(--violet-soft);border:1px solid #DCD4FF;border-bottom:none;border-radius:8px 8px 0 0;position:relative;}
+  .bar.hi .col{background:var(--violet);border-color:var(--violet);}
+  .bar .val{font-size:12px;font-weight:700;margin-bottom:5px;font-feature-settings:"tnum";}
+  .bar .lab{font-size:11px;color:var(--ink3);margin-top:8px;white-space:nowrap;}
+
+  .callout{
+    background:var(--coral-soft);border:1px solid #F6CFC7;border-radius:14px;padding:20px 22px;
+    font-size:13.5px;line-height:1.8;color:#7A2A1C;
+  }
+  .callout b{color:#5A1A0F;}
+
+  footer{
+    margin-top:70px;padding-top:24px;border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--ink3);line-height:1.9;
+  }
+  footer b{color:var(--ink2);font-weight:600;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .orb-wrap{min-height:220px;}
+    .orb{width:180px;height:180px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .pyr-row{font-size:12px;padding:12px 10px;}
+    .pyr-row:nth-child(1){width:52%;}
+    .pyr-row:nth-child(2){width:67%;}
+    .pyr-row:nth-child(3){width:82%;}
+    .pyr-row:nth-child(4){width:98%;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;gap:8px;}
+    .step::after{display:none;}
+    .tl{grid-template-columns:1fr;border-top:none;}
+    .tl-item{border-right:none;border-top:1px solid var(--line);padding:16px 0 0;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .stack{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+    .card{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Product Teardown · 2026</div>
+      <h1>Soul<span class="dot">.</span></h1>
+      <div class="subtitle">把「被看见」<br>做成<em>生意</em></div>
+      <p class="lede">
+        它不是帮你找到对象的工具,而是<strong>让你随时能开始一段关系、又随时能退出</strong>的情绪基础设施。
+        用户支付的是「可能性」的定金,而不是「关系」的货款。
+      </p>
+    </div>
+    <div class="orb-wrap">
+      <div class="orb"></div>
+      <div class="orb-label">AVATAR · 第二自我</div>
+    </div>
+  </header>
+
+  <!-- METRICS -->
+  <div class="metrics">
+    <div class="metric"><div class="v">1100<small>万</small></div><div class="k">DAU · 2025 前 8 月</div></div>
+    <div class="metric"><div class="v">2800<small>万</small></div><div class="k">MAU · 2025 前 8 月</div></div>
+    <div class="metric"><div class="v"><span class="accent">39</span><small>%</small></div><div class="k">DAU / MAU 粘性</div></div>
+    <div class="metric"><div class="v"><small>¥</small>104.4</div><div class="k">ARPPU · 元 / 月</div></div>
+    <div class="metric"><div class="v">6.5<small>%</small></div><div class="k">付费率</div></div>
+    <div class="metric"><div class="v">78.7<small>%</small></div><div class="k">Z 世代占 DAU</div></div>
+  </div>
+
+  <!-- 01 POSITION -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:一个「四合一」的缝合体</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tag">CONTENT</div>
+        <h3>社区</h3>
+        <p>广场、瞬间、话题。用内容沉淀兴趣图谱,承担拉新与表达。</p>
+        <div class="note">对标 小红书 / 贴吧 / 即刻</div>
+      </div>
+      <div class="card">
+        <div class="tag">MATCH</div>
+        <h3>匹配器</h3>
+        <p>星球、语音匹配。算法制造「相遇」,是付费转化的入口。</p>
+        <div class="note">对标 探探 / 陌陌</div>
+      </div>
+      <div class="card">
+        <div class="tag">LIVE</div>
+        <h3>语音房</h3>
+        <p>群聊派对、音乐房、K歌。用一对多的陪伴拉长在线时长。</p>
+        <div class="note">对标 TT语音 / 伴伴</div>
+      </div>
+      <div class="card">
+        <div class="tag">AI</div>
+        <h3>AI 陪伴</h3>
+        <p>Soul X、AI 伴侣、灵感回复。7×24 兜底,保证「永远有回应」。</p>
+        <div class="note">对标 星野 / 猫箱</div>
+      </div>
+    </div>
+    <div class="flow">
+      <b>广场</b> 内容获客 <span class="arrow">→</span>
+      <b>星球</b> 一对一相遇 <span class="arrow">→</span>
+      <b>群聊派对</b> 一对多陪伴 <span class="arrow">→</span>
+      <b>AI 伴侣</b> 无人可聊时兜底
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">本质不是社交网络,而是<b style="color:var(--violet)">社交游乐场</b></span>
+    </div>
+  </section>
+
+  <!-- 02 AUDIENCE -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">谁在用:被三种场景「淘汰」出来的年轻人</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">被熟人社交淘汰</div>
+        <h3>朋友圈是人设监狱</h3>
+        <p>说话要掂量,情绪要分组。发一句难过,第二天全家都来问候。</p>
+        <div class="note">→ 产品解法:<b>去通讯录</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">被颜值社交淘汰</div>
+        <h3>照片即简历,3 秒定生死</h3>
+        <p>对自认外貌不占优的人,这是一场开局就输的游戏。</p>
+        <div class="note">→ 产品解法:<b>去脸,用 Avatar</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">被内容平台淘汰</div>
+        <h3>没颜值没才艺 = 0 播放</h3>
+        <p>普通人发内容,大概率石沉大海,连一个回应都换不到。</p>
+        <div class="note">→ 产品解法:<b>去流量,发了有人回</b></div>
+      </div>
+    </div>
+
+    <div style="margin-top:22px;" class="card">
+      <div class="tag">平台里同时住着三种人</div>
+      <div class="stack">
+        <div style="width:55%;background:#A99BFF;color:#2A1B8F;">陪伴者 55%</div>
+        <div style="width:30%;background:#5B3DF5;">猎手 30%</div>
+        <div style="width:15%;background:#2A1B8F;">15%</div>
+      </div>
+      <div class="legend">
+        <span><i class="dot-c" style="background:#2A1B8F;"></i>表达者:发帖、开房、当主持,提供内容供给</span>
+        <span><i class="dot-c" style="background:#A99BFF;"></i>陪伴者:刷广场、听房间,低能量陪伴</span>
+        <span><i class="dot-c" style="background:#5B3DF5;"></i>猎手:大量匹配、送礼,贡献主要收入</span>
+      </div>
+      <div class="note" style="border-top-style:solid;">
+        核心难题不是「让更多人付费」,而是<b>「让猎手不吓跑表达者」</b>。所谓「绿色化」,保护的是自己的供给侧。
+        <span style="color:var(--ink3);">占比为基于公开信息的估算。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SCENE -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">什么时候用:孤独的「时段生意」</span>
+      <span class="sec-en">Scenes</span>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-time">22:00 — 02:00</div>
+        <div class="tl-name">深夜情绪溢出</div>
+        <div class="tl-desc">一天里最脆弱的两小时。不需要解决方案,只需要一个人接住。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">5 — 15 MIN</div>
+        <div class="tl-name">碎片化无聊</div>
+        <div class="tl-desc">通勤、课间、排队。日均启动 20.1 次,被当作口袋里的消遣。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">WEEKEND</div>
+        <div class="tl-name">周末陪伴缺口</div>
+        <div class="tl-desc">不想独处又不想社交。进房间当「背景音」,听别人聊天、唱歌。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">EVENT</div>
+        <div class="tl-name">事件触发倾诉</div>
+        <div class="tl-desc">失恋、考试失败、离职、生日。需要一个安全的陌生人。</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:22px;">
+      <b>所有场景共享同一个前提:在现实中说出这句话的成本,高于在 Soul 上说。</b>
+      所以它卖的不是社交,是「诉说的豁免权」。
+    </div>
+  </section>
+
+  <!-- 04 NEED -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">为什么用:四层需求,本质是「无风险的亲密」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="grid-2" style="align-items:center;">
+      <div class="card" style="padding:26px 30px;">
+        <div class="pyr">
+          <div class="pyr-row">身份实验 · 我可以是另一个人</div>
+          <div class="pyr-row">控制感 · 我随时可以退出,不用负责</div>
+          <div class="pyr-row">被回应 · 有人接住我的情绪</div>
+          <div class="pyr-row">打发时间 · 我不想一个人待着</div>
+        </div>
+      </div>
+      <div class="card violet-card" style="padding:28px 30px;">
+        <div class="tag">THE CORE</div>
+        <h3 style="font-size:22px;line-height:1.45;margin-bottom:14px;">用户要的是<br>「像恋爱一样亲密、<br>但不用承担后果」的关系</h3>
+        <p style="font-size:13.5px;line-height:1.9;">
+          注意第二层不是「被理解」——被理解太难了——而是「被回应」。一个「哈哈哈」就够了。
+          <b>回应的门槛越低,供给越充足。</b>
+        </p>
+        <div class="note" style="border-top-color:#DCD4FF;">
+          用户真正上瘾的,不是「有人陪」,而是<b>「我可以随时不要」</b>。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 MECHANISM -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">怎么满足:五道减法</span>
+      <span class="sec-en">Mechanism</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">01 / 减掉脸</div>
+        <h4>Avatar 捏脸</h4>
+        <p>消除外貌焦虑,创造「身份实验」空间。</p>
+      </div>
+      <div class="step">
+        <div class="n">02 / 减掉熟人</div>
+        <h4>无通讯录</h4>
+        <p>不导入、不推荐、不关联,造一个安全区。</p>
+      </div>
+      <div class="step">
+        <div class="n">03 / 减掉开场白</div>
+        <h4>灵魂测试 + AI 破冰</h4>
+        <p>把「你是谁」变成「我们像不像」。</p>
+      </div>
+      <div class="step">
+        <div class="n">04 / 减掉尴尬</div>
+        <h4>群聊 / 音乐房 / 游戏</h4>
+        <p>用「活动」替代「对话」,不用硬找话题。</p>
+      </div>
+      <div class="step">
+        <div class="n">05 / 减掉冷场</div>
+        <h4>AI 伴侣兜底</h4>
+        <p>保证「永远有回应」,守住最后一道留存。</p>
+      </div>
+    </div>
+    <div class="flow" style="margin-top:16px;">
+      每减掉一个社交成本,就多一个人愿意开口。
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">AI Boosters 覆盖 <b style="color:var(--violet)">460 万</b> DAU</span>
+    </div>
+  </section>
+
+  <!-- 06 BUSINESS -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">钱从哪来:四种「税」和一个悖论</span>
+      <span class="sec-en">Business Model</span>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="padding:26px 28px;">
+        <div class="tag">REVENUE MIX · 2025 前 8 月</div>
+        <div class="stack">
+          <div style="width:58.4%;background:#2A1B8F;">58.4%</div>
+          <div style="width:17.6%;background:#5B3DF5;">17.6%</div>
+          <div style="width:9.7%;background:#8E7BFF;">9.7%</div>
+          <div style="width:9%;background:#C9BEFF;color:#2A1B8F;">9%</div>
+          <div style="width:5.3%;background:#D9D2FF;color:#2A1B8F;font-size:9px;">5%</div>
+        </div>
+        <div class="legend" style="margin-top:6px;">
+          <span><i class="dot-c" style="background:#2A1B8F;"></i>虚拟礼物 58.4% · 关系税</span>
+          <span><i class="dot-c" style="background:#5B3DF5;"></i>推荐特权+AI 17.6% · 效率税</span>
+          <span><i class="dot-c" style="background:#8E7BFF;"></i>Avatar 9.7% · 身份税</span>
+          <span><i class="dot-c" style="background:#C9BEFF;"></i>广告 ~9%</span>
+          <span><i class="dot-c" style="background:#D9D2FF;"></i>会员 ~5.3%(估算)</span>
+        </div>
+        <div class="note" style="border-top-style:solid;">
+          「灵魂社交」的钱,主要不是从灵魂来的。礼物 + 特权 = <b>76%</b>,结构与秀场直播同源。
+        </div>
+      </div>
+      <div class="card" style="padding:26px 28px;background:var(--ink);color:#fff;border-color:var(--ink);">
+        <div class="tag" style="color:#B7A6FF;">THE PARADOX</div>
+        <h3 style="font-size:20px;line-height:1.5;margin-bottom:14px;color:#fff;">产品越好用,用户越容易离开</h3>
+        <p style="font-size:13px;line-height:1.9;color:rgba(255,255,255,.72);">
+          两个人一旦加微信、见面、成为情侣,就不再需要 Soul。
+          于是它必须让关系<b style="color:#fff;">「接近成功,但永不完成」</b>:
+          聊天记录不可导出、加微引导受限、亲密度与 CP 机制上锁。
+        </p>
+        <div class="note" style="border-top-color:rgba(255,255,255,.16);color:rgba(255,255,255,.5);">
+          这不是道德问题,是「关系中介」生意的结构问题。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 JUDGMENTS -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <span class="sec-title">三个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>它卖的是「关系期权」,不是关系</h3>
+          <p>期权费是会员、礼物、推荐特权;行权是加微信、见面;不行权就继续付。
+            平台不对结果负责,因此<b>收入与用户的「失败率」正相关</b>——越难在现实中建立关系,越依赖 Soul。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>用「灵魂」筛人,用「荷尔蒙」变现</h3>
+          <p>「不看脸」筛掉了纯外貌猎手,留下更愿意聊的人;但聊到最后仍要落到见面。
+            <b>礼物和推荐特权,就是「聊」到「见面」之间的收费站。</b>不是欺骗,是定位与模式的必然错位。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>AI 是留存的解药,是毛利率的毒药</h3>
+          <p>虚拟礼物边际成本≈0,AI 对话每次都有 token 成本。毛利率已从
+            <b>86.3% 跌到 81.5%</b>。更深的问题:当 AI 足够好,Soul 还是社交网络吗?平台估值靠网络效应,服务估值靠订阅 ARPU。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 STRUCTURAL RISK -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">结构性隐患:毕业即流失</span>
+      <span class="sec-en">Structural Risk</span>
+    </div>
+    <div class="grid-2" style="align-items:stretch;">
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">MAU · 万</div>
+        <div class="bars">
+          <div class="bar">
+            <div class="val">2940</div>
+            <div class="col" style="height:100px;"></div>
+            <div class="lab">2022</div>
+          </div>
+          <div class="bar">
+            <div class="val">2620</div>
+            <div class="col" style="height:89px;"></div>
+            <div class="lab">2023</div>
+          </div>
+          <div class="bar">
+            <div class="val">2620</div>
+            <div class="col" style="height:89px;"></div>
+            <div class="lab">2024</div>
+          </div>
+          <div class="bar hi">
+            <div class="val">2800</div>
+            <div class="col" style="height:95px;"></div>
+            <div class="lab">2025 前 8 月</div>
+          </div>
+        </div>
+        <div class="note" style="border-top-style:solid;">
+          营销费累计近 <b>29 亿</b>,MAU 仍未回到 2022 年。买量的边际效益在递减。
+        </div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">THE LOOP</div>
+        <p style="font-size:13.5px;line-height:1.95;color:var(--ink2);">
+          核心用户 18-24 岁,每年约 <b style="color:var(--ink);">1000 万人毕业</b>。
+          毕业后时间、圈子、婚恋任务全变,而 Soul 没有承接 25 岁的钩子:没有真实身份、没有线下场景、没有通讯录。
+        </p>
+        <div class="flow" style="margin-top:14px;padding:14px 16px;font-size:12.5px;background:#FAF8F5;">
+          获取新大学生 <span class="arrow">→</span> 四年后毕业流失 <span class="arrow">→</span> 再买量
+          <span style="margin-left:auto;color:var(--ink3);">循环停不下来</span>
+        </div>
+        <div class="note" style="border-top-style:solid;">
+          这也是它必须不断换叙事的原因:灵魂社交 → 元宇宙 → AI 社交,每一轮都是为了重新吸引一代人。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 RISK LIST -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">IPO 对赌</div>
+      <div class="risk-desc">124.06 亿元可赎回股份负债;上市失败可能触发回购与控制权变更。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">监管合规</div>
+      <div class="risk-desc">未成年人保护、擦边内容、数据安全,2019 与 2023 年均被点名。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">用户下滑</div>
+      <div class="risk-desc">MAU 从 2940 万降至 2620 万,买量换不来同步增长。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">收入集中</div>
+      <div class="risk-desc">据媒体报道,1% 用户贡献 50% 收入,抗风险能力弱。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">AI 成本</div>
+      <div class="risk-desc">毛利率四年跌 5 个百分点,推理成本刚性上升。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">竞争加剧</div>
+      <div class="risk-desc">抖音/小红书抢时长,星野/猫箱抢 AI 陪伴,微信占住关系链。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">护城河缺失</div>
+      <div class="risk-desc">关系可被微信带走,内容可被搬走,AI 可被大模型追平。</div>
+      <div class="stars">★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 港交所招股书(2025.11.27 递表,数据截至 2025.8.31);证券时报、中国经营报、证券之星、TMT 观察网等公开报道。<br>
+    <b>说明</b> · 用户角色占比、竞品时长等为基于公开信息的估算;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md" style="color:var(--violet);text-decoration:none;border-bottom:1px solid #C9BEFF;">《Soul App 产品拆解:把「被看见」做成生意》</a>
+  </footer>
+
+</div>
+</body>
+</html>
