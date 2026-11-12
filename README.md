@@ -5,11 +5,12 @@
 
 ## 进度
 
-**1 / 180**
+**2 / 180**
 
 | # | 对象 | 赛道 | 日期 | 可视化 | 长文 |
 |:--:|---|---|---|:--:|:--:|
 | 001 | **Soul App** | 陌生人社交 / 情绪消费 | 2026-11-11 | [HTML](001-soul/index.html) · [预览图](001-soul/preview.png) | [analysis.md](001-soul/analysis.md) |
+| 002 | **瑞幸咖啡** | 连锁咖啡 / 快消零售 | 2026-11-12 | [HTML](002-luckin/index.html) · [预览图](002-luckin/preview.png) | [analysis.md](002-luckin/analysis.md) |
 
 ## 每篇包含什么
 

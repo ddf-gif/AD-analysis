@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>瑞幸咖啡 · 广告与商业逻辑拆解</title>
+<style>
+  :root{
+    --bg:#F4F1EC;
+    --card:#FFFFFF;
+    --ink:#0C1226;
+    --ink2:#464B60;
+    --ink3:#8A8FA3;
+    --line:#E3DED5;
+    --blue:#0B2C8A;
+    --blue2:#1B4FD8;
+    --blue-soft:#E6EBFB;
+    --coral:#E04A32;
+    --coral-soft:#FBE7E2;
+    --gold:#B8862B;
+    --gold-soft:#F6EDD8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center;padding:20px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue2);font-weight:600;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--blue2);display:block;}
+  h1{font-size:clamp(52px,7.2vw,94px);line-height:.92;letter-spacing:-.045em;font-weight:800;margin-bottom:12px;}
+  h1 .accent{color:var(--blue2);}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(24px,2.9vw,36px);line-height:1.35;font-weight:600;margin-bottom:24px;}
+  .subtitle em{font-style:normal;color:var(--blue2);}
+  .lede{font-size:16px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;background:linear-gradient(transparent 64%,#C9D6F7 64%);padding:0 2px;}
+
+  .orb-wrap{display:flex;justify-content:center;align-items:center;position:relative;min-height:300px;}
+  .orb{
+    width:230px;height:230px;border-radius:50%;
+    background:radial-gradient(circle at 34% 28%,#5B85FF 0%,#1B4FD8 40%,#0B2C8A 72%,#061550 100%);
+    box-shadow:0 40px 90px -34px rgba(11,44,138,.6), inset -16px -18px 44px rgba(0,0,0,.38);
+    position:relative;
+  }
+  .orb::before{content:"";position:absolute;inset:-38px;border:1px solid rgba(27,79,216,.26);border-radius:50%;}
+  .orb::after{content:"";position:absolute;inset:-76px;border:1px dashed rgba(27,79,216,.2);border-radius:50%;}
+  .orb-label{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:10.5px;letter-spacing:.16em;color:var(--ink3);white-space:nowrap;}
+
+  /* METRICS */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 16px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:13px;font-weight:600;margin-left:1px;color:var(--ink2);}
+  .metric .v .accent{color:var(--blue2);}
+  .metric .v .neg{color:var(--coral);}
+  .metric .k{font-size:11px;color:var(--ink3);margin-top:7px;letter-spacing:.04em;}
+
+  /* SECTION */
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--blue2);border:1px solid var(--blue2);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card .tag{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-bottom:12px;}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.75;color:var(--ink2);}
+  .card .note{font-size:12px;color:var(--ink3);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+  .blue-card{background:var(--blue-soft);border-color:#C9D6F7;}
+  .blue-card .tag{color:var(--blue2);}
+
+  /* VS TABLE */
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);}
+  .vs-col{padding:24px 26px;}
+  .vs-col+.vs-col{border-left:1px solid var(--line);background:#FAF9F6;}
+  .vs-col .tag{font-size:10.5px;letter-spacing:.14em;color:var(--ink3);margin-bottom:10px;}
+  .vs-col h3{font-size:18px;font-weight:700;margin-bottom:14px;}
+  .vs-row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px dashed var(--line);font-size:13px;}
+  .vs-row span:first-child{color:var(--ink3);flex:none;}
+  .vs-row span:last-child{text-align:right;color:var(--ink);font-weight:600;}
+
+  /* STACK */
+  .stack{display:flex;height:40px;border-radius:10px;overflow:hidden;margin:6px 0 14px;}
+  .stack div{display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#fff;letter-spacing:.02em;overflow:hidden;white-space:nowrap;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--ink2);}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .dot-c{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  /* FLYWHEEL */
+  .flywheel{position:relative;height:340px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;}
+  .fw-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:118px;height:118px;border-radius:50%;background:linear-gradient(140deg,#1B4FD8,#0B2C8A);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 18px 40px -16px rgba(11,44,138,.65);z-index:2;}
+  .fw-center b{font-size:15px;letter-spacing:.02em;}
+  .fw-center i{font-style:normal;font-size:10px;opacity:.7;letter-spacing:.14em;margin-top:3px;}
+  .fw-node{position:absolute;background:#fff;border:1px solid #D8DDF0;border-radius:10px;padding:8px 14px;font-size:12.5px;font-weight:700;color:var(--blue);box-shadow:0 4px 14px -8px rgba(11,44,138,.3);}
+  .fw-n1{left:50%;top:16px;transform:translateX(-50%);}
+  .fw-n2{right:18px;top:50%;transform:translateY(-50%);}
+  .fw-n3{left:50%;bottom:16px;transform:translateX(-50%);}
+  .fw-n4{left:18px;top:50%;transform:translateY(-50%);}
+  .fw-arrow{position:absolute;color:#B9C3E6;font-size:15px;}
+  .fw-a1{left:50%;top:52px;transform:translateX(-50%) rotate(90deg);}
+  .fw-a2{right:56px;top:50%;transform:translateY(-50%);}
+  .fw-a3{left:50%;bottom:52px;transform:translateX(-50%) rotate(90deg);}
+  .fw-a4{left:56px;top:50%;transform:translateY(-50%);}
+
+  /* CHART */
+  .chart{position:relative;height:190px;margin-top:8px;}
+  .zero{position:absolute;left:0;right:0;top:80px;border-top:1px dashed #C9CDDB;}
+  .zero-label{position:absolute;right:0;top:74px;font-size:10px;color:var(--ink3);}
+  .cbar{position:absolute;bottom:0;width:15.5%;height:190px;}
+  .cbar .col{position:absolute;left:50%;transform:translateX(-50%);width:38px;border-radius:6px;}
+  .cbar.up .col{bottom:110px;background:var(--blue2);border-radius:6px 6px 0 0;}
+  .cbar.down .col{top:80px;background:var(--coral);border-radius:0 0 6px 6px;}
+  .cbar .cv{position:absolute;left:50%;transform:translateX(-50%);font-size:12px;font-weight:800;font-feature-settings:"tnum";white-space:nowrap;}
+  .cbar.up .cv{bottom:calc(110px + var(--h) + 5px);color:var(--blue2);}
+  .cbar.down .cv{top:calc(80px + var(--h) + 5px);color:var(--coral);}
+  .cbar .cl{position:absolute;left:50%;transform:translateX(-50%);bottom:-2px;font-size:10.5px;color:var(--ink3);white-space:nowrap;}
+
+  /* TIMELINE */
+  .tl{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--line);}
+  .tl-item{padding:18px 16px 0 0;border-right:1px solid var(--line);position:relative;}
+  .tl-item:last-child{border-right:none;}
+  .tl-item::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;border-radius:50%;background:var(--blue2);}
+  .tl-year{font-size:11.5px;font-weight:800;color:var(--blue2);letter-spacing:.04em;margin-bottom:5px;}
+  .tl-name{font-size:14px;font-weight:700;margin-bottom:5px;}
+  .tl-desc{font-size:11.5px;color:var(--ink2);line-height:1.65;}
+
+  /* PRINCIPLES */
+  .principles{counter-reset:p;}
+  .p-item{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);}
+  .p-item:first-child{border-top:1px solid var(--ink);}
+  .p-num{font-size:22px;font-weight:800;color:#C9D6F7;letter-spacing:-.04em;line-height:1.2;}
+  .p-item h4{font-size:15px;font-weight:700;margin-bottom:5px;}
+  .p-item p{font-size:12.5px;color:var(--ink2);line-height:1.7;}
+
+  /* JUDGMENTS */
+  .judgments{background:#0A1230;color:#fff;border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{border-color:rgba(255,255,255,.35);color:#8FB0FF;}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:18px;}
+  .j-num{font-size:10.5px;letter-spacing:.16em;color:#8FB0FF;font-weight:700;margin-bottom:10px;}
+  .j-item h3{font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.72);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  /* RISK */
+  .risk-row{display:grid;grid-template-columns:180px 1fr 100px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .risk-row:first-of-type{border-top:1px solid var(--ink);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12.5px;}
+  .stars{color:var(--coral);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  .callout{background:var(--gold-soft);border:1px solid #E8D5A8;border-radius:14px;padding:18px 22px;font-size:13.5px;line-height:1.8;color:#6B4E12;}
+  .callout b{color:#4A3508;}
+  .callout-blue{background:var(--blue-soft);border-color:#C9D6F7;color:#1A2C66;}
+  .callout-blue b{color:var(--blue);}
+
+  .flow{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:12.5px;color:var(--ink2);display:flex;flex-wrap:wrap;align-items:center;gap:9px;}
+  .flow b{color:var(--ink);font-weight:600;}
+  .flow .arrow{color:var(--blue2);font-weight:700;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--blue2);text-decoration:none;border-bottom:1px solid #C9D6F7;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .orb-wrap{min-height:220px;}
+    .orb{width:170px;height:170px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .vs{grid-template-columns:1fr;}
+    .vs-col+.vs-col{border-left:none;border-top:1px solid var(--line);}
+    .tl{grid-template-columns:1fr;border-top:none;}
+    .tl-item{border-right:none;border-top:1px solid var(--line);padding:14px 0 0;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+    .flywheel{height:380px;}
+    .cbar .col{width:24px;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.stack,.metric{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Ad &amp; Business Teardown · Day 002</div>
+      <h1>瑞幸<span class="accent">.</span></h1>
+      <div class="subtitle">把广告费做成补贴<br>把门店做成<em>媒体</em></div>
+      <p class="lede">
+        它不是一家「会做广告的咖啡公司」,而是一家把广告费做成了补贴、
+        把门店做成了媒体、把产品做成了内容的<strong>效率公司</strong>。
+        它的广告不在媒介里,在价格里、在门店里、在产品名里。
+      </p>
+    </div>
+    <div class="orb-wrap">
+      <div class="orb"></div>
+      <div class="orb-label">DENSITY · 密度即护城河</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">38,909</div><div class="k">全球门店 · 2026 Q3</div></div>
+    <div class="metric"><div class="v"><small>¥</small>178.91<small>亿</small></div><div class="k">单季营收 · +17.0%</div></div>
+    <div class="metric"><div class="v"><span class="accent">15.4</span><small>%</small></div><div class="k">营业利润率</div></div>
+    <div class="metric"><div class="v">1.23<small>亿</small></div><div class="k">月均交易客户</div></div>
+    <div class="metric"><div class="v">23.3<small>%</small></div><div class="k">门店层面利润率</div></div>
+    <div class="metric"><div class="v"><span class="neg">-11.1</span><small>%</small></div><div class="k">自营同店增速</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:一家卖咖啡的效率公司</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="vs">
+      <div class="vs-col">
+        <div class="tag">STARBUCKS</div>
+        <h3>第三空间</h3>
+        <div class="vs-row"><span>卖什么</span><span>咖啡 + 座位 + 体面</span></div>
+        <div class="vs-row"><span>门店</span><span>150-200 ㎡,大座位区</span></div>
+        <div class="vs-row"><span>单杯价格</span><span>30-40 元</span></div>
+        <div class="vs-row"><span>成本结构</span><span>租金占比高</span></div>
+        <div class="vs-row"><span>增长逻辑</span><span>同店增长 + 开店</span></div>
+        <div class="vs-row"><span>竞争边界</span><span>其他「第三空间」</span></div>
+      </div>
+      <div class="vs-col">
+        <div class="tag">LUCKIN</div>
+        <h3>快消履约</h3>
+        <div class="vs-row"><span>卖什么</span><span>咖啡因 + 便利 + 性价比</span></div>
+        <div class="vs-row"><span>门店</span><span>20-50 ㎡,快取为主</span></div>
+        <div class="vs-row"><span>单杯价格</span><span>9.9-16 元</span></div>
+        <div class="vs-row"><span>成本结构</span><span>租金占比低,靠杯量摊薄</span></div>
+        <div class="vs-row"><span>增长逻辑</span><span>密度 + 频次 + 数据</span></div>
+        <div class="vs-row"><span>竞争边界</span><span>所有现制饮品</span></div>
+      </div>
+    </div>
+    <div class="callout-blue callout" style="margin-top:16px;">
+      <b>星巴克的座位是产品,翻台率是敌人;瑞幸的座位是浪费,密度是朋友。</b>
+      这就是为什么它能开到 3.8 万家,而星巴克中国只有 8 千家左右——不是咖啡更好喝,是商业模型的可复制性完全不同。
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">三个选择,砍掉三块成本</span>
+      <span class="sec-en">Cost Structure</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">01 / 空间</div>
+        <h3>小店 + 快取</h3>
+        <p>20-50 ㎡,2-3 名员工,无座位区。租金被压到单杯 1-2 元,而传统咖啡店可能 5-8 元。</p>
+        <div class="note">砍掉「空间成本」</div>
+      </div>
+      <div class="card">
+        <div class="tag">02 / 人力</div>
+        <h3>APP 下单 + 自提</h3>
+        <p>没有传统收银台,用户线上点单、到店扫码。排队效率高,用户数据全沉淀,可千人千券。</p>
+        <div class="note">砍掉「收银成本」</div>
+      </div>
+      <div class="card">
+        <div class="tag">03 / 资本</div>
+        <h3>联营扩张</h3>
+        <p>13,353 家联营店,占中国门店 34.6%。加盟商出钱开店,总部出品牌、供应链、系统。</p>
+        <div class="note">砍掉「资本开支」</div>
+      </div>
+    </div>
+    <div class="flow">
+      <b>自营</b> 25,277 家 · 零售收入全额 <span class="arrow">|</span>
+      <b>联营</b> 13,353 家 · 供货 + 分成
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">2025 年净增 <b style="color:var(--blue2)">8,708</b> 家,因为不用自己出钱</span>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">一杯咖啡的账:单店模型</span>
+      <span class="sec-en">Unit Economics</span>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="padding:26px 28px;">
+        <div class="tag">SINGLE STORE · 2026 Q3 倒推</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px;">
+          <div>
+            <div style="font-size:11px;color:var(--ink3);">单店月均营收</div>
+            <div style="font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--blue);">17.06<span style="font-size:14px;margin-left:2px;">万元</span></div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--ink3);">单店月均利润</div>
+            <div style="font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--blue);">3.98<span style="font-size:14px;margin-left:2px;">万元</span></div>
+          </div>
+        </div>
+        <div class="note" style="border-top-style:solid;">
+          129.40 亿 ÷ 3 ÷ 25,277 家 = 17.06 万;<br>
+          30.19 亿 ÷ 3 ÷ 25,277 家 = 3.98 万。
+        </div>
+      </div>
+      <div class="card" style="padding:26px 28px;">
+        <div class="tag">COST MIX · 单杯成本结构(估算)</div>
+        <div class="stack">
+          <div style="width:40%;background:#0B2C8A;">40%</div>
+          <div style="width:17%;background:#1B4FD8;">17%</div>
+          <div style="width:9%;background:#5B85FF;">9%</div>
+          <div style="width:10.7%;background:#9DB4F2;color:#0B2C8A;">10.7%</div>
+          <div style="width:23.3%;background:#F6EDD8;color:#8A6416;">利润 23.3%</div>
+        </div>
+        <div class="legend" style="margin-top:2px;">
+          <span><i class="dot-c" style="background:#0B2C8A;"></i>原材料 40%</span>
+          <span><i class="dot-c" style="background:#1B4FD8;"></i>人工 17%</span>
+          <span><i class="dot-c" style="background:#5B85FF;"></i>租金 9%</span>
+          <span><i class="dot-c" style="background:#9DB4F2;"></i>折旧水电 10.7%</span>
+          <span><i class="dot-c" style="background:#F6EDD8;"></i>门店利润 23.3%</span>
+        </div>
+        <div class="note" style="border-top-style:solid;">
+          一杯 13 元的咖啡,门店层面留下约 3 元。<b>不靠卖得贵,靠卖得多。</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">增长飞轮:密度即价格战能力</span>
+      <span class="sec-en">Flywheel</span>
+    </div>
+    <div class="flywheel">
+      <div class="fw-node fw-n1">更多门店</div>
+      <div class="fw-node fw-n2">履约更近</div>
+      <div class="fw-node fw-n3">频次更高</div>
+      <div class="fw-node fw-n4">数据更多</div>
+      <div class="fw-arrow fw-a1">→</div>
+      <div class="fw-arrow fw-a2">→</div>
+      <div class="fw-arrow fw-a3">→</div>
+      <div class="fw-arrow fw-a4">→</div>
+      <div class="fw-center"><b>密度</b><i>DENSITY</i></div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>瑞幸敢打价格战的底气,不是有钱烧,是单杯成本比对手低。</b>
+      2023 年库迪用 9.9 挑起战争,2026 年 2 月库迪取消全场 9.9。这场仗的胜负,是成本结构的胜负,不是营销声量的胜负。
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">广告策略:三个「替代」</span>
+      <span class="sec-en">Advertising</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">REPLACE 01 · MEDIA</div>
+        <h3>价格即广告</h3>
+        <p>9.9 元不是促销,是传播装置。它是社交货币、是新闻标题、是筛选器。同样的预算,做成补贴能换来 3 亿杯「真实体验」,投给电梯只能换来曝光。</p>
+        <div class="note">体验的传播效率 &gt; 广告的传播效率</div>
+      </div>
+      <div class="card">
+        <div class="tag">REPLACE 02 · OOH</div>
+        <h3>门店即广告</h3>
+        <p>38,909 家店,每一家都是 24 小时亮着的招牌、一个「有人排队」的信号、一个「500 米内能买到」的提示。</p>
+        <div class="note">唯一带交易转化的户外广告</div>
+      </div>
+      <div class="card">
+        <div class="tag">REPLACE 03 · CONTENT</div>
+        <h3>产品即内容</h3>
+        <p>「生椰」「酱香」「椰椰椰椰椰」「苦瓜轻体美式」——产品名就是广告语,产品图就是广告画面,上市就是投放。</p>
+        <div class="note">营销前置到「产品定义」阶段</div>
+      </div>
+    </div>
+    <div class="flow">
+      营销费用率仅约 <b>5-6%</b>
+      <span class="arrow">·</span>
+      2025 Q4 销售及营销费用 7.56 亿元,而配送费 16.31 亿元
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">获客主要不靠广告,靠<b style="color:var(--blue2)">便宜和方便</b></span>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">联名方法论:借资产,不借流量</span>
+      <span class="sec-en">Co-branding</span>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="principles">
+          <div class="p-item">
+            <div class="p-num">01</div>
+            <div><h4>借「认知资产」,不借「流量」</h4>
+              <p>普通联名是「你有粉丝,我有货,换流量」;瑞幸是「你有认知资产,我有场景,换心智」。茅台的国酒感、椰树的土味、黑神话的文化符号,都是资产。</p></div>
+          </div>
+          <div class="p-item">
+            <div class="p-num">02</div>
+            <div><h4>要「反差」,不要「和谐」</h4>
+              <p>白酒 × 咖啡、土味 × 精致、抽象 × 日常。和谐的合作没人讨论,反差的合作才有话题。</p></div>
+          </div>
+          <div class="p-item">
+            <div class="p-num">03</div>
+            <div><h4>让用户「参与」,不要「观看」</h4>
+              <p>杯套、纸袋、周边、彩蛋、改名——用户参与的成本越低,传播的半径越大。</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">ASSET EXCHANGE</div>
+        <div style="font-size:12.5px;">
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);">
+            <span style="color:var(--ink3);">茅台</span><span style="font-weight:600;">国酒 · 面子 → 高端感</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);">
+            <span style="color:var(--ink3);">椰树</span><span style="font-weight:600;">土味 · 直白 → 会玩人设</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);">
+            <span style="color:var(--ink3);">黑神话</span><span style="font-weight:600;">文化符号 → 年轻认同</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);">
+            <span style="color:var(--ink3);">陶喆</span><span style="font-weight:600;">抽象梗 → 情怀传播</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+            <span style="color:var(--ink3);">迪士尼反派</span><span style="font-weight:600;">经典 IP → 收藏欲</span>
+          </div>
+        </div>
+        <div class="note" style="border-top:none;padding-top:14px;">
+          联名的本质不是 1+1&gt;2,是<b>用别人的品牌资产,给自己的产品做背书</b>。
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;background:var(--coral-soft);border-color:#F3C7BD;color:#7A2A1C;">
+      <b>但联名正在边际递减。</b>2026 年瑞幸几乎每周都有联名,消费者开始出现「联名疲劳」——「又是联名」「周边质量差」的抱怨增多,传播峰值下降。
+      联名是杠杆,但杠杆用多了会变成日常,而日常是不传播的。
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">案例:把单品做成「年度仪式」</span>
+      <span class="sec-en">Case Study</span>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-year">1 周年 · 2022</div>
+        <div class="tl-name">椰树</div>
+        <div class="tl-desc">椰云拿铁。椰树 34 年首次联名,土味设计引爆二创。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2 周年 · 2023</div>
+        <div class="tl-name">彩虹合唱团</div>
+        <div class="tl-desc">一首生日歌,温情路线,「生椰快乐」。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">3 周年 · 2024</div>
+        <div class="tl-name">腾格尔</div>
+        <div class="tl-desc">《生椰快乐歌》,硬核反差 + THE MONSTERS。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">4 周年 · 2025</div>
+        <div class="tl-name">付航</div>
+        <div class="tl-desc">「猴系男孩」产地溯源,强化产品力。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">5 周年 · 2026</div>
+        <div class="tl-name">陶喆</div>
+        <div class="tl-desc">「椰椰椰椰椰」抽象广告片,打工人主题曲。</div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:20px;">
+      <div class="card">
+        <div class="tag">CASE A</div>
+        <h3>生椰拿铁</h3>
+        <p>累计 <b style="color:var(--blue2);">20 亿杯</b>,首个百亿级单品。2021 年上市,在瑞幸低谷期救活了品牌。</p>
+        <div class="note">产品救了公司,不是广告</div>
+      </div>
+      <div class="card">
+        <div class="tag">CASE B</div>
+        <h3>酱香拿铁</h3>
+        <p>首日 <b style="color:var(--blue2);">542 万杯</b>,单日销售额破 1 亿。3000 万元的茅台,只够卖 1.5 天。</p>
+        <div class="note">让媒体不得不报道的新闻</div>
+      </div>
+      <div class="card">
+        <div class="tag">CASE C</div>
+        <h3>陶喆「椰椰椰椰椰」</h3>
+        <p>把金曲改编成打工人主题曲,杯身印「oh yeah」,杯套藏简谱猜歌彩蛋。</p>
+        <div class="note">不是卖咖啡,是替打工人出口气</div>
+      </div>
+    </div>
+    <div class="callout-blue callout" style="margin-top:16px;">
+      <b>大多数品牌的品牌故事是「我们为什么做咖啡」;瑞幸的品牌故事是「这杯咖啡今年又和谁玩了」。</b>
+      前者需要时间沉淀,后者可以每年重制。这是瑞幸最独特的资产:它没有品牌故事,它有一堆产品故事。
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">9.9 元的两难:从 +14.4% 到 -11.1%</span>
+      <span class="sec-en">Price War</span>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">SELF-OPERATED SAME-STORE GROWTH</div>
+        <div class="chart">
+          <div class="zero"></div>
+          <div class="zero-label">0</div>
+          <div class="cbar up" style="left:0.5%;--h:40px;"><div class="cv">+8.1%</div><div class="col" style="height:40px;"></div><div class="cl">25Q1</div></div>
+          <div class="cbar up" style="left:17%;--h:67px;"><div class="cv">+13.4%</div><div class="col" style="height:67px;"></div><div class="cl">25Q2</div></div>
+          <div class="cbar up" style="left:33.5%;--h:72px;"><div class="cv">+14.4%</div><div class="col" style="height:72px;"></div><div class="cl">25Q3</div></div>
+          <div class="cbar up" style="left:50%;--h:8px;"><div class="cv">+1.2%</div><div class="col" style="height:8px;"></div><div class="cl">25Q4</div></div>
+          <div class="cbar down" style="left:66.5%;--h:27px;"><div class="cv">-5.3%</div><div class="col" style="height:27px;"></div><div class="cl">26Q2</div></div>
+          <div class="cbar down" style="left:83%;--h:56px;"><div class="cv">-11.1%</div><div class="col" style="height:56px;"></div><div class="cl">26Q3</div></div>
+        </div>
+        <div class="note" style="border-top-style:solid;">
+          从 +14.4% 到 -11.1%,只用了四个季度。不是瑞幸变差了,是补贴退潮后的真实需求露出来了。
+        </div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">THE DILEMMA</div>
+        <h3 style="font-size:19px;line-height:1.5;margin-bottom:12px;">「便宜」心智一旦形成,提价就是背叛</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          9.9 元帮瑞幸拿下市场,也给它上了枷锁。想摆脱这个心智,只有三条路:
+        </p>
+        <div style="margin-top:14px;font-size:12.5px;line-height:1.9;color:var(--ink2);">
+          <div style="padding:8px 0;border-top:1px dashed var(--line);"><b style="color:var(--ink);">① 产品升级</b> — 瑰夏、SOE、原产地旗舰店,用专业感撑溢价</div>
+          <div style="padding:8px 0;border-top:1px dashed var(--line);"><b style="color:var(--ink);">② 品类扩张</b> — 非咖占比 2025 年 20%+,Q4 达 23.6%</div>
+          <div style="padding:8px 0;border-top:1px dashed var(--line);"><b style="color:var(--ink);">③ 品牌分层</b> — 收购 Costa / 蓝瓶的传闻,用第二品牌接高端</div>
+        </div>
+        <div class="note" style="border-top-style:solid;">
+          这是瑞幸未来三年最大的品牌难题。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">09</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>广告费是「用户获取成本」的会计重分类</h3>
+          <p>传统品牌把广告记在销售费用,瑞幸把大部分记在补贴和联名授权费里。省下来的钱变成门店和补贴,而门店和补贴又反过来成为广告——<b>花出去的钱变成了资产,不是费用。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>联名是内容杠杆,不是品牌建设</h3>
+          <p>记忆点属于 IP,不属于瑞幸。用户记住的是「茅台咖啡」「陶喆咖啡」,不是「瑞幸」。<b>联名一停,声量就停。</b>它真正的课题是:没有联名时,用户为什么选我。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>护城河是「密度 × 数据 × 供应链」</h3>
+          <p>3.8 万家店的 500 米覆盖、5.2 亿累计交易客户的行为数据、年采购数万吨咖啡豆的成本优势。<b>品牌是结果,不是原因。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:30px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>天花板不是咖啡,是「效率极限」</h3>
+          <p>2026 年年化营收约 700 亿,已接近现制咖啡大盘的 1/3。继续增长只能靠:品类(非咖、轻食)、地域(出海)、渠道(到家、即饮)。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>出海是「模型复制」的考试</h3>
+          <p>新加坡 103 家店跑通,美国只有 22 家。瑞幸的模型依赖高密度——<b>它能在高密度城市复制,很难在低密度国家复制。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>真正的对手不是星巴克</h3>
+          <p>是古茗、七鲜、华莱士这些「跨界者」——它们用更轻的模式、更低的价格切咖啡,而且供应链和门店规模不输老玩家。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">10</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">加盟商盈利压力</div>
+      <div class="risk-desc">门店密度上升、SKU 变多、价格战,单店回报下降,「保本理财」心态蔓延。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">价格战反复</div>
+      <div class="risk-desc">库迪取消 9.9 后,古茗、七鲜、华莱士等跨界者用更低价格切入。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">品牌溢价缺失</div>
+      <div class="risk-desc">「便宜」心智固化,提价困难,联名记忆不属于品牌。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">同店增长转负</div>
+      <div class="risk-desc">2026 Q3 自营同店 -11.1%,补贴退潮后真实需求待验证。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">食品安全</div>
+      <div class="risk-desc">3.8 万家店,联营占比 34.6%,品控难度指数级上升。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">出海不确定性</div>
+      <div class="risk-desc">美国仅 22 家店,低密度市场模型未验证。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">历史包袱</div>
+      <div class="risk-desc">2020 年造假退市,治理与信任仍是长期议题。</div>
+      <div class="stars">★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 瑞幸咖啡 2025 年全年及 2026 年 Q3 财报;中国网财经、蓝鲸新闻、SocialBeta、每日商报等公开报道。<br>
+    <b>说明</b> · 单店成本结构为行业估算,已标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《瑞幸咖啡:把广告费做成补贴,把门店做成媒体》</a>
+  </footer>
+
+</div>
+</body>
+</html>
