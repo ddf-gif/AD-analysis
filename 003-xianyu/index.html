@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>闲鱼 · 模式与营销拆解</title>
+<style>
+  :root{
+    --bg:#F4F1EC;
+    --card:#FFFFFF;
+    --ink:#111111;
+    --ink2:#4A4A4A;
+    --ink3:#8C8C8C;
+    --line:#E3DED5;
+    --yellow:#FFD400;
+    --yellow-deep:#B8860B;
+    --yellow-soft:#FFF7CC;
+    --coral:#E04A32;
+    --coral-soft:#FBE7E2;
+    --mint:#0E7C5A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center;padding:20px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--ink);display:block;}
+  h1{font-size:clamp(56px,7.6vw,100px);line-height:.9;letter-spacing:-.05em;font-weight:900;margin-bottom:12px;}
+  h1 .mark{background:var(--yellow);padding:0 .08em;box-decoration-break:clone;}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(24px,2.9vw,36px);line-height:1.35;font-weight:600;margin-bottom:24px;}
+  .subtitle em{font-style:normal;background:linear-gradient(transparent 62%,var(--yellow) 62%);padding:0 2px;}
+  .lede{font-size:16px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;background:linear-gradient(transparent 64%,#FFE97A 64%);padding:0 2px;}
+
+  .orb-wrap{display:flex;justify-content:center;align-items:center;position:relative;min-height:300px;}
+  .orb{
+    width:224px;height:224px;border-radius:50%;
+    background:radial-gradient(circle at 32% 26%,#FFF3A0 0%,#FFD400 42%,#D4A900 78%,#7A6100 100%);
+    box-shadow:0 40px 90px -34px rgba(180,134,0,.5), inset -16px -18px 44px rgba(0,0,0,.22);
+    position:relative;
+  }
+  .orb::before{content:"";position:absolute;inset:-40px;border:2px solid rgba(17,17,17,.85);border-radius:50%;transform:rotate(-24deg) scaleY(.4);}
+  .orb::after{content:"";position:absolute;inset:-70px;border:1px dashed rgba(17,17,17,.28);border-radius:50%;transform:rotate(-24deg) scaleY(.4);}
+  .orb-label{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:10.5px;letter-spacing:.16em;color:var(--ink3);white-space:nowrap;}
+
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 16px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:27px;font-weight:900;letter-spacing:-.03em;line-height:1.1;font-feature-settings:"tnum";}
+  .metric .v small{font-size:13px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .up{color:var(--coral);}
+  .metric .k{font-size:11px;color:var(--ink3);margin-top:7px;letter-spacing:.04em;}
+
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--ink);background:var(--yellow);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card .tag{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-bottom:12px;}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.75;color:var(--ink2);}
+  .card .note{font-size:12px;color:var(--ink3);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+  .yellow-card{background:var(--yellow-soft);border-color:#F0E29A;}
+  .yellow-card .tag{color:var(--yellow-deep);}
+
+  .vs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);}
+  .vs-col{padding:24px 26px;}
+  .vs-col+.vs-col{border-left:1px solid var(--line);background:#FAF9F6;}
+  .vs-col .tag{font-size:10.5px;letter-spacing:.14em;color:var(--ink3);margin-bottom:10px;}
+  .vs-col h3{font-size:18px;font-weight:700;margin-bottom:14px;}
+  .vs-row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px dashed var(--line);font-size:13px;}
+  .vs-row span:first-child{color:var(--ink3);flex:none;}
+  .vs-row span:last-child{text-align:right;color:var(--ink);font-weight:600;}
+
+  .steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
+  .s4{padding:20px 18px 0 0;border-right:1px solid var(--line);position:relative;}
+  .s4:last-child{border-right:none;}
+  .s4::before{content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:var(--ink);}
+  .s4.hot::before{background:var(--coral);}
+  .s4-time{font-size:11.5px;font-weight:800;letter-spacing:.04em;margin-bottom:6px;}
+  .s4-rate{font-size:26px;font-weight:900;letter-spacing:-.03em;line-height:1.1;margin-bottom:6px;}
+  .s4.hot .s4-rate{color:var(--coral);}
+  .s4-desc{font-size:12px;color:var(--ink2);line-height:1.65;}
+
+  .flow3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .f3{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;position:relative;}
+  .f3 .n{font-size:10px;letter-spacing:.12em;color:var(--yellow-deep);font-weight:800;margin-bottom:8px;}
+  .f3 h4{font-size:14px;font-weight:700;margin-bottom:5px;}
+  .f3 p{font-size:12px;color:var(--ink2);line-height:1.65;}
+  .f3::after{content:"→";position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:13px;background:var(--bg);padding:0 2px;}
+  .f3:last-child::after{display:none;}
+
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;}
+  .pyr-row{padding:11px 18px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:46px;}
+  .pyr-row:nth-child(1){width:46%;background:#111;color:var(--yellow);}
+  .pyr-row:nth-child(2){width:62%;background:#3A3A3A;color:#fff;}
+  .pyr-row:nth-child(3){width:79%;background:var(--yellow);color:#111;}
+  .pyr-row:nth-child(4){width:96%;background:var(--yellow-soft);color:#6B5300;}
+
+  .judgments{background:#141414;color:#fff;border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--yellow);color:#111;}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:18px;}
+  .j-num{font-size:10.5px;letter-spacing:.16em;color:var(--yellow);font-weight:800;margin-bottom:10px;}
+  .j-item h3{font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.72);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  .risk-row{display:grid;grid-template-columns:180px 1fr 100px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .risk-row:first-of-type{border-top:1px solid var(--ink);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12.5px;}
+  .stars{color:var(--coral);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  .callout{background:var(--yellow-soft);border:1px solid #F0E29A;border-radius:14px;padding:18px 22px;font-size:13.5px;line-height:1.8;color:#5C4A00;}
+  .callout b{color:#3A2E00;}
+  .callout-red{background:var(--coral-soft);border-color:#F3C7BD;color:#7A2A1C;}
+  .callout-red b{color:#5A1A0F;}
+
+  .flow{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:12.5px;color:var(--ink2);display:flex;flex-wrap:wrap;align-items:center;gap:9px;}
+  .flow b{color:var(--ink);font-weight:700;}
+  .flow .arrow{color:var(--yellow-deep);font-weight:800;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--ink);text-decoration:none;border-bottom:2px solid var(--yellow);}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .orb-wrap{min-height:220px;}
+    .orb{width:170px;height:170px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .vs{grid-template-columns:1fr;}
+    .vs-col+.vs-col{border-left:none;border-top:1px solid var(--line);}
+    .steps4{grid-template-columns:1fr;border-top:none;}
+    .s4{border-right:none;border-top:1px solid var(--line);padding:14px 0 0;}
+    .flow3{grid-template-columns:1fr;gap:8px;}
+    .f3::after{display:none;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.pyr-row,.metric,.sec-num{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Platform Teardown · Day 003</div>
+      <h1><span class="mark">闲鱼</span></h1>
+      <div class="subtitle">中国最大的<em>非标品交易所</em><br>靠「梗」活着</div>
+      <p class="lede">
+        它不是「二手交易平台」,而是用流量和信任,把「闲置」这种低流动性资产,
+        变成可交易的<strong>流动资产</strong>。它的核心指标不是 GMV,是「发布量」和「成交率」。
+      </p>
+    </div>
+    <div class="orb-wrap">
+      <div class="orb"></div>
+      <div class="orb-label">CIRCULATION · 物与人的循环</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">6<small>亿</small></div><div class="k">累计注册用户</div></div>
+    <div class="metric"><div class="v">2.17<small>亿</small></div><div class="k">月活 MAU</div></div>
+    <div class="metric"><div class="v"><small>¥</small>10<small>亿+</small></div><div class="k">日均 GMV</div></div>
+    <div class="metric"><div class="v">65<small>%</small></div><div class="k">95 后 + 00 后占比</div></div>
+    <div class="metric"><div class="v">400<small>万+</small></div><div class="k">每日闲置发布</div></div>
+    <div class="metric"><div class="v"><span class="up">1.6</span><small>%</small></div><div class="k">鱼小铺费率 · 原 0.6%</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:一个「非标品交易所」</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="vs">
+      <div class="vs-col">
+        <div class="tag">STANDARD GOODS</div>
+        <h3>标品</h3>
+        <div class="vs-row"><span>例子</span><span>iPhone、戴森吹风机</span></div>
+        <div class="vs-row"><span>定价</span><span>有市场价,查一下就知道</span></div>
+        <div class="vs-row"><span>交易难点</span><span>比价、保真</span></div>
+        <div class="vs-row"><span>平台价值</span><span>渠道(流量)</span></div>
+      </div>
+      <div class="vs-col">
+        <div class="tag">NON-STANDARD GOODS</div>
+        <h3>非标品</h3>
+        <div class="vs-row"><span>例子</span><span>二手衣、手作、谷子、技能</span></div>
+        <div class="vs-row"><span>定价</span><span>没有市场价,只有共识</span></div>
+        <div class="vs-row"><span>交易难点</span><span>定价、信任、描述</span></div>
+        <div class="vs-row"><span>平台价值</span><span>机制(定价、担保、仲裁)</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>闲鱼的真正生意,是「非标品的定价机制」。</b>
+      闲鱼相机(拍照估价)、闲鱼空间(行情看板)、闲鱼小法庭(用户裁决)——三件事的共同点:把「说不清」变成「说得清」。
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">模式:四年四步,从「免费」到「抽佣」</span>
+      <span class="sec-en">Monetization</span>
+    </div>
+    <div class="steps4">
+      <div class="s4">
+        <div class="s4-time">2023.6</div>
+        <div class="s4-rate">1%</div>
+        <div class="s4-desc">试水:月成交超 10 笔且金额超 1 万的卖家,超额部分 1%。</div>
+      </div>
+      <div class="s4">
+        <div class="s4-time">2024.9</div>
+        <div class="s4-rate">0.6%</div>
+        <div class="s4-desc">全面铺开:全体卖家 0.6%,单笔封顶 60 元。</div>
+      </div>
+      <div class="s4">
+        <div class="s4-time">2025.4</div>
+        <div class="s4-rate">1.6%<span style="font-size:11px;font-weight:600;color:var(--ink3);margin-left:4px;">手机</span></div>
+        <div class="s4-desc">品类加码:一年卖手机超 6 件,额外 1%,最高 1.6%。</div>
+      </div>
+      <div class="s4 hot">
+        <div class="s4-time">2026.4</div>
+        <div class="s4-rate">1.6%<span style="font-size:11px;font-weight:600;color:var(--coral);margin-left:4px;">鱼小铺</span></div>
+        <div class="s4-desc">核心商家翻倍:鱼小铺 1.6%,取消封顶,计费基数扩大。</div>
+      </div>
+    </div>
+    <div class="callout-red callout" style="margin-top:16px;">
+      <b>创始人的承诺:</b>「闲鱼一定不会收取交易佣金。」——2014 年,谌伟业。这句话在 2023 年被打破。
+      四年四步,每一步都不剧烈,但合起来是一场质变:<b>先培养交易习惯,再收割交易价值。</b>
+    </div>
+    <div class="flow">
+      <b>日均 GMV 10 亿</b> × <b>综合费率 ~1%</b> ≈ 年服务费 <b>36 亿元</b>(估算)
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">占阿里营收比例很小,但它是<b style="color:var(--ink)">最年轻的亿级流量池</b></span>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">抽佣的账:谁在付钱,谁在逃离</span>
+      <span class="sec-en">The Squeeze</span>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tag">CASE A</div>
+        <h3>420 元的专辑</h3>
+        <p>手续费从 <b>2.52 元</b> 涨到 <b style="color:var(--coral);">6.72 元</b>,「快赶上邮费了」。</p>
+        <div class="note">个人卖家开始有感</div>
+      </div>
+      <div class="card">
+        <div class="tag">CASE B</div>
+        <h3>月流水 1 万的卖家</h3>
+        <p>年费从 <b>600 元</b> 涨到 <b style="color:var(--coral);">1,600 元</b>,成本拉高近两倍。</p>
+        <div class="note">中小卖家利润被压缩</div>
+      </div>
+      <div class="card">
+        <div class="tag">CASE C</div>
+        <h3>5 万元的奢侈品包</h3>
+        <p>原来封顶 60 元,现在一单扣 <b style="color:var(--coral);">800 元</b>。</p>
+        <div class="note">高客单价品类最惨</div>
+      </div>
+      <div class="card">
+        <div class="tag">CASE D</div>
+        <h3>2.5 万元的相机</h3>
+        <p>一单抽 <b style="color:var(--coral);">400 元</b>,卖家开始优先同城面交。</p>
+        <div class="note">逃逸:绕过平台</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>猫鼠游戏:</b>平台提高抽佣 → 卖家逃逸(同城面交、微信交易)→ 平台加强管控(2026.4.20「站外引流专项治理」)→ 卖家体验下降 → 供给流失。
+      <b>闲鱼敢这么做,因为它是垄断者:</b>2025 年 10 月,转转关停 C2C,纯 C2C 市场再无对手。
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">供给侧革命:为什么「发布量」比 GMV 重要</span>
+      <span class="sec-en">Supply Side</span>
+    </div>
+    <div class="grid-2" style="margin-bottom:16px;">
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">THE DEATH SPIRAL</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">二手平台的死穴:没人发布</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          买家来了,发现没有好东西 → 走了;卖家挂了,发现没人买 → 不挂了。供给和需求互为因果,冷启动极难。
+        </p>
+        <div class="note" style="border-top-style:solid;">
+          <b>解法:把发布的门槛降到零。</b>
+        </div>
+      </div>
+      <div class="card yellow-card" style="padding:24px 26px;">
+        <div class="tag">XIANYU CAMERA · 2026.3</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">闲鱼相机:拍照即发布</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          接入千问模型,自动识别物品、给出价格区间和商品描述,一键发布,并同步到「闲鱼空间」形成个人资产陈列馆与行情看板。
+        </p>
+        <div class="note" style="border-top-color:#F0E29A;">
+          <b>解决的不是拍照,是「定价焦虑」。</b>
+        </div>
+      </div>
+    </div>
+    <div class="flow3">
+      <div class="f3">
+        <div class="n">STEP 01</div>
+        <h4>拍一张照</h4>
+        <p>对着家里的闲置随手一拍。</p>
+      </div>
+      <div class="f3">
+        <div class="n">STEP 02</div>
+        <h4>AI 认货估价</h4>
+        <p>识别品类,给出合理价格区间与描述。</p>
+      </div>
+      <div class="f3">
+        <div class="n">STEP 03</div>
+        <h4>一键发布</h4>
+        <p>同步「闲鱼空间」,行情变化自动更新。</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>从「卖闲置」到「卖一切」:</b>卖技能、卖时间、卖租赁、卖情绪。
+      00 后学生出租大疆 3 个月创收 40 多万;66 岁退休女工卖定制 Labubu 娃衣;导演于正在闲鱼招募演员收到 4 万份简历。
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">营销:不生产梗,只收割梗</span>
+      <span class="sec-en">Marketing</span>
+    </div>
+    <div class="callout" style="margin-bottom:16px;">
+      <b>「卖掉了」不是闲鱼策划的,是用户自创的。</b>
+      2025 年,年轻人开始用「卖掉了」表达情绪:把班味卖掉、把前任卖掉、把周一的自己卖掉。闲鱼做的,只是「接住它」。
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">AXE 01 · MEME</div>
+        <h3>梗文化</h3>
+        <p>「闲鱼文学」是用户写的商品描述。平台不发明文化,只做放大:开屏广告被当段子看,外卖柜「开口说话」成了装置。</p>
+        <div class="note">品牌「认领」文化,不「制造」文化</div>
+      </div>
+      <div class="card">
+        <div class="tag">AXE 02 · OFFLINE</div>
+        <h3>线下店</h3>
+        <p>「闲鱼循环商店」覆盖 9 城 28 家门店。它不只是卖货,是内容场:打卡、拍照、发小红书。</p>
+        <div class="note">线下店是品牌广告,不是零售渠道</div>
+      </div>
+      <div class="card">
+        <div class="tag">AXE 03 · STAR</div>
+        <h3>代言人</h3>
+        <p>2026 年,赵露思成为闲鱼品牌代言人。亲切、接地气、有点「野生」,和闲鱼的「神奇」调性匹配。</p>
+        <div class="note">把「野生感」做成品牌资产</div>
+      </div>
+    </div>
+    <div class="flow">
+      <b>2026.9 闲鱼 × 卫龙</b>
+      <span class="arrow">→</span> 「闲鱼爽」「卖掉爽」两款联名
+      <span class="arrow">→</span> 9 城 28 店 + 南京「卖掉班味号」巴士
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">把「班味」做成<b style="color:var(--ink)">可吃的产品</b></span>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">人群 · 场景 · 需求</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">WHO · 65% 是 95 后</div>
+        <div style="font-size:12.5px;">
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">学生党</span><span style="font-weight:600;">卖旧物、买谷子、租设备</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">职场新人</span><span style="font-weight:600;">卖旧物回血、买平替</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">二次元圈</span><span style="font-weight:600;">收谷、出谷、追联名</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">下沉市场</span><span style="font-weight:600;">第一次用二手平台</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">职业卖家</span><span style="font-weight:600;">批量收货转卖,被抽佣</span></div>
+        </div>
+        <div class="note" style="border-top:none;padding-top:14px;">
+          供给和需求高度重叠:同一个人,<b>既是买家也是卖家</b>。闲鱼不是「电商」,是「循环」。
+        </div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">WHEN · 五个非典型时刻</div>
+        <div style="font-size:12.5px;">
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">搬家/断舍离</span><span style="font-weight:600;">批量发布,快速回血</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">冲动消费后</span><span style="font-weight:600;">卖闲置,抵消愧疚</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">蹲「捡漏」</span><span style="font-weight:600;">刷「最新发布」找低价</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">追谷/追联名</span><span style="font-weight:600;">抢限量、收绝版</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">技能变现</span><span style="font-weight:600;">卖技能、租设备、接单</span></div>
+        </div>
+        <div class="note" style="border-top:none;padding-top:14px;">
+          <b>淘宝是「我需要,所以买」;闲鱼是「我不想要了,所以卖/淘」。</b>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;align-items:center;">
+      <div class="card" style="padding:24px 28px;">
+        <div class="pyr">
+          <div class="pyr-row">身份与圈层 · 我是谷圈的人</div>
+          <div class="pyr-row">惊喜与支配感 · 捡到漏了</div>
+          <div class="pyr-row">回血与止损 · 卖掉回血</div>
+          <div class="pyr-row">省钱与变现 · 便宜 / 能卖钱</div>
+        </div>
+      </div>
+      <div class="card yellow-card" style="padding:26px 28px;">
+        <div class="tag">THE CORE</div>
+        <h3 style="font-size:20px;line-height:1.5;margin-bottom:12px;">用户要的不是「二手货」<br>是重新支配自己的物</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          卖掉不需要的,买到想要的,顺便获得一点「我会过日子」的掌控感。
+        </p>
+        <div class="note" style="border-top-color:#F0E29A;">
+          闲鱼处理的是<b>「人与物的关系」</b>,不是「人与商品的关系」。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">竞争:转转退场后的「垄断红利」</span>
+      <span class="sec-en">Competition</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">闲鱼</div>
+      <div class="risk-desc">C2C 为主,MAU 2.17 亿,纯 C2C 市场几乎无对手。</div>
+      <div class="stars" style="color:var(--ink);font-weight:800;">垄断</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">转转</div>
+      <div class="risk-desc">2025 年 10 月关停 C2C,全面转型「官方验」。</div>
+      <div class="stars" style="color:var(--ink3);">退场</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">爱回收 / 多抓鱼</div>
+      <div class="risk-desc">3C 回收、图书服饰,自营垂类,规模有限。</div>
+      <div class="stars" style="color:var(--ink3);">垂类</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">小红书 / 抖音</div>
+      <div class="risk-desc">内容 + 交易,可能切走年轻用户的「逛」和「种草」。</div>
+      <div class="stars">潜在</div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>但垄断也有代价:</b>创新动力下降、用户体验被侵蚀、信任被透支。
+      <b>闲鱼真正的对手,不是转转,是「信任」。</b>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">08</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>护城河是「供给密度 + 梗文化」</h3>
+          <p>2 亿月活、400 万日发布,是十年积累;「卖掉了」「闲鱼文学」是用户自创的,无法复制。<b>AI 相机是效率工具,不是护城河。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>抽佣是「垄断租金」,不是价值创造</h3>
+          <p>0.6% → 1.6%,涨的是过路费,不是服务费。平台没有让交易更容易,也没有让信任更强,<b>只是设了个收费站。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>内容化是伪命题,除非服务交易</h3>
+          <p>用户来闲鱼是为了买卖,不是逛。抖音、小红书已经占据内容生态位。<b>正确的内容化:商品详情、买家秀、避坑指南、行情分析。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:30px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>增长来自「非标品」和「服务」</h3>
+          <p>标品有市场价,平台只是渠道;非标品没有市场价,平台有定价权;服务(技能、租赁、副业)是增量且高频。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>天花板是「信任」</h3>
+          <p>买家怕假货,卖家怕到手刀。平台的中介价值就是降低信任成本。<b>谁能把信任做成基础设施,谁就吃到下一波红利。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>它是阿里的「年轻用户入口」</h3>
+          <p>6 亿注册、65% 是 95 后,是阿里最年轻的流量池。<b>所以闲鱼可以「不赚钱」,但不能「没有用户」。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">卖家流失</div>
+      <div class="risk-desc">抽佣翻倍,鱼小铺卖家逃逸到私域、同城面交。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">信任危机</div>
+      <div class="risk-desc">假货、货不对板、纠纷处理慢,是 C2C 的原罪。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">监管合规</div>
+      <div class="risk-desc">二手交易涉税、违禁品、未成年人保护。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">内容化失败</div>
+      <div class="risk-desc">种草、直播投入大、产出低,稀释交易体验。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">阿里战略摇摆</div>
+      <div class="risk-desc">从「战略创新业务」到「自负盈亏」,投入可能收缩。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">垄断反噬</div>
+      <div class="risk-desc">没有竞争,创新停滞,用户体验下降。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">新兴对手</div>
+      <div class="risk-desc">小红书、抖音的「内容 + 交易」可能切走年轻用户。</div>
+      <div class="stars">★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · QuestMobile、阿里财报、蓝鲸财经、网易财经、SocialBeta、澎湃新闻等公开报道。<br>
+    <b>说明</b> · GMV、服务费收入等为基于公开数据的估算,已标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《闲鱼:中国最大的非标品交易所,靠「梗」活着》</a>
+  </footer>
+
+</div>
+</body>
+</html>
