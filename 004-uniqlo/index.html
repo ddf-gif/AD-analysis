@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>优衣库 · 人群 · 场景 · 需求拆解</title>
+<style>
+  :root{
+    --bg:#F4F1EC;
+    --card:#FFFFFF;
+    --ink:#141414;
+    --ink2:#4A4A4A;
+    --ink3:#8C8C8C;
+    --line:#E3DED5;
+    --red:#E60012;
+    --red-dark:#B3000E;
+    --red-soft:#FDE8E6;
+    --grey-soft:#F0EEE9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center;padding:20px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--red);display:block;}
+  h1{font-size:clamp(52px,7vw,92px);line-height:.92;letter-spacing:-.045em;font-weight:900;margin-bottom:12px;}
+  h1 .mark{color:var(--red);}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(23px,2.8vw,35px);line-height:1.35;font-weight:600;margin-bottom:24px;}
+  .subtitle em{font-style:normal;color:var(--red);}
+  .lede{font-size:16px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;background:linear-gradient(transparent 64%,#FFC9C4 64%);padding:0 2px;}
+
+  .block-wrap{display:flex;justify-content:center;align-items:center;position:relative;min-height:300px;flex-direction:column;gap:22px;}
+  .red-block{
+    width:196px;height:196px;background:var(--red);border-radius:6px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#fff;box-shadow:0 34px 70px -28px rgba(230,0,18,.55);
+    transform:rotate(-5deg);position:relative;
+  }
+  .red-block b{font-size:26px;letter-spacing:.14em;font-weight:900;}
+  .red-block i{font-style:normal;font-size:9px;letter-spacing:.3em;opacity:.85;margin-top:6px;}
+  .block-label{font-size:10.5px;letter-spacing:.18em;color:var(--ink3);}
+
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 16px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:25px;font-weight:900;letter-spacing:-.03em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:12.5px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .neg{color:var(--red);}
+  .metric .k{font-size:11px;color:var(--ink3);margin-top:7px;letter-spacing:.04em;}
+
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.16em;color:#fff;background:var(--red);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card .tag{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-bottom:12px;}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.75;color:var(--ink2);}
+  .card .note{font-size:12px;color:var(--ink3);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+  .red-card{background:var(--red-soft);border-color:#F6C9C4;}
+  .red-card .tag{color:var(--red-dark);}
+
+  .vs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);}
+  .vs-col{padding:24px 26px;}
+  .vs-col+.vs-col{border-left:1px solid var(--line);background:#FAF9F6;}
+  .vs-col .tag{font-size:10.5px;letter-spacing:.14em;color:var(--ink3);margin-bottom:10px;}
+  .vs-col h3{font-size:18px;font-weight:700;margin-bottom:14px;}
+  .vs-row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px dashed var(--line);font-size:13px;}
+  .vs-row span:first-child{color:var(--ink3);flex:none;}
+  .vs-row span:last-child{text-align:right;color:var(--ink);font-weight:600;}
+
+  .squeeze{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 28px;}
+  .sq-row{display:flex;align-items:center;gap:14px;padding:10px 0;font-size:13px;color:var(--ink2);}
+  .sq-arrow{font-size:15px;font-weight:800;width:22px;text-align:center;}
+  .sq-up .sq-arrow{color:var(--ink3);}
+  .sq-down .sq-arrow{color:var(--red);}
+  .sq-bar{height:64px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;background:var(--red);letter-spacing:.04em;}
+  .sq-bar span{font-size:11px;font-weight:600;opacity:.8;margin-left:8px;letter-spacing:.02em;}
+
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;}
+  .pyr-row{padding:11px 18px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:46px;}
+  .pyr-row:nth-child(1){width:48%;background:var(--ink);color:#fff;}
+  .pyr-row:nth-child(2){width:64%;background:#3D3D3D;color:#fff;}
+  .pyr-row:nth-child(3){width:80%;background:var(--red);color:#fff;}
+  .pyr-row:nth-child(4){width:96%;background:var(--red-soft);color:var(--red-dark);}
+
+  .judgments{background:var(--ink);color:#fff;border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--red);color:#fff;}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:18px;}
+  .j-num{font-size:10.5px;letter-spacing:.16em;color:#FF8A80;font-weight:800;margin-bottom:10px;}
+  .j-item h3{font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.72);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  .risk-row{display:grid;grid-template-columns:180px 1fr 100px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .risk-row:first-of-type{border-top:1px solid var(--ink);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12.5px;}
+  .stars{color:var(--red);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  .callout{background:var(--red-soft);border:1px solid #F6C9C4;border-radius:14px;padding:18px 22px;font-size:13.5px;line-height:1.8;color:#7A1710;}
+  .callout b{color:#5A0E08;}
+  .callout-grey{background:var(--grey-soft);border-color:#DDD8CF;color:#3D3D3D;}
+  .callout-grey b{color:var(--ink);}
+
+  .flow{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:12.5px;color:var(--ink2);display:flex;flex-wrap:wrap;align-items:center;gap:9px;}
+  .flow b{color:var(--ink);font-weight:700;}
+  .flow .arrow{color:var(--red);font-weight:800;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--red-dark);text-decoration:none;border-bottom:1px solid #F6C9C4;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .block-wrap{min-height:220px;}
+    .red-block{width:150px;height:150px;}
+    .red-block b{font-size:20px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .vs{grid-template-columns:1fr;}
+    .vs-col+.vs-col{border-left:none;border-top:1px solid var(--line);}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+    .card div[style*="justify-content:space-between"]{flex-direction:column;gap:2px;}
+    .card div[style*="justify-content:space-between"] span:last-child{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.pyr-row,.metric,.sec-num,.red-block,.sq-bar{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Retail Teardown · Day 004</div>
+      <h1>优衣库<span class="mark">.</span></h1>
+      <div class="subtitle">卖的不是衣服<br>是<em>「不用想的确定性」</em></div>
+      <p class="lede">
+        它不提供「最好的白 T」,它提供「<strong>不用挑的白 T</strong>」。
+        它的护城河不是设计,也不是价格,而是你站在衣架前,<strong>不需要做选择</strong>。
+      </p>
+    </div>
+    <div class="block-wrap">
+      <div class="red-block">
+        <b>UNIQLO</b>
+        <i>LIFEWEAR</i>
+      </div>
+      <div class="block-label">BASIC · 基础款的确定性</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">3.96<small>万亿日元</small></div><div class="k">集团营收 · +16.6%</div></div>
+    <div class="metric"><div class="v">7,240<small>亿日元</small></div><div class="k">大中华区营收</div></div>
+    <div class="metric"><div class="v">852<small>家</small></div><div class="k">中国大陆门店</div></div>
+    <div class="metric"><div class="v">18.3<small>%</small></div><div class="k">大中华区营收占比</div></div>
+    <div class="metric"><div class="v"><span class="neg">-74</span><small>家</small></div><div class="k">一年净关店</div></div>
+    <div class="metric"><div class="v"><span class="neg">3</span><small>%</small></div><div class="k">大陆同币增速</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:服装界的「默认选项」</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="callout-grey callout">
+      <b>一个思想实验:</b>买一件白 T 恤。淘宝搜「白 T」,10 万个结果,9.9 到 399,要花 30 分钟比价、看评价、赌质量;
+      走进优衣库,拿起 79 元的,试穿,买单,5 分钟。<b>优衣库卖的就是这 25 分钟的差价。</b>
+    </div>
+    <div class="grid-3" style="margin-top:16px;">
+      <div class="card">
+        <div class="tag">PILLAR 01</div>
+        <h3>一致性</h3>
+        <p>款式极简、颜色基础、每年微调。降低「选错」的风险。</p>
+        <div class="note">不用比风格</div>
+      </div>
+      <div class="card">
+        <div class="tag">PILLAR 02</div>
+        <h3>可得性</h3>
+        <p>全球 3,000+ 店,商场一层。降低「买不到」的风险。</p>
+        <div class="note">不用比渠道</div>
+      </div>
+      <div class="card">
+        <div class="tag">PILLAR 03</div>
+        <h3>品质稳定</h3>
+        <p>供应链自控,面料标准化。降低「质量差」的风险。</p>
+        <div class="note">不用比品质</div>
+      </div>
+    </div>
+    <div class="flow">
+      <b>ZARA</b> 赌「你会为好看买单」<span class="arrow">|</span><b>优衣库</b> 赌「你会为不用想买单」
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">消费上行期 ZARA 赢,下行期优衣库赢</span>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">人群:卡在两代人之间</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="card" style="padding:24px 26px;margin-bottom:14px;">
+      <div class="tag">FIVE SEGMENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">老顾客 · 35-50 岁</span><span style="font-weight:600;">基础款、内衣、家居服 · 正在流失</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">年轻人 · 18-28 岁</span><span style="font-weight:600;">UT、联名、防晒衣 · 来得少、买得少</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">家庭用户 · 30-45 岁</span><span style="font-weight:600;">全家一站式采购 · 稳定</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">下沉市场 · 25-45 岁</span><span style="font-weight:600;">打折基础款 · 价格敏感</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">商务通勤 · 25-40 岁</span><span style="font-weight:600;">衬衫、西裤、免烫 · 稳定</span></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">LOST · 老顾客</div>
+        <h3 style="font-size:17px;margin-bottom:10px;">「优衣库不再为我设计」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          最早那批顾客,当年 20-30 岁,现在 40-50 岁。他们要宽松、耐穿、79 元、不张扬。
+          但优衣库的女装「变短、变紧、变小」,79/99 元的款式下架,100 元以下大多只剩童装。
+        </p>
+        <div class="note" style="border-top-style:solid;">46 岁顾客:「有些花样太新潮,不适合我这个年纪。」</div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">NOT YET · 年轻人</div>
+        <h3 style="font-size:17px;margin-bottom:10px;">「路过会看,但很久没买」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          年轻人嫌它「版型一般,不能遮盖身材缺陷」「不够时髦」;平替又太多——「同样的品质,3 折的价格」。
+          社交平台上,「优衣库平替」话题浏览量破亿。
+        </p>
+        <div class="note" style="border-top-style:solid;">大学生:「同等价位,我选更有设计感的品牌。」</div>
+      </div>
+    </div>
+    <div class="squeeze" style="margin-top:14px;">
+      <div class="sq-row sq-up">
+        <div class="sq-arrow">↑</div>
+        <div>向上:打不过 ZARA、COS、国潮设计师品牌 —— 它不敢「赌流行」</div>
+      </div>
+      <div class="sq-bar">优衣库 · 基础款 + 合理价<span>中间地带</span></div>
+      <div class="sq-row sq-down">
+        <div class="sq-arrow">↓</div>
+        <div>向下:打不过白牌、平替、1688 —— 成本结构降不下来</div>
+      </div>
+      <div class="callout" style="margin-top:14px;">
+        <b>中间化陷阱:不上不下,两头不靠。</b>向上不够时尚,向下不够便宜,「基础款」正在被两边的力量同时侵蚀。
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">场景:衣橱的「补货时刻」</span>
+      <span class="sec-en">Scenes</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">SIX MOMENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">换季补货</span><span style="font-weight:600;">降温/升温 → 针织衫、HEATTECH、防晒衣</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">旅行应急</span><span style="font-weight:600;">忘带衣服 → 短袖、内衣、袜子</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">家庭采购</span><span style="font-weight:600;">孩子长个、开学 → 童装、家居服</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">通勤基础</span><span style="font-weight:600;">上班需要 → 衬衫、西裤、免烫</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">功能场景</span><span style="font-weight:600;">冷/晒 → HEATTECH、AIRism、防晒衣</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">联名抢购</span><span style="font-weight:600;">UT 发售 → KAWS、动漫 IP</span></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card red-card" style="padding:24px 26px;">
+        <div class="tag">THE DIFFERENCE</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">「逛」出来的需求 vs 「缺」出来的需求</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          ZARA 是逛出来的——你本来没想买,逛着逛着就买了;<br>
+          优衣库是缺出来的——你缺一件打底衫,才会去优衣库。
+        </p>
+        <div class="note" style="border-top-color:#F6C9C4;">
+          <b>「缺」出来的需求,频次低,但确定性高。</b>
+        </div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">THE MOAT</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">技术场景:最后的护城河</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          HEATTECH(2003)、AIRism(2013)、防晒衣、轻羽绒——这些不是「好看」,是「有用」。
+        </p>
+        <div class="note" style="border-top-style:solid;">
+          天气每年都会来,流行不一定。<b>「有用」比「好看」更稳定。</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">需求:从性价比到确定性</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="grid-2" style="align-items:center;">
+      <div class="card" style="padding:26px 30px;">
+        <div class="pyr">
+          <div class="pyr-row">社会 · 不出错、不张扬、融入</div>
+          <div class="pyr-row">心理 · 不用想、不会错、省心</div>
+          <div class="pyr-row">经济 · 性价比、耐穿、值</div>
+          <div class="pyr-row">功能 · 保暖、透气、免烫、合身</div>
+        </div>
+      </div>
+      <div class="card" style="padding:26px 28px;">
+        <div class="tag">THE REAL PRODUCT</div>
+        <h3 style="font-size:21px;line-height:1.5;margin-bottom:12px;">它真正卖的<br>是「降低决策成本」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          买一件衣服要做四个决策:风格、预算、质量、尺码。优衣库把这四个决策全部标准化了——
+          款式不出错、价位可接受、质量稳定、尺码齐全。
+        </p>
+        <div class="note" style="border-top-style:solid;">
+          <b>优衣库的价值 = 帮你省掉的决策时间。</b>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>但「确定性」不再稀缺了:</b>平替提供「更便宜的确定性」,国潮提供「更有趣的确定性」,电商提供「更方便的确定性」。
+      当确定性变成基础设施,优衣库的溢价就没了。
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">商业:全球创新高,中国在收缩</span>
+      <span class="sec-en">Business</span>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tag">GROUP</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.03em;color:var(--red);">3.96<span style="font-size:12px;">万亿日元</span></div>
+        <p style="font-size:12px;margin-top:6px;">集团营收 +16.6%,连续 5 年创纪录</p>
+      </div>
+      <div class="card">
+        <div class="tag">GREATER CHINA</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.03em;">7,240<span style="font-size:12px;">亿日元</span></div>
+        <p style="font-size:12px;margin-top:6px;">+11.3%,但同币仅 +3%</p>
+      </div>
+      <div class="card">
+        <div class="tag">EU + NA</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.03em;">22.1<span style="font-size:12px;">%</span></div>
+        <p style="font-size:12px;margin-top:6px;">首次超过大中华区(18.3%)</p>
+      </div>
+      <div class="card">
+        <div class="tag">STORES</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.03em;"><span style="color:var(--red);">926→852</span></div>
+        <p style="font-size:12px;margin-top:6px;">一年净关 74 家</p>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">CLOSING &amp; PRICING UP</div>
+        <h3 style="font-size:17px;margin-bottom:10px;">关店 + 涨价 = 用规模换利润</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          关掉约 150 家「无法吸引顾客」的店;79/99 元的款式减少,149/199 元的设计款增多。
+          结果是:大陆利润 +18%,事业利润率回到约 16%——但「性价比之王」的心智受损。
+        </p>
+        <div class="note" style="border-top-style:solid;">短期是精耕细作,长期是放弃基本盘?</div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">THREE MOVES</div>
+        <h3 style="font-size:17px;margin-bottom:10px;">三个战略调整</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          ① 从数量到质量:关小店、开旗舰店(重庆、成都、天津);<br>
+          ② 从连锁到单店:区域化经营,按地区调商品与陈列;<br>
+          ③ 从线下到全渠道:电商占比 20% → 30%,与京东合作。
+        </p>
+        <div class="note" style="border-top-style:solid;">供应链本土化:与鲁泰、晨风结成战略联盟</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">广告:一家「几乎不做广告」的公司</span>
+      <span class="sec-en">Advertising</span>
+    </div>
+    <div class="vs">
+      <div class="vs-col">
+        <div class="tag">TRADITIONAL</div>
+        <h3>传统服装品牌</h3>
+        <div class="vs-row"><span>预算</span><span>高(明星、大片、投放)</span></div>
+        <div class="vs-row"><span>媒介</span><span>TVC、户外、社媒</span></div>
+        <div class="vs-row"><span>逻辑</span><span>「说服你买」</span></div>
+        <div class="vs-row"><span>资产</span><span>形象</span></div>
+      </div>
+      <div class="vs-col">
+        <div class="tag">UNIQLO</div>
+        <h3>优衣库</h3>
+        <div class="vs-row"><span>预算</span><span>低</span></div>
+        <div class="vs-row"><span>媒介</span><span>门店、产品、口碑</span></div>
+        <div class="vs-row"><span>逻辑</span><span>「让你看见」</span></div>
+        <div class="vs-row"><span>资产</span><span>产品</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>LifeWear(服适人生):</b>「衣服是配角,人才是主角。」它不卖时尚,卖生活;不承诺好看,承诺合适。
+      这不是一句 slogan,是一个<b>让基础款合理化</b>的叙事。
+    </div>
+    <div class="flow">
+      <b>门店</b> 最大的广告位 <span class="arrow">|</span>
+      <b>产品</b> HEATTECH / AIRism / UT 即内容 <span class="arrow">|</span>
+      <b>联名</b> KAWS / JW Anderson 即事件
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">代言人:倪妮、费德勒、Emma Raducanu</span>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>护城河是「默认」,不是品牌</h3>
+          <p>品牌要被想起,默认只需被路过。门店密度就是「默认」的基础设施。<b>一旦消费者开始比价、找平替,默认就失效了。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>中国困境的本质是「中间化」</h3>
+          <p>向上打不过设计师品牌和国潮,向下打不过白牌和平替。<b>不是卖不动,是不知道卖给谁。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>涨价是「正确的错误」</h3>
+          <p>正确:修复利润(+18%),提升坪效;错误:失去「性价比之王」心智,把老顾客推给平替。<b>短期精耕,长期弃盘。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:30px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>全球化是「中国经验的复制」</h3>
+          <p>大中华区做了 20 年试验场:门店运营、商品企划、消费者洞察。欧美 +34.6% / +38.7%,本质是「中国打法」出海。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>技术场景是最后的护城河</h3>
+          <p>HEATTECH、AIRism 是功能,不是时尚。功能不容易被平替,因为需要研发和供应链。<b>未来可能是「功能性基础款公司」。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>最大的对手不是 ZARA,是 1688</h3>
+          <p>ZARA 抢的是时尚需求,优衣库本来就不做;1688、拼多多抢的是基础款需求——<b>这是它的命根子。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">中间化陷阱</div>
+      <div class="risk-desc">老顾客流失、年轻人不买,两头不靠。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">平替冲击</div>
+      <div class="risk-desc">「优衣库平替」话题浏览破亿,代工厂 3 折。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">品牌心智受损</div>
+      <div class="risk-desc">涨价 + 关店,「性价比之王」不再。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">中国市场收缩</div>
+      <div class="risk-desc">门店 926→852,同币增速仅 3%。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">汇率依赖</div>
+      <div class="risk-desc">大中华区 +11.3% 里,很大一部分是日元贬值。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">本土竞争</div>
+      <div class="risk-desc">国潮、设计师品牌、户外品牌各占山头。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">产品同质化</div>
+      <div class="risk-desc">基础款容易被复制,技术款才有壁垒。</div>
+      <div class="stars">★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 迅销集团 2026 财年财报;中国经营报、红星新闻、东方财富等公开报道。<br>
+    <b>说明</b> · 部分比例为基于公开数据的估算,已标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《优衣库:卖的不是衣服,是「不用想的确定性」》</a>
+  </footer>
+
+</div>
+</body>
+</html>
