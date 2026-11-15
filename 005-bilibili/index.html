@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B站 · 社区与商业拆解</title>
+<style>
+  :root{
+    --bg:#F4F1EC;
+    --card:#FFFFFF;
+    --ink:#141414;
+    --ink2:#4A4A4A;
+    --ink3:#8C8C8C;
+    --line:#E3DED5;
+    --pink:#FB7299;
+    --pink-deep:#D4476E;
+    --pink-soft:#FDE7EE;
+    --blue:#00A1D6;
+    --blue-soft:#E4F5FB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center;padding:20px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--pink-deep);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--pink-deep);display:block;}
+  h1{font-size:clamp(54px,7.4vw,96px);line-height:.92;letter-spacing:-.05em;font-weight:900;margin-bottom:12px;}
+  h1 .mark{color:var(--pink);}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(23px,2.8vw,35px);line-height:1.35;font-weight:600;margin-bottom:24px;}
+  .subtitle em{font-style:normal;color:var(--pink-deep);background:linear-gradient(transparent 64%,#FFD3E0 64%);padding:0 2px;}
+  .lede{font-size:16px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;background:linear-gradient(transparent 64%,#FFD3E0 64%);padding:0 2px;}
+
+  .tv-wrap{display:flex;justify-content:center;align-items:center;position:relative;min-height:300px;flex-direction:column;gap:22px;}
+  .tv{
+    width:230px;height:172px;background:var(--pink);border-radius:22px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 34px 70px -30px rgba(251,114,153,.65);
+    position:relative;transform:rotate(-3deg);
+  }
+  .tv::before,.tv::after{
+    content:"";position:absolute;top:-18px;width:3px;height:22px;background:var(--pink-deep);border-radius:2px;
+  }
+  .tv::before{left:38%;transform:rotate(-22deg);}
+  .tv::after{right:38%;transform:rotate(22deg);}
+  .tri{width:0;height:0;border-left:38px solid #fff;border-top:24px solid transparent;border-bottom:24px solid transparent;margin-left:10px;}
+  .tv-label{font-size:10.5px;letter-spacing:.18em;color:var(--ink3);}
+
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 16px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:26px;font-weight:900;letter-spacing:-.03em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:12.5px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .accent{color:var(--pink-deep);}
+  .metric .k{font-size:11px;color:var(--ink3);margin-top:7px;letter-spacing:.04em;}
+
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.16em;color:#fff;background:var(--pink);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card .tag{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-bottom:12px;}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.75;color:var(--ink2);}
+  .card .note{font-size:12px;color:var(--ink3);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+  .pink-card{background:var(--pink-soft);border-color:#F9CBD9;}
+  .pink-card .tag{color:var(--pink-deep);}
+
+  .stack{display:flex;height:44px;border-radius:10px;overflow:hidden;margin:6px 0 14px;}
+  .stack div{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;letter-spacing:.02em;overflow:hidden;white-space:nowrap;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--ink2);}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .dot-c{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;}
+  .pyr-row{padding:11px 18px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:46px;}
+  .pyr-row:nth-child(1){width:48%;background:var(--ink);color:#fff;}
+  .pyr-row:nth-child(2){width:64%;background:#3D3D3D;color:#fff;}
+  .pyr-row:nth-child(3){width:80%;background:var(--pink);color:#fff;}
+  .pyr-row:nth-child(4){width:96%;background:var(--pink-soft);color:var(--pink-deep);}
+
+  .judgments{background:#141414;color:#fff;border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--pink);color:#fff;}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:18px;}
+  .j-num{font-size:10.5px;letter-spacing:.16em;color:#FF9DBB;font-weight:800;margin-bottom:10px;}
+  .j-item h3{font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.72);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  .risk-row{display:grid;grid-template-columns:180px 1fr 100px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .risk-row:first-of-type{border-top:1px solid var(--ink);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12.5px;}
+  .stars{color:var(--pink-deep);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  .callout{background:var(--pink-soft);border:1px solid #F9CBD9;border-radius:14px;padding:18px 22px;font-size:13.5px;line-height:1.8;color:#7A1F3A;}
+  .callout b{color:#5A1228;}
+  .callout-blue{background:var(--blue-soft);border-color:#C4E9F4;color:#0A4E66;}
+  .callout-blue b{color:#063A4C;}
+
+  .flow{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:12.5px;color:var(--ink2);display:flex;flex-wrap:wrap;align-items:center;gap:9px;}
+  .flow b{color:var(--ink);font-weight:700;}
+  .flow .arrow{color:var(--pink-deep);font-weight:800;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--pink-deep);text-decoration:none;border-bottom:1px solid #F9CBD9;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .tv-wrap{min-height:220px;}
+    .tv{width:180px;height:136px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+    .card div[style*="justify-content:space-between"]{flex-direction:column;gap:2px;}
+    .card div[style*="justify-content:space-between"] span:last-child{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.pyr-row,.metric,.sec-num,.tv,.stack{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Community Teardown · Day 005</div>
+      <h1>bilibili<span class="mark">.</span></h1>
+      <div class="subtitle">用<em>社区</em>换增长<br>用<em>广告</em>换盈利</div>
+      <p class="lede">
+        它卖的不是视频,是「<strong>归属感</strong>」——一种「我和一群懂我的人,在看同一个东西」的感觉。
+        但 2026 年的 B 站,正在把归属感变成<strong>广告库存</strong>。
+      </p>
+    </div>
+    <div class="tv-wrap">
+      <div class="tv"><div class="tri"></div></div>
+      <div class="tv-label">DANMAKU · 一起看</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">1.17<small>亿</small></div><div class="k">DAU · +7%</div></div>
+    <div class="metric"><div class="v">113<small>分钟</small></div><div class="k">日均使用时长</div></div>
+    <div class="metric"><div class="v">79.4<small>亿</small></div><div class="k">Q2 总营收 · +8%</div></div>
+    <div class="metric"><div class="v"><span class="accent">39</span><small>%</small></div><div class="k">广告占营收比</div></div>
+    <div class="metric"><div class="v">2,571<small>万</small></div><div class="k">大会员</div></div>
+    <div class="metric"><div class="v">26.5<small>岁</small></div><div class="k">用户平均年龄</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:一个「用弹幕连接的同好社区」</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">MECHANISM 01</div>
+        <h3>弹幕</h3>
+        <p>视频上飞过的评论。把「一个人看」变成「一起看」——同一秒钟,几万人发出同一句话。</p>
+        <div class="note">让你「参与」</div>
+      </div>
+      <div class="card">
+        <div class="tag">MECHANISM 02</div>
+        <h3>投币 / 充电</h3>
+        <p>用户给 UP 主「付费」。把「喜欢」变成「支持」,把观众变成「投资人」。</p>
+        <div class="note">让你「投资」</div>
+      </div>
+      <div class="card">
+        <div class="tag">MECHANISM 03</div>
+        <h3>答题转正</h3>
+        <p>注册要答 100 道题。把「路人」筛成「会员」,把「看客」筛成「自己人」。</p>
+        <div class="note">让你「证明你懂」</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>社区的本质,不是「内容」,是「门槛」——门槛越高,归属感越强。</b>
+      这三个机制,共同构成了 B 站的「准入仪式」。
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">人群:从「二次元」到「26.5 岁的中国人」</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="card" style="padding:24px 26px;margin-bottom:14px;">
+      <div class="tag">THREE LAYERS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">看的人 · 学生 / 年轻白领</span><span style="font-weight:600;">刷视频、发弹幕、追番 → 广告、大会员</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">做的人 · UP 主</span><span style="font-weight:600;">投稿、接商单、直播 → 广告、直播分成</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">混的人 · 社区活跃用户</span><span style="font-weight:600;">评论、二创、参与话题 → 氛围、内容供给</span></div>
+      </div>
+      <div class="note" style="border-top:none;padding-top:14px;">
+        B 站的特殊之处:<b>三层用户高度重叠</b>。一个用户,可能既是观众,也是 UP 主,还是社区活跃分子。
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card pink-card" style="padding:24px 26px;">
+        <div class="tag">GROWN UP</div>
+        <h3 style="font-size:17px;margin-bottom:10px;">用户长大了</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          平均 26.5 岁,核心用户从「学生」变成「职场人」。需求从「看番剧」变成「看知识、看职场、看理财」,从「有闲」变成「没时间」。
+        </p>
+        <div class="note" style="border-top-color:#F9CBD9;">从「为爱发电」到「为生活付费」</div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">NOT YET</div>
+        <h3 style="font-size:17px;margin-bottom:10px;">B 站还没长大</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          内容供给还停留在「年轻人的兴趣」:二次元在退潮,知识区变现难,生活区、美食区和抖音、小红书高度重叠。
+        </p>
+        <div class="note" style="border-top-style:solid;"><b>用户长大了,B 站没有跟着长大——这是最深的错位。</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">场景:一天里的 B 站</span>
+      <span class="sec-en">Scenes</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">SIX MOMENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">早晨通勤</span><span style="font-weight:600;">知识区、财经、播客 → 中长视频</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">午休</span><span style="font-weight:600;">StoryMode、搞笑、鬼畜 → 竖屏</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">下午摸鱼</span><span style="font-weight:600;">游戏解说、测评 → 中视频</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">晚上</span><span style="font-weight:600;">番剧、影视、纪录片 → 长视频</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">周末</span><span style="font-weight:600;">直播、比赛、课程 → 直播 / 长视频</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">学习时</span><span style="font-weight:600;">教程、网课、自习室 → 长视频 / 直播</span></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">THE CONTAINER</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">B 站是「时间的容器」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          StoryMode 抢「碎片时间」,和抖音正面竞争;长视频守「沉浸时间」,这是抖音做不到的。
+        </p>
+        <div class="note" style="border-top-style:solid;"><b>但两件事的产品逻辑是冲突的:一个要快,一个要慢。</b></div>
+      </div>
+      <div class="card pink-card" style="padding:24px 26px;">
+        <div class="tag">THE UNIQUE</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">最独特的场景:「一起看」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          弹幕:几万人同一秒发同一句话;直播:和主播实时互动;评论区:看完之后,看别人怎么说。
+        </p>
+        <div class="note" style="border-top-color:#F9CBD9;">算法让你「一个人刷」,弹幕让你「一起看」。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">需求:四层价值,本质是「归属感」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="grid-2" style="align-items:center;">
+      <div class="card" style="padding:26px 30px;">
+        <div class="pyr">
+          <div class="pyr-row">表达 · 我要说、我要二创</div>
+          <div class="pyr-row">身份 · 我是 B 站用户</div>
+          <div class="pyr-row">陪伴 · 有人和我一起看</div>
+          <div class="pyr-row">内容 · 番剧 / 游戏 / 知识</div>
+        </div>
+      </div>
+      <div class="card" style="padding:26px 28px;">
+        <div class="tag">THE CORE</div>
+        <h3 style="font-size:21px;line-height:1.5;margin-bottom:12px;">用户要的不是「视频」<br>是「安放兴趣的地方」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          「B 站用户」是一种身份标签:年轻、有品味、懂梗、不随大流。用户不只是消费者,也是生产者。
+        </p>
+        <div class="note" style="border-top-style:solid;">
+          这就是为什么用户会说「小破站」——<b>「破」是自嘲,也是亲昵。</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">商业:广告首超游戏,盈利的代价</span>
+      <span class="sec-en">Business</span>
+    </div>
+    <div class="card" style="padding:26px 28px;">
+      <div class="tag">REVENUE MIX · 2026 Q2</div>
+      <div class="stack">
+        <div style="width:39.4%;background:var(--pink);">广告 39.4%</div>
+        <div style="width:37.4%;background:#3D3D3D;">增值 37.4%</div>
+        <div style="width:17.5%;background:var(--blue);">游戏 17.5%</div>
+        <div style="width:5.7%;background:#D9D2FF;color:#3A2E7A;font-size:9px;">5.7%</div>
+      </div>
+      <div class="legend">
+        <span><i class="dot-c" style="background:var(--pink);"></i>广告 31.3 亿 · +28%</span>
+        <span><i class="dot-c" style="background:#3D3D3D;"></i>增值服务 29.7 亿 · +5%</span>
+        <span><i class="dot-c" style="background:var(--blue);"></i>移动游戏 13.9 亿 · -14%</span>
+        <span><i class="dot-c" style="background:#D9D2FF;"></i>IP 衍生等 5.7%</span>
+      </div>
+      <div class="note" style="border-top-style:solid;">
+        <b>广告首次成为第一大收入来源。</b>B 站不再是「游戏公司」,也不再是「会员公司」——它变成了「广告公司」。
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:14px;">
+      <div class="card">
+        <div class="tag">ENGINE 01</div>
+        <h3>广告</h3>
+        <p>连续 14 个季度 +20%+;StoryMode 创造库存;AI 广告收入翻倍,自动投放降低门槛。</p>
+        <div class="note">前五行业:游戏、数码、网服、电商、汽车</div>
+      </div>
+      <div class="card">
+        <div class="tag">ENGINE 02</div>
+        <h3>游戏</h3>
+        <p>《三国:谋定天下》2024 爆款,2026 高基数下滑;自研毛利率 90%+,是利润压舱石。</p>
+        <div class="note">储备四款新品,2027 年见</div>
+      </div>
+      <div class="card">
+        <div class="tag">ENGINE 03</div>
+        <h3>降本</h3>
+        <p>毛利率从 17%(2022)升到 35%+(2025);带宽成本压缩;UP 主激励削减。</p>
+        <div class="note">开源节流:多卖广告、少发补贴</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>代价:三件事同时发生。</b>UP 主 K 型分化(头部涨价、中腰部暴跌)、社区抖音化(StoryMode 稀释弹幕)、二次元退潮(先审后播,大会员停滞)。
+      <b>B 站用「社区」换了「盈利」。</b>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">广告:B 站广告为什么「不讨厌」</span>
+      <span class="sec-en">Advertising</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">FORM 01</div>
+        <h3>UP 主商单</h3>
+        <p>UP 主在视频里植入品牌。内容化、可信度高,用户甚至会「主动看广告」——商单常常比正片还有趣。</p>
+        <div class="note">内容,不是打断</div>
+      </div>
+      <div class="card">
+        <div class="tag">FORM 02</div>
+        <h3>StoryMode 信息流</h3>
+        <p>竖屏滑动中的广告,量大、转化直接。这是 B 站广告增长最快的引擎。</p>
+        <div class="note">库存,不是体验</div>
+      </div>
+      <div class="card">
+        <div class="tag">FORM 03</div>
+        <h3>开屏 / 贴片</h3>
+        <p>传统广告位,但 B 站用得克制——因为用户对「打断」零容忍。</p>
+        <div class="note">克制,是策略</div>
+      </div>
+    </div>
+    <div class="callout-blue callout" style="margin-top:16px;">
+      <b>花火平台:</b>UP 主接单、品牌投放、平台抽成。2024 年超 300 万 UP 主获得收入,广告主数量同比增长双位数。
+      <b>B 站广告的天花板,不是「库存」,是「UP 主的产能」。</b>
+    </div>
+    <div class="flow">
+      <b>但隐忧:</b>StoryMode 广告密度上升 <span class="arrow">→</span> 商单「含广量」提高 <span class="arrow">→</span> 用户抱怨「B 站变味了」
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">广告是续命药,也是慢性毒药</span>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>护城河是「社区氛围」,不是内容</h3>
+          <p>内容可以买、可以抄、可以挖;氛围买不到、抄不走、挖不动。<b>但氛围最脆弱:它需要克制,而盈利需要贪婪。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>广告首超游戏,是「身份转换」</h3>
+          <p>从游戏公司到广告公司,估值逻辑变了。游戏是项目制、波动大;广告是现金流、稳定。<b>但广告天花板取决于时长和库存,两者都在被抖音挤压。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>用户长大了,B 站没学会服务成年人</h3>
+          <p>26.5 岁的用户需要职场、理财、育儿、健康;B 站的内容还停留在学生兴趣。<b>这是最大的机会,也是最大的风险。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:30px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>最大的敌人是抖音和小红书</h3>
+          <p>抖音抢碎片时间,小红书抢种草心智。B 站的长视频 + 社区,是差异化,也是低效率。<b>不可能赢效率,只能赢深度。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>二次元退潮是「战略选择」</h3>
+          <p>先审后播是政策,无法改变;但「守」还是「放」是选择。它选择了「泛化」——<b>用二次元的社区感,服务泛文化的内容。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>盈利是成人礼,「平庸」是下一座山</h3>
+          <p>B 站证明了社区可以赚钱,但还没证明社区可以一直独特。<b>赢的只是财报,输的可能是文化定义权。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">社区稀释</div>
+      <div class="risk-desc">StoryMode 抖音化、弹幕文化衰退。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">UP 主流失</div>
+      <div class="risk-desc">中腰部 UP 主收入暴跌、跨平台迁移。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">二次元退潮</div>
+      <div class="risk-desc">番剧滞后、打码,大会员增长停滞。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">游戏青黄不接</div>
+      <div class="risk-desc">《三谋》高基数下滑,新品未验证。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">广告依赖</div>
+      <div class="risk-desc">广告占比 39%,受宏观和抖音竞争影响。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">AI 投入</div>
+      <div class="risk-desc">全年 10 亿资本开支,侵蚀利润。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">版权与灰产</div>
+      <div class="risk-desc">盗版资源、版权诉讼、网络安全。</div>
+      <div class="stars">★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 哔哩哔哩 2026 年 Q2 财报;中国经营报、蓝鲸财经、东方财富等公开报道。<br>
+    <b>说明</b> · 部分比例为基于公开数据的估算,已标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《B站:用社区换增长,用广告换盈利》</a>
+  </footer>
+
+</div>
+</body>
+</html>
