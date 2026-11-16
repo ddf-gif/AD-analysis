@@ -5,7 +5,7 @@
 
 ## 进度
 
-**5 / 180**
+**6 / 180**
 
 | # | 对象 | 赛道 | 日期 | 可视化 | 长文 |
 |:--:|---|---|---|:--:|:--:|
@@ -14,6 +14,7 @@
 | 003 | **闲鱼** | 二手交易 / C2C 平台 | 2026-11-13 | [HTML](003-xianyu/index.html) · [预览图](003-xianyu/preview.png) | [analysis.md](003-xianyu/analysis.md) |
 | 004 | **优衣库** | 服装零售 / 基础款 | 2026-11-14 | [HTML](004-uniqlo/index.html) · [预览图](004-uniqlo/preview.png) | [analysis.md](004-uniqlo/analysis.md) |
 | 005 | **哔哩哔哩** | 内容社区 / 视频平台 | 2026-11-15 | [HTML](005-bilibili/index.html) · [预览图](005-bilibili/preview.png) | [analysis.md](005-bilibili/analysis.md) |
+| 006 | **INS 新乐园** | 线下娱乐 / 夜经济 | 2026-11-16 | [HTML](006-insland/index.html) · [预览图](006-insland/preview.png) | [analysis.md](006-insland/analysis.md) |
 
 ## 每篇包含什么
 

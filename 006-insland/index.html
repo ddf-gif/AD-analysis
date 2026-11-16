@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INS 新乐园 · 人群 · 场景 · 需求 · 模式</title>
+<style>
+  :root{
+    --bg:#08080C;
+    --bg2:#0D0D14;
+    --card:#12121A;
+    --line:#262633;
+    --text:#F2F2F5;
+    --muted:#9A9AA8;
+    --pink:#FF2E7E;
+    --purple:#8B5CF6;
+    --cyan:#22D3EE;
+    --amber:#FFB020;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 78% 6%,rgba(255,46,126,.16),transparent 42%),radial-gradient(circle at 10% 42%,rgba(139,92,246,.12),transparent 40%);
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center;padding:20px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--pink);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--pink);display:block;}
+  h1{font-size:clamp(50px,7vw,90px);line-height:.94;letter-spacing:-.045em;font-weight:900;margin-bottom:14px;}
+  h1 .grad{background:linear-gradient(100deg,var(--pink),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(22px,2.7vw,33px);line-height:1.4;font-weight:600;margin-bottom:24px;}
+  .subtitle em{font-style:normal;color:var(--pink);}
+  .lede{font-size:16px;line-height:1.95;color:var(--muted);max-width:580px;}
+  .lede strong{color:var(--text);font-weight:700;}
+  .lede strong.hl{color:var(--pink);}
+
+  .ticket-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:24px;min-height:300px;}
+  .ticket{
+    width:250px;height:152px;border-radius:14px;position:relative;
+    background:linear-gradient(135deg,var(--pink),var(--purple));
+    display:flex;flex-direction:column;justify-content:center;padding:0 26px;
+    box-shadow:0 0 60px -12px rgba(255,46,126,.65),0 0 100px -30px rgba(139,92,246,.6);
+    transform:rotate(-4deg);
+  }
+  .ticket::before,.ticket::after{content:"";position:absolute;width:26px;height:26px;border-radius:50%;background:var(--bg);top:50%;transform:translateY(-50%);}
+  .ticket::before{left:-13px;}
+  .ticket::after{right:-13px;}
+  .ticket .tk-top{font-size:10px;letter-spacing:.3em;opacity:.85;margin-bottom:8px;}
+  .ticket .tk-main{font-size:27px;font-weight:900;letter-spacing:.02em;line-height:1.05;}
+  .ticket .tk-sub{font-size:11px;letter-spacing:.16em;margin-top:10px;opacity:.9;}
+  .ticket .tk-dash{position:absolute;left:26px;right:26px;bottom:36px;border-top:1px dashed rgba(255,255,255,.45);}
+  .ticket-label{font-size:10.5px;letter-spacing:.18em;color:var(--muted);}
+
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 16px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:25px;font-weight:900;letter-spacing:-.03em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:12.5px;font-weight:700;margin-left:1px;color:var(--muted);}
+  .metric .v .neon{color:var(--pink);text-shadow:0 0 22px rgba(255,46,126,.55);}
+  .metric .k{font-size:11px;color:var(--muted);margin-top:7px;letter-spacing:.04em;}
+
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.16em;color:#0A0A0F;background:linear-gradient(120deg,var(--pink),var(--purple));border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card .tag{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--muted);margin-bottom:12px;}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.78;color:var(--muted);}
+  .card .note{font-size:12px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+  .neon-card{border-color:rgba(255,46,126,.45);box-shadow:0 0 40px -18px rgba(255,46,126,.7);}
+  .neon-card .tag{color:var(--pink);}
+
+  .vs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);}
+  .vs-col{padding:24px 26px;}
+  .vs-col+.vs-col{border-left:1px solid var(--line);background:rgba(139,92,246,.06);}
+  .vs-col .tag{font-size:10.5px;letter-spacing:.14em;color:var(--muted);margin-bottom:10px;}
+  .vs-col h3{font-size:18px;font-weight:700;margin-bottom:14px;}
+  .vs-row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px dashed var(--line);font-size:13px;}
+  .vs-row span:first-child{color:var(--muted);flex:none;}
+  .vs-row span:last-child{text-align:right;color:var(--text);font-weight:600;}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .st{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;position:relative;overflow:hidden;}
+  .st::after{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:linear-gradient(90deg,var(--pink),var(--purple));opacity:.9;}
+  .st .n{font-size:10.5px;letter-spacing:.16em;color:var(--pink);font-weight:800;margin-bottom:10px;}
+  .st h3{font-size:17px;font-weight:700;margin-bottom:8px;}
+  .st p{font-size:12.5px;line-height:1.8;color:var(--muted);}
+  .st .note{font-size:11.5px;color:var(--text);margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);}
+
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;}
+  .pyr-row{padding:11px 18px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:46px;color:#0A0A0F;}
+  .pyr-row:nth-child(1){width:48%;background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff;}
+  .pyr-row:nth-child(2){width:64%;background:#3A2B52;color:#fff;}
+  .pyr-row:nth-child(3){width:80%;background:#5B4B7A;color:#fff;}
+  .pyr-row:nth-child(4){width:96%;background:#2A2438;color:#C9C4D8;}
+
+  .judgments{background:linear-gradient(160deg,rgba(255,46,126,.1),rgba(139,92,246,.08));border:1px solid rgba(255,46,126,.3);border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;}
+  .j-num{font-size:10.5px;letter-spacing:.16em;color:var(--pink);font-weight:800;margin-bottom:10px;}
+  .j-item h3{font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.66);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  .risk-row{display:grid;grid-template-columns:180px 1fr 100px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .risk-row:first-of-type{border-top:1px solid var(--pink);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--muted);font-size:12.5px;}
+  .stars{color:var(--pink);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  .callout{background:rgba(255,46,126,.09);border:1px solid rgba(255,46,126,.3);border-radius:14px;padding:18px 22px;font-size:13.5px;line-height:1.8;color:#F7D6E3;}
+  .callout b{color:#fff;}
+  .callout-cyan{background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.3);color:#C9F4FA;}
+
+  .flow{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:9px;}
+  .flow b{color:var(--text);font-weight:700;}
+  .flow .arrow{color:var(--pink);font-weight:800;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);line-height:1.9;}
+  footer b{color:#C9C4D8;font-weight:600;}
+  footer a{color:var(--pink);text-decoration:none;border-bottom:1px solid rgba(255,46,126,.4);}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .ticket{width:210px;height:130px;}
+    .ticket .tk-main{font-size:22px;}
+    .ticket .tk-top{font-size:9px;letter-spacing:.18em;}
+    .ticket-wrap{min-height:220px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    .vs{grid-template-columns:1fr;}
+    .vs-col+.vs-col{border-left:none;border-top:1px solid var(--line);}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+    .card div[style*="justify-content:space-between"]{flex-direction:column;gap:2px;}
+    .card div[style*="justify-content:space-between"] span:last-child{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;color:#111;background-image:none;}
+    .page{max-width:none;padding:0;}
+    .card,.st,.vs,.judgments,.callout,.flow,.metrics{background:#fff!important;border-color:#ddd!important;}
+    .card p,.st p,.risk-desc,.metric .k,.sec-en,.tag,.note,.lede,.flow,.risk-desc{color:#444!important;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Nightlife Teardown · Day 006</div>
+      <h1>INS <span class="grad">新乐园</span></h1>
+      <div class="subtitle">把夜店做成<em>一款游戏</em></div>
+      <p class="lede">
+        它不是夜店,是「卖给成年人的主题乐园」——它把夜店从「身份场」改造成「内容场」,
+        把「买酒」改造成<strong class="hl">买票</strong>。一张通票,十个区域,四十五天一次版本更新。
+      </p>
+    </div>
+    <div class="ticket-wrap">
+      <div class="ticket">
+        <div class="tk-top">INS LAND · SHANGHAI</div>
+        <div class="tk-main">ONE PASS</div>
+        <div class="tk-dash"></div>
+        <div class="tk-sub">10 ZONES · 1 NIGHT</div>
+      </div>
+      <div class="ticket-label">ADMIT ONE · 成年人的迪士尼</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">300<small>万+</small></div><div class="k">年客流</div></div>
+    <div class="metric"><div class="v"><small>$</small>1.5<small>亿</small></div><div class="k">年营收(预计)</div></div>
+    <div class="metric"><div class="v"><span class="neon">74</span><small>%</small></div><div class="k">通票占散客消费</div></div>
+    <div class="metric"><div class="v"><span class="neon">60</span><small>%</small></div><div class="k">女性顾客占比</div></div>
+    <div class="metric"><div class="v">26<small>亿</small></div><div class="k">估值(A 轮)</div></div>
+    <div class="metric"><div class="v">#12</div><div class="k">DJ Mag 全球排名</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:成年人的主题乐园</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="vs">
+      <div class="vs-col">
+        <div class="tag">TRADITIONAL CLUB</div>
+        <h3>传统夜店</h3>
+        <div class="vs-row"><span>核心收入</span><span>卡座、酒水</span></div>
+        <div class="vs-row"><span>门槛</span><span>消费能力、颜值</span></div>
+        <div class="vs-row"><span>体验</span><span>一个场子,一种音乐</span></div>
+        <div class="vs-row"><span>复购</span><span>「今天想喝酒」</span></div>
+        <div class="vs-row"><span>组织</span><span>店长</span></div>
+        <div class="vs-row"><span>本质</span><span>身份场</span></div>
+      </div>
+      <div class="vs-col">
+        <div class="tag">INS LAND</div>
+        <h3>INS 新乐园</h3>
+        <div class="vs-row"><span>核心收入</span><span>通票 + 酒水</span></div>
+        <div class="vs-row"><span>门槛</span><span>一张票 + 安检</span></div>
+        <div class="vs-row"><span>体验</span><span>十个区域,多种体验</span></div>
+        <div class="vs-row"><span>复购</span><span>「今天是什么主题」</span></div>
+        <div class="vs-row"><span>组织</span><span>线下娱乐产品经理</span></div>
+        <div class="vs-row"><span>本质</span><span>内容场</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>传统夜店是「卖酒的地方」,INS 是「卖一个晚上」的地方。</b>
+      它用「一张票 + 安检」,把夜店从「看你是谁」,变成了「买票就能进」。
+    </div>
+    <div class="flow">
+      <b>复兴公园</b> 原钱柜 KTV 大楼 · 2 万平方米 · 7 层
+      <span class="arrow">|</span>
+      投资约 <b>1 亿美元</b> · 2023.6 开业
+      <span class="arrow">|</span>
+      约 10 家自营酒吧夜店 + 餐饮
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">模式:三个「游戏化」设计</span>
+      <span class="sec-en">Business Model</span>
+    </div>
+    <div class="steps">
+      <div class="st">
+        <div class="n">DESIGN 01 · PASS</div>
+        <h3>通票制</h3>
+        <p>一张票,进 10 个区域,酒水另付。降低决策门槛、提高停留时长、制造探索感——像游戏开地图。</p>
+        <div class="note">通票占散客消费 <b style="color:var(--pink)">74%</b>,已成主收入</div>
+      </div>
+      <div class="st">
+        <div class="n">DESIGN 02 · CONTENT</div>
+        <h3>45 天一次「版本更新」</h3>
+        <p>春天伊甸森林、夏秋深海冒险、年末天马行空号。把「装修」变成「内容」,把「内容」变成复购理由。</p>
+        <div class="note">新赛季、限定皮肤、节日活动</div>
+      </div>
+      <div class="st">
+        <div class="n">DESIGN 03 · ORG</div>
+        <h3>产品经理制</h3>
+        <p>负责人不叫店长,叫「线下娱乐产品经理」。每个区域是一个产品,有独立定位。</p>
+        <div class="note">Jump / Oasis / Radi / 电竞馆</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>最颠覆的地方:它把夜店的商业模式,从「卖酒」改成了「卖门票」。</b>
+      传统夜店卖「面子」——卡座、香槟、身份;INS 卖「体验」——一张票,随便逛。
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">扩张:从「一栋楼」到「一座城」</span>
+      <span class="sec-en">Expansion</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">INS LAND 2.0 · 把城市玩成乐园</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">INS 新乐园</span><span style="font-weight:600;">复兴公园 · 大本营,夜生活综合体</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">夜间游乐场</span><span style="font-weight:600;">复兴公园·成人夜间游乐,周三至周日 19-22 点</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">Soul House</span><span style="font-weight:600;">思南公馆 · 沉浸式鸡尾酒吧</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">HERO DOME</span><span style="font-weight:600;">黄浦滨江 · 万人演艺,全年 150+ 场</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">INS SEA</span><span style="font-weight:600;">文旅商体展综合区</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--muted);">北京店</span><span style="font-weight:600;">朝阳公园 · 2027 年</span></div>
+      </div>
+      <div class="note" style="border-top:none;padding-top:14px;">
+        <b>它要做的不是「更多夜店」,是「一座城市的夜生活操作系统」。</b>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">人群:大学生、白领、女性、游客</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">FOUR SEGMENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">大学生 · 1/3 以上</span><span style="font-weight:600;">预算有限,爱新鲜,社交需求强</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">白领 · 约 30%</span><span style="font-weight:600;">近 30 岁,有消费力,周末释放压力</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">女性 · 60%</span><span style="font-weight:600;">安全感是首要考量</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--muted);">外地 / 境外游客</span><span style="font-weight:600;">2026 年成为主力,海外消费 +233%</span></div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:14px;">
+      <div class="card neon-card">
+        <div class="tag">SHIFT 01</div>
+        <h3>女性占 60%</h3>
+        <p>不强调卡座和酒水,没有「看脸」的保安,机场式安检。把夜店变成乐园:规则是「买票入场」,不是「看你是谁」。</p>
+        <div class="note">安全感,是最大的产品创新</div>
+      </div>
+      <div class="card">
+        <div class="tag">SHIFT 02</div>
+        <h3>从本地到游客</h3>
+        <p>开业初期以本地年轻人为主;2026 年变成外地 + 境外游客为主。从「上海的夜店」,变成「来上海的理由」。</p>
+        <div class="note">海外用户消费 +233%</div>
+      </div>
+      <div class="card">
+        <div class="tag">SHIFT 03</div>
+        <h3>名人即场景</h3>
+        <p>王嘉尔、宋雨琦、王鹤棣、哈登……名人现身不断制造「偶遇」话题。不是代言,是场景的一部分。</p>
+        <div class="note">你去的那个晚上,可能就遇到谁</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">场景:夜晚的六个时刻</span>
+      <span class="sec-en">Scenes</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">SIX MOMENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">周末开场 · 21-23 点</span><span style="font-weight:600;">和朋友碰头,先喝一杯 → Oasis / 餐饮</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">蹦迪高峰 · 23-02 点</span><span style="font-weight:600;">蹦迪、听 DJ → Jump / Radi</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">社交配对 · 全场</span><span style="font-weight:600;">认识人、约会 → 全场 + 配对小程序</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">生日 / 庆生</span><span style="font-weight:600;">包场、庆祝 → 全场</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--muted);">赛事观赛</span><span style="font-weight:600;">看电竞、看球 → 电竞电音馆</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--muted);">游客打卡</span><span style="font-weight:600;">拍照、打卡、体验 → 全场</span></div>
+      </div>
+    </div>
+    <div class="callout callout-cyan" style="margin-top:16px;">
+      <b>它卖的不是「一个点位」,是「一条动线」:</b>先吃饭(15-19 点)→ 再喝酒(19-22 点)→ 再蹦迪(22-02 点)→ 再夜宵(02-06 点)。
+      每个环节,都能收一次钱。
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">需求:四层,本质是「一晚的逃离」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="grid-2" style="align-items:center;">
+      <div class="card" style="padding:26px 30px;">
+        <div class="pyr">
+          <div class="pyr-row">身份 · 我在场 / 我去过 INS</div>
+          <div class="pyr-row">社交 · 认识人 / 和朋友一起</div>
+          <div class="pyr-row">体验 · 新鲜 / 沉浸 / 好玩</div>
+          <div class="pyr-row">情绪 · 释放 / 逃离 / 不用想</div>
+        </div>
+      </div>
+      <div class="card neon-card" style="padding:26px 28px;">
+        <div class="tag">THE CORE</div>
+        <h3 style="font-size:21px;line-height:1.5;margin-bottom:12px;">用户要的不是「喝酒」<br>是「一个晚上,不用做自己」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          酒精、音乐、灯光,都是「逃离现实」的工具。十个区域、45 天换主题、沉浸式演出——「每次来都不一样」。
+        </p>
+        <div class="note" style="border-top-color:rgba(255,46,126,.35);">
+          这和 Soul 的「无风险的亲密」、迪士尼的「成年人的童话」是同一个逻辑:<b>用一张票,买一段「不用负责的快乐」。</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">营销:不投广告,靠「事件」</span>
+      <span class="sec-en">Marketing</span>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tag">EVENT 01</div>
+        <h3>名人现身</h3>
+        <p>王嘉尔、宋雨琦、王鹤棣、哈登。制造「偶遇」话题。</p>
+        <div class="note">不是代言,是场景</div>
+      </div>
+      <div class="card">
+        <div class="tag">EVENT 02</div>
+        <h3>权威背书</h3>
+        <p>DJ Mag 全球百大俱乐部第 12 名,中国俱乐部历史最高。</p>
+        <div class="note">专业认可,吸引全球乐迷</div>
+      </div>
+      <div class="card">
+        <div class="tag">EVENT 03</div>
+        <h3>主题事件</h3>
+        <p>伊甸森林、深海冒险、天马行空号。每次更新都是一次传播。</p>
+        <div class="note">内容即广告</div>
+      </div>
+      <div class="card">
+        <div class="tag">EVENT 04</div>
+        <h3>媒体叙事</h3>
+        <p>与迪士尼、乐高、哈利波特并称「上海四大乐园」。</p>
+        <div class="note">借势定位,重塑品类</div>
+      </div>
+    </div>
+    <div class="flow">
+      年均客流 <b>300 万+</b> <span class="arrow">|</span> 社交媒体曝光 <b>5 亿+</b> <span class="arrow">|</span> 小程序注册 <b>近百万</b>
+      <span style="margin-left:auto;color:var(--muted);font-size:12px;">INS 的「广告」,是用户自己发的</span>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">08</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>它卖的不是酒,是「入场权」</h3>
+          <p>通票占散客消费 74%,说明门票是主收入,酒水是附加消费。<b>它把夜店从「消费场」,变成了「目的地」。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>通票制是「订阅制」的雏形</h3>
+          <p>一张票 = 一次进入;如果做成月卡、季卡,就是「夜生活订阅」。<b>真正的想象空间,不是卖更多票,是卖会员。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>护城河是「内容更新能力」</h3>
+          <p>地段可以复制(北京朝阳公园在建),装修可以模仿。<b>但 45 天一次版本更新的组织能力,很难复制。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:30px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>它把「夜店」变成了「内容生意」</h3>
+          <p>传统夜店靠荷尔蒙、靠酒水、靠卡座;INS 靠主题、靠体验、靠内容。<b>它更像迪士尼,而不是夜店。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>女性 60%,是最被低估的成就</h3>
+          <p>传统夜店女性是「稀缺资源」,需要被保护;INS 用「买票入场 + 安检」,把女性变成「正常客人」。<b>安全感是最大的产品创新。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>风险不在竞争,在政策与安全</h3>
+          <p>夜间经济受政策影响大,人流密集,安全是生命线。<b>一旦出事,整个模式都会被质疑。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">政策风险</div>
+      <div class="risk-desc">夜间经济、噪音、治安、消防。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">安全风险</div>
+      <div class="risk-desc">人流密集、酒精、突发事件。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">内容疲劳</div>
+      <div class="risk-desc">45 天更新,创意能否持续。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">扩张失控</div>
+      <div class="risk-desc">北京、HERO DOME、INS SEA 同时铺开。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">同质化</div>
+      <div class="risk-desc">模式被模仿,「通票」不再新鲜。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">客群漂移</div>
+      <div class="risk-desc">从本地客变游客,复购率下降。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">盈利结构</div>
+      <div class="risk-desc">通票占比高,酒水收入被稀释。</div>
+      <div class="stars">★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 彭博商业周刊、界面新闻、中国企业家、青年报、百度百科等公开报道。<br>
+    <b>说明</b> · 部分数据为媒体估算或企业披露,已标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《INS 新乐园:把夜店做成一款「游戏」》</a>
+  </footer>
+
+</div>
+</body>
+</html>
