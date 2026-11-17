@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>泡泡玛特 · IP · 盲盒 · 周期拆解</title>
+<style>
+  :root{
+    --bg:#FAF6EF;
+    --card:#FFFFFF;
+    --ink:#2B1D14;
+    --ink2:#5C4A3D;
+    --ink3:#9A8A7C;
+    --line:#E8DFD2;
+    --yellow:#FFC93C;
+    --yellow-deep:#D99A00;
+    --caramel:#C97B2E;
+    --pink:#FF6B9D;
+    --red:#E04A32;
+    --cream:#FFF3D6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  .hero{display:grid;grid-template-columns:1.32fr .68fr;gap:40px;align-items:center;padding:20px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--caramel);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--caramel);display:block;}
+  h1{font-size:clamp(48px,6.6vw,86px);line-height:.95;letter-spacing:-.045em;font-weight:900;margin-bottom:12px;}
+  h1 .mark{color:var(--yellow-deep);}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(23px,2.8vw,34px);line-height:1.38;font-weight:600;margin-bottom:24px;}
+  .subtitle em{font-style:normal;background:linear-gradient(transparent 62%,#FFE08A 62%);padding:0 2px;}
+  .lede{font-size:16px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;background:linear-gradient(transparent 64%,#FFE08A 64%);padding:0 2px;}
+
+  .box-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:22px;min-height:300px;}
+  .blindbox{
+    width:196px;height:196px;border-radius:18px;position:relative;
+    background:linear-gradient(150deg,#FFE79A 0%,#FFC93C 46%,#E8A21F 100%);
+    box-shadow:0 30px 60px -26px rgba(201,123,46,.55),inset 0 -14px 26px rgba(150,90,20,.18);
+    display:flex;align-items:center;justify-content:center;
+    transform:rotate(-4deg);
+  }
+  .blindbox::before{
+    content:"";position:absolute;left:0;right:0;top:34px;height:2px;
+    background:repeating-linear-gradient(90deg,rgba(120,70,10,.35) 0 8px,transparent 8px 16px);
+  }
+  .blindbox .q{font-size:86px;font-weight:900;color:#fff;text-shadow:0 6px 0 rgba(160,95,15,.28);line-height:1;margin-top:10px;font-family:Georgia,serif;}
+  .blindbox .cap{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.3em;color:rgba(90,55,10,.65);font-weight:700;}
+  .box-label{font-size:10.5px;letter-spacing:.18em;color:var(--ink3);}
+
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 16px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:25px;font-weight:900;letter-spacing:-.03em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:12.5px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .up{color:var(--caramel);}
+  .metric .v .neg{color:var(--red);}
+  .metric .k{font-size:11px;color:var(--ink3);margin-top:7px;letter-spacing:.04em;}
+
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.16em;color:#4A3208;background:var(--yellow);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card .tag{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-bottom:12px;}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.78;color:var(--ink2);}
+  .card .note{font-size:12px;color:var(--ink3);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+  .yellow-card{background:var(--cream);border-color:#F3DFA8;}
+  .yellow-card .tag{color:var(--yellow-deep);}
+
+  .vs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);}
+  .vs-col{padding:24px 26px;}
+  .vs-col+.vs-col{border-left:1px solid var(--line);background:#FDFAF4;}
+  .vs-col .tag{font-size:10.5px;letter-spacing:.14em;color:var(--ink3);margin-bottom:10px;}
+  .vs-col h3{font-size:18px;font-weight:700;margin-bottom:14px;}
+  .vs-row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px dashed var(--line);font-size:13px;}
+  .vs-row span:first-child{color:var(--ink3);flex:none;}
+  .vs-row span:last-child{text-align:right;color:var(--ink);font-weight:600;}
+
+  .ipbars{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;}
+  .iprow{display:grid;grid-template-columns:128px 1fr 92px;gap:12px;align-items:center;padding:7px 0;font-size:12.5px;}
+  .ipname{font-weight:700;white-space:nowrap;}
+  .iptrack{height:22px;background:#F4EEE3;border-radius:6px;overflow:hidden;}
+  .ipfill{height:100%;border-radius:6px;}
+  .ipval{text-align:right;font-weight:700;font-feature-settings:"tnum";color:var(--ink2);}
+  .ipval small{font-size:10.5px;font-weight:600;}
+
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;}
+  .pyr-row{padding:11px 18px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:46px;}
+  .pyr-row:nth-child(1){width:48%;background:var(--ink);color:#fff;}
+  .pyr-row:nth-child(2){width:64%;background:#4A3A2E;color:#fff;}
+  .pyr-row:nth-child(3){width:80%;background:var(--yellow);color:#4A3208;}
+  .pyr-row:nth-child(4){width:96%;background:var(--cream);color:#7A5A10;}
+
+  .judgments{background:var(--ink);color:#fff;border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--yellow);color:#4A3208;}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:18px;}
+  .j-num{font-size:10.5px;letter-spacing:.16em;color:var(--yellow);font-weight:800;margin-bottom:10px;}
+  .j-item h3{font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.7);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  .risk-row{display:grid;grid-template-columns:180px 1fr 100px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .risk-row:first-of-type{border-top:1px solid var(--ink);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12.5px;}
+  .stars{color:var(--red);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  .callout{background:var(--cream);border:1px solid #F3DFA8;border-radius:14px;padding:18px 22px;font-size:13.5px;line-height:1.8;color:#5C4308;}
+  .callout b{color:#3A2A00;}
+  .callout-red{background:#FCE9E5;border-color:#F3C7BD;color:#7A2A1C;}
+  .callout-red b{color:#5A1A0F;}
+
+  .flow{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:12.5px;color:var(--ink2);display:flex;flex-wrap:wrap;align-items:center;gap:9px;}
+  .flow b{color:var(--ink);font-weight:700;}
+  .flow .arrow{color:var(--caramel);font-weight:800;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--caramel);text-decoration:none;border-bottom:1px solid #F3DFA8;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .box-wrap{min-height:220px;}
+    .blindbox{width:150px;height:150px;}
+    .blindbox .q{font-size:66px;}
+    .blindbox .cap{font-size:8px;letter-spacing:.16em;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .vs{grid-template-columns:1fr;}
+    .vs-col+.vs-col{border-left:none;border-top:1px solid var(--line);}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+    .iprow{grid-template-columns:92px 1fr 70px;gap:8px;}
+    .card div[style*="justify-content:space-between"]{flex-direction:column;gap:2px;}
+    .card div[style*="justify-content:space-between"] span:last-child{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.pyr-row,.metric,.sec-num,.blindbox,.ipfill{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">IP Teardown · Day 007</div>
+      <h1>泡泡玛特<span class="mark">.</span></h1>
+      <div class="subtitle">把「惊喜」<br>做成一条<em>流水线</em></div>
+      <p class="lede">
+        它卖的从来不是「玩具」,是「<strong>情绪价值的盲盒化</strong>」。
+        你买的不是那只玩偶,是<strong>拆开之前的那 3 秒</strong>。
+      </p>
+    </div>
+    <div class="box-wrap">
+      <div class="blindbox">
+        <div class="q">?</div>
+        <div class="cap">BLIND BOX · 59-99 CNY</div>
+      </div>
+      <div class="box-label">PROBABILITY · 卖的不是塑料,是概率</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">171.7<small>亿</small></div><div class="k">H1 营收 · +23.8%</div></div>
+    <div class="metric"><div class="v"><span class="up">69.7</span><small>%</small></div><div class="k">毛利率</div></div>
+    <div class="metric"><div class="v">1<small>亿</small></div><div class="k">全球注册会员</div></div>
+    <div class="metric"><div class="v">676</div><div class="k">全球门店</div></div>
+    <div class="metric"><div class="v">51.6<small>%</small></div><div class="k">会员复购率</div></div>
+    <div class="metric"><div class="v"><span class="neg">-45~50</span><small>%</small></div><div class="k">Q3 整体收益</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:一家「IP 经纪公司」</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">ROLE 01</div>
+        <h3>IP 经纪</h3>
+        <p>签约设计师、孵化 IP、运营 IP。MOLLY、LABUBU、星星人,都是「签约 + 孵化」的产物。</p>
+        <div class="note">像经纪公司</div>
+      </div>
+      <div class="card">
+        <div class="tag">ROLE 02</div>
+        <h3>发行商</h3>
+        <p>盲盒、毛绒、衍生品。用「不确定性 + 稀缺 + 系列」,把 IP 变成可复购的商品。</p>
+        <div class="note">像游戏发行</div>
+      </div>
+      <div class="card">
+        <div class="tag">ROLE 03</div>
+        <h3>渠道商</h3>
+        <p>676 家门店 + 2,827 台机器人商店 + 电商。渠道本身就是「体验」。</p>
+        <div class="note">像零售连锁</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>它更像「迪士尼 + 游戏公司 + 零售连锁」的混合体。</b>
+      但它最核心的能力,是「IP 的发行能力」——不是拥有 IP,是能不断造出 IP。
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">模式:盲盒的三层设计</span>
+      <span class="sec-en">Business Model</span>
+    </div>
+    <div class="grid-3">
+      <div class="card yellow-card">
+        <div class="tag">DESIGN 01</div>
+        <h3>不确定性</h3>
+        <p>59-99 元一个,你不知道里面是什么。抽到普通款「还行」,抽到隐藏款「赚了」——小额赌注,买一次情绪波动。</p>
+        <div class="note">像抽卡、开蛋、扭蛋</div>
+      </div>
+      <div class="card">
+        <div class="tag">DESIGN 02</div>
+        <h3>稀缺性</h3>
+        <p>隐藏款概率 1/144 甚至更低;限定款只在线下、只卖几天。二手溢价,反过来强化「抽到就赚」。</p>
+        <div class="note">稀缺不是产量少,是让你觉得抽不到</div>
+      </div>
+      <div class="card">
+        <div class="tag">DESIGN 03</div>
+        <h3>系列化</h3>
+        <p>每季一套:12 个常规 + 1 个隐藏。抽到一个想凑齐一套,凑齐一套又想等下一季。</p>
+        <div class="note">把一次性消费,变成长期订阅</div>
+      </div>
+    </div>
+    <div class="flow">
+      <b>毛利率 69.7%</b> <span class="arrow">·</span> <b>经调整净利率 30%</b> <span class="arrow">·</span> <b>会员贡献销售 92.9%</b>
+      <span style="margin-left:auto;color:var(--ink3);font-size:12px;">这不是零售的利润率,是「内容 + 概率」的利润率</span>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">IP 矩阵:一条「IP 流水线」</span>
+      <span class="sec-en">IP Portfolio</span>
+    </div>
+    <div class="ipbars">
+      <div class="tag" style="font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-bottom:14px;">2026 H1 · IP 收入(亿元)</div>
+      <div class="iprow">
+        <div class="ipname">THE MONSTERS</div>
+        <div class="iptrack"><div class="ipfill" style="width:100%;background:linear-gradient(90deg,#C97B2E,#8A4E14);"></div></div>
+        <div class="ipval">44.5 <small style="color:var(--red);">-7.5%</small></div>
+      </div>
+      <div class="iprow">
+        <div class="ipname">星星人</div>
+        <div class="iptrack"><div class="ipfill" style="width:60%;background:linear-gradient(90deg,#FFC93C,#E8A21F);"></div></div>
+        <div class="ipval">26.5 <small style="color:var(--yellow-deep);">+580%</small></div>
+      </div>
+      <div class="iprow">
+        <div class="ipname">CRYBABY</div>
+        <div class="iptrack"><div class="ipfill" style="width:37%;background:#FF6B9D;"></div></div>
+        <div class="ipval">16.3 <small>+34%</small></div>
+      </div>
+      <div class="iprow">
+        <div class="ipname">DIMOO</div>
+        <div class="iptrack"><div class="ipfill" style="width:36%;background:#7FB3D5;"></div></div>
+        <div class="ipval">16.2 <small>+47%</small></div>
+      </div>
+      <div class="iprow">
+        <div class="ipname">SKULLPANDA</div>
+        <div class="iptrack"><div class="ipfill" style="width:35%;background:#8E7CC3;"></div></div>
+        <div class="ipval">15.5 <small>+27%</small></div>
+      </div>
+      <div class="iprow">
+        <div class="ipname">Hirono 小野</div>
+        <div class="iptrack"><div class="ipfill" style="width:23%;background:#7A8B99;"></div></div>
+        <div class="ipval">10.1 <small>+39%</small></div>
+      </div>
+      <div class="iprow">
+        <div class="ipname">MOLLY</div>
+        <div class="iptrack"><div class="ipfill" style="width:20%;background:#D4A5A5;"></div></div>
+        <div class="ipval">9.0 <small>20 周年</small></div>
+      </div>
+    </div>
+    <div class="callout-red callout" style="margin-top:16px;">
+      <b>一个关键转折:LABUBU 首次下滑。</b>THE MONSTERS 收入 44.5 亿,同比 -7.5%,占比从 34.7% 降到 26%;
+      2026 年 6 月「复古理发店」系列多款<strong>跌破发行价</strong>。这是它成为超级 IP 以来,第一次收入同比下滑。
+    </div>
+    <div class="callout" style="margin-top:12px;">
+      <b>同时,星星人接棒:26.5 亿,+580.6%。</b>
+      这证明:超级 IP 有周期,而 IP 矩阵是「抗周期」的唯一办法。泡泡玛特真正的能力,不是「拥有 LABUBU」,是<b>「能造出下一个 LABUBU」</b>。
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">人群:1 亿会员,一半会复购</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="card" style="padding:24px 26px;margin-bottom:14px;">
+      <div class="tag">THREE LAYERS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">收藏者 · 核心玩家</span><span style="font-weight:600;">追系列、收隐藏、蹲限定 → 高复购、高客单</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">情绪消费者 · 年轻女性为主</span><span style="font-weight:600;">喜欢就买,买的是「开心」→ 中复购、中客单</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">社交消费者 · 泛人群</span><span style="font-weight:600;">送礼、打卡、跟风 → 低复购、高传播</span></div>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">CHANGE 01</div>
+        <h3>从中国玩家到全球用户</h3>
+        <p>中国 455 家店、营收 122 亿(+47.3%);亚太 90 家、美洲 86 家、欧洲 45 家。</p>
+        <div class="note">海外是下一阶段的增长引擎</div>
+      </div>
+      <div class="card">
+        <div class="tag">CHANGE 02</div>
+        <h3>从潮玩圈到情绪消费</h3>
+        <p>LABUBU 把潮玩从「小众收藏」变成「大众配饰」——挂在包上,是一种社交信号。</p>
+        <div class="note">从「收藏」到「穿搭」</div>
+      </div>
+      <div class="card">
+        <div class="tag">CHANGE 03</div>
+        <h3>从交易到体验</h3>
+        <p>城市乐园、POP BAKERY、POPOP 珠宝——它在把「卖货」升级成「卖生活方式」。</p>
+        <div class="note">业态,比商品更抗周期</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">场景:从「抽盒」到「乐园」</span>
+      <span class="sec-en">Scenes</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">SIX MOMENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">抽盒</span><span style="font-weight:600;">线上抽、机器人商店抽、门店抽</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">逛店</span><span style="font-weight:600;">看新品、摸材质、拍照</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">社交</span><span style="font-weight:600;">换娃、晒娃、开箱</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">打卡</span><span style="font-weight:600;">城市乐园、快闪、展览</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">送礼</span><span style="font-weight:600;">生日、节日、伴手礼</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">体验</span><span style="font-weight:600;">烘焙、咖啡、乐园(POP BAKERY / POP LAND)</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>它不想只做「卖盲盒的」,它想做「IP 的生活方式」。</b>
+      2026 年,它把出海重心从「卖货」升级为「卖业态」:新加坡圣淘沙 POP BAKERY,一楼零售 + 二楼烘焙,本地化产品配东南亚风味。
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">需求:四层,本质是「情绪定价」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="grid-2" style="align-items:center;">
+      <div class="card" style="padding:26px 30px;">
+        <div class="pyr">
+          <div class="pyr-row">社交 · 我有,你没有</div>
+          <div class="pyr-row">收集 · 我要凑齐一套</div>
+          <div class="pyr-row">惊喜 · 拆开的那 3 秒</div>
+          <div class="pyr-row">审美 · 它好看 / 它可爱</div>
+        </div>
+      </div>
+      <div class="card yellow-card" style="padding:26px 28px;">
+        <div class="tag">THE CORE</div>
+        <h3 style="font-size:21px;line-height:1.5;margin-bottom:12px;">用户买的不是「玩偶」<br>是「确定的开心 + 不确定的惊喜」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          一个 59 元的盲盒,成本可能不到 20 元;剩下的 40 元,是「惊喜的设计费」。
+          泡泡玛特的定价,不是按成本,是按情绪。
+        </p>
+        <div class="note" style="border-top-color:#F3DFA8;">
+          <b>它卖的不是塑料,是概率。</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">周期:LABUBU 退潮的启示</span>
+      <span class="sec-en">Cycle</span>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tag">H1 2026</div>
+        <div style="font-size:24px;font-weight:900;letter-spacing:-.03em;">171.7<span style="font-size:12px;">亿</span></div>
+        <p style="font-size:12px;margin-top:6px;">营收 +23.8%</p>
+      </div>
+      <div class="card">
+        <div class="tag">H1 2026</div>
+        <div style="font-size:24px;font-weight:900;letter-spacing:-.03em;">50.4<span style="font-size:12px;">亿</span></div>
+        <p style="font-size:12px;margin-top:6px;">归母净利 +10.1%</p>
+      </div>
+      <div class="card">
+        <div class="tag">Q3 2026</div>
+        <div style="font-size:24px;font-weight:900;letter-spacing:-.03em;color:var(--red);">-45~50<span style="font-size:12px;">%</span></div>
+        <p style="font-size:12px;margin-top:6px;">整体收益同比</p>
+      </div>
+      <div class="card">
+        <div class="tag">2026.11</div>
+        <div style="font-size:24px;font-weight:900;letter-spacing:-.03em;color:var(--caramel);">+39<span style="font-size:12px;">%</span></div>
+        <p style="font-size:12px;margin-top:6px;">LABUBU 搜索热度(环比)</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>注意最后一个反差:销售在跌,搜索在涨。</b>
+      这说明 LABUBU 不是「没人要了」,是「该买的人都买了」。热度在被消耗,但 IP 还在。
+    </div>
+    <div class="flow">
+      <b>管理层应对:</b>2026 定义「休整年」<span class="arrow">→</span> 重心不在高速增长 <span class="arrow">→</span> 20-50 亿港元回购 <span class="arrow">→</span> 多 IP、多业态、出海
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">08</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>盲盒是「发行方式」,不是「产品」</h3>
+          <p>产品是 IP,盲盒是「怎么卖」。同样的 IP,可以盲盒、毛绒、珠宝、乐园。<b>核心能力是「IP 的发行能力」。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>护城河是「IP 运营」,不是「IP 本身」</h3>
+          <p>IP 会过气,LABUBU 已经证明了。<b>但「造 IP、养 IP、换 IP」的能力可以持续。它真正的资产,是那条 IP 流水线。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>潮玩的本质是「时尚」,时尚有周期</h3>
+          <p>潮玩不是必需品,是情绪消费品。情绪消费天然有「新鲜感」的折旧。<b>LABUBU 的退潮不是失败,是规律。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:30px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>出海是「业态输出」,不是商品输出</h3>
+          <p>卖货靠渠道,卖业态靠品牌 + 体验。<b>POP BAKERY 出海,比「多开 10 家店」更有价值。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>天花板不是「潮玩」,是「IP 的边界」</h3>
+          <p>潮玩市场规模有限,但 IP 可以做乐园、电影、游戏、珠宝。<b>真正的对手是迪士尼、三丽鸥、万代。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>2026 是「成人礼」,不是「衰退」</h3>
+          <p>从单品爆发到矩阵运营,从中国品牌到全球品牌。<b>能穿过周期的公司,才配叫「IP 公司」。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">IP 周期</div>
+      <div class="risk-desc">LABUBU 下滑,Q3 收入 -45%~-50%。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">单一 IP 依赖</div>
+      <div class="risk-desc">虽降到 26%,仍是大头。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">二手市场崩盘</div>
+      <div class="risk-desc">破发、溢价消失,打击「收藏」预期。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">出海不确定性</div>
+      <div class="risk-desc">西方对星星人接受度不及 LABUBU。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">监管</div>
+      <div class="risk-desc">盲盒概率、未成年人保护。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">竞争</div>
+      <div class="risk-desc">布鲁可、卡游、52TOYS 等。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">业态扩张</div>
+      <div class="risk-desc">乐园、烘焙、珠宝,战线过长。</div>
+      <div class="stars">★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 泡泡玛特 2026 年中期财报;搜狐、界面新闻、新浪财经、光明网、国泰海通证券等公开报道。<br>
+    <b>说明</b> · 部分数据为媒体估算或企业披露,已标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《泡泡玛特:把「惊喜」做成一条流水线》</a>
+  </footer>
+
+</div>
+</body>
+</html>

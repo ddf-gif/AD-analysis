@@ -5,7 +5,7 @@
 
 ## 进度
 
-**6 / 180**
+**7 / 180**
 
 | # | 对象 | 赛道 | 日期 | 可视化 | 长文 |
 |:--:|---|---|---|:--:|:--:|
@@ -15,6 +15,7 @@
 | 004 | **优衣库** | 服装零售 / 基础款 | 2026-11-14 | [HTML](004-uniqlo/index.html) · [预览图](004-uniqlo/preview.png) | [analysis.md](004-uniqlo/analysis.md) |
 | 005 | **哔哩哔哩** | 内容社区 / 视频平台 | 2026-11-15 | [HTML](005-bilibili/index.html) · [预览图](005-bilibili/preview.png) | [analysis.md](005-bilibili/analysis.md) |
 | 006 | **INS 新乐园** | 线下娱乐 / 夜经济 | 2026-11-16 | [HTML](006-insland/index.html) · [预览图](006-insland/preview.png) | [analysis.md](006-insland/analysis.md) |
+| 007 | **泡泡玛特** | IP 潮玩 / 情绪消费 | 2026-11-17 | [HTML](007-popmart/index.html) · [预览图](007-popmart/preview.png) | [analysis.md](007-popmart/analysis.md) |
 
 ## 每篇包含什么
 
