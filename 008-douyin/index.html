@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>抖音 · 人群 · 场景 · 需求拆解</title>
+<style>
+  :root{
+    --bg:#000000;
+    --card:#0E0E11;
+    --card2:#141418;
+    --line:#26262C;
+    --text:#FFFFFF;
+    --muted:#9A9AA2;
+    --cyan:#25F4EE;
+    --red:#FE2C55;
+    --grey:#6E6E76;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 82% 4%,rgba(254,44,85,.14),transparent 40%),radial-gradient(circle at 8% 38%,rgba(37,244,238,.09),transparent 38%);
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center;padding:20px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--cyan);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--cyan);display:block;}
+  h1{font-size:clamp(52px,7.2vw,94px);line-height:.98;letter-spacing:-.05em;font-weight:900;margin-bottom:20px;}
+  h1 .accent{color:var(--cyan);}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(22px,2.7vw,33px);line-height:1.4;font-weight:600;margin-bottom:24px;}
+  .subtitle em{font-style:normal;color:var(--cyan);}
+  .lede{font-size:16px;line-height:1.95;color:var(--muted);max-width:580px;}
+  .lede strong{color:var(--text);font-weight:700;}
+  .lede strong.hl{color:var(--red);}
+
+  .phone-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:20px;min-height:320px;}
+  .phone{
+    width:168px;height:300px;border-radius:26px;border:2px solid #2C2C34;
+    background:linear-gradient(170deg,#15151A 0%,#08080A 70%);
+    position:relative;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 60px -18px rgba(254,44,85,.55),0 0 100px -40px rgba(37,244,238,.5);
+    transform:rotate(-4deg);
+  }
+  .phone::before{content:"";position:absolute;top:12px;left:50%;transform:translateX(-50%);width:44px;height:5px;border-radius:3px;background:#2C2C34;}
+  .tri{width:0;height:0;border-left:44px solid #fff;border-top:26px solid transparent;border-bottom:26px solid transparent;margin-left:12px;filter:drop-shadow(0 0 16px rgba(37,244,238,.55));}
+  .phone .swipe{position:absolute;bottom:34px;left:0;right:0;text-align:center;color:var(--cyan);font-size:11px;letter-spacing:.22em;font-weight:700;}
+  .phone .swipe i{display:block;font-style:normal;font-size:15px;margin-bottom:2px;animation:none;}
+  .phone-label{font-size:10.5px;letter-spacing:.18em;color:var(--grey);}
+
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid #2A2A32;border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 16px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:25px;font-weight:900;letter-spacing:-.03em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:12.5px;font-weight:700;margin-left:1px;color:var(--muted);}
+  .metric .v .cy{color:var(--cyan);}
+  .metric .v .rd{color:var(--red);}
+  .metric .k{font-size:11px;color:var(--grey);margin-top:7px;letter-spacing:.04em;}
+
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.16em;color:#000;background:linear-gradient(120deg,var(--cyan),#7CF7F2);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card .tag{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--grey);margin-bottom:12px;}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.78;color:var(--muted);}
+  .card .note{font-size:12px;color:var(--grey);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+  .red-card{border-color:rgba(254,44,85,.45);box-shadow:0 0 40px -18px rgba(254,44,85,.7);}
+  .red-card .tag{color:var(--red);}
+
+  .stack{display:flex;height:44px;border-radius:10px;overflow:hidden;margin:6px 0 14px;}
+  .stack div{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#000;letter-spacing:.02em;overflow:hidden;white-space:nowrap;}
+
+  .bar-compare{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;}
+  .bc-row{display:grid;grid-template-columns:96px 1fr 64px;gap:12px;align-items:center;padding:9px 0;font-size:12.5px;}
+  .bc-name{font-weight:700;}
+  .bc-track{height:26px;background:#1A1A20;border-radius:6px;overflow:hidden;}
+  .bc-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:9px;font-size:10.5px;font-weight:800;color:#000;}
+  .bc-val{text-align:right;font-weight:800;font-feature-settings:"tnum";}
+
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;}
+  .pyr-row{padding:11px 18px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:46px;}
+  .pyr-row:nth-child(1){width:48%;background:linear-gradient(90deg,var(--red),#B3123A);color:#fff;}
+  .pyr-row:nth-child(2){width:64%;background:#2A1A20;color:#fff;border:1px solid #4A2430;}
+  .pyr-row:nth-child(3){width:80%;background:#16262A;color:#fff;border:1px solid #1F4448;}
+  .pyr-row:nth-child(4){width:96%;background:linear-gradient(90deg,var(--cyan),#0FB9B3);color:#002B29;}
+
+  .judgments{background:linear-gradient(160deg,rgba(37,244,238,.07),rgba(254,44,85,.07));border:1px solid #2A2A32;border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;}
+  .j-num{font-size:10.5px;letter-spacing:.16em;color:var(--cyan);font-weight:800;margin-bottom:10px;}
+  .j-item h3{font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.66);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  .risk-row{display:grid;grid-template-columns:180px 1fr 100px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .risk-row:first-of-type{border-top:1px solid var(--red);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--muted);font-size:12.5px;}
+  .stars{color:var(--red);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  .callout{background:rgba(254,44,85,.08);border:1px solid rgba(254,44,85,.32);border-radius:14px;padding:18px 22px;font-size:13.5px;line-height:1.8;color:#FFD9E1;}
+  .callout b{color:#fff;}
+  .callout-cyan{background:rgba(37,244,238,.07);border-color:rgba(37,244,238,.3);color:#CFFEFC;}
+
+  .flow{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:9px;}
+  .flow b{color:var(--text);font-weight:700;}
+  .flow .arrow{color:var(--cyan);font-weight:800;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--grey);line-height:1.9;}
+  footer b{color:#B9B9C1;font-weight:600;}
+  footer a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(37,244,238,.35);}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .phone{width:140px;height:250px;}
+    .phone-wrap{min-height:auto;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+    .card div[style*="justify-content:space-between"]{flex-direction:column;gap:2px;}
+    .card div[style*="justify-content:space-between"] span:last-child{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;color:#111;background-image:none;}
+    .page{max-width:none;padding:0;}
+    .card,.bc-row,.judgments,.callout,.flow,.metrics{background:#fff!important;border-color:#ddd!important;}
+    .card p,.risk-desc,.metric .k,.sec-en,.tag,.note,.lede,.flow,.bc-val{color:#333!important;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Attention Teardown · Day 008</div>
+      <h1>抖音<span class="accent">.</span></h1>
+      <div class="subtitle">一台 10 亿人的<br><em>「注意力机器」</em></div>
+      <p class="lede">
+        它不是「短视频平台」,是「注意力的操作系统」——先把你的时间拿走,再把你的消费装进去。
+        它真正的产品不是视频,是<strong class="hl">「下一个」</strong>。
+      </p>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="tri"></div>
+        <div class="swipe"><i>↑</i>SWIPE UP</div>
+      </div>
+      <div class="phone-label">INFINITE · 下一个永远未知</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">10.09<small>亿</small></div><div class="k">MAU · 2026.3</div></div>
+    <div class="metric"><div class="v">8.3<small>亿</small></div><div class="k">DAU</div></div>
+    <div class="metric"><div class="v"><span class="cy">76.3</span><small>%</small></div><div class="k">DAU / MAU</div></div>
+    <div class="metric"><div class="v">112<small>分钟</small></div><div class="k">日均使用时长</div></div>
+    <div class="metric"><div class="v"><span class="cy">19.4</span><small>%</small></div><div class="k">月度总时长份额</div></div>
+    <div class="metric"><div class="v"><span class="rd">2.4</span><small>万亿</small></div><div class="k">H1 电商支付 GMV</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:注意力的操作系统</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">LAYER 01 · TIME</div>
+        <h3>拿走时间</h3>
+        <p>日均 112 分钟;2026 年 7 月,月度总时长份额 19.4%,首次超过微信的 18.8%。</p>
+        <div class="note">不是更常用,是更占时间</div>
+      </div>
+      <div class="card red-card">
+        <div class="tag">LAYER 02 · ATTENTION</div>
+        <h3>捕获注意力</h3>
+        <p>全屏 + 无限下滑 + 算法推荐。你永远不知道下一个是什么,所以你永远划下去。</p>
+        <div class="note">真正的产品是「下一个」</div>
+      </div>
+      <div class="card">
+        <div class="tag">LAYER 03 · COMMERCE</div>
+        <h3>装进消费</h3>
+        <p>电商、本地生活、搜索——把注意力变成 GMV。半年 2.4 万亿。</p>
+        <div class="note">从「媒体」到「商业基础设施」</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>微信的优势是「覆盖」,抖音的优势是「占用」。</b>
+      微信沉淀关系链,抖音占用注意力——这是两种完全不同的商业模式。
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">规模:10 亿 MAU 之后</span>
+      <span class="sec-en">Scale</span>
+    </div>
+    <div class="bar-compare">
+      <div class="tag" style="font-size:10.5px;letter-spacing:.12em;color:var(--grey);margin-bottom:14px;">2026.7 · Top50 App 时长份额</div>
+      <div class="bc-row">
+        <div class="bc-name" style="color:var(--cyan);">抖音</div>
+        <div class="bc-track"><div class="bc-fill" style="width:100%;background:linear-gradient(90deg,var(--cyan),#0FB9B3);">19.4%</div></div>
+        <div class="bc-val" style="color:var(--cyan);">19.4%</div>
+      </div>
+      <div class="bc-row">
+        <div class="bc-name">微信</div>
+        <div class="bc-track"><div class="bc-fill" style="width:96.9%;background:#3A3A44;color:#fff;">18.8%</div></div>
+        <div class="bc-val">18.8%</div>
+      </div>
+      <div class="note" style="font-size:12px;color:var(--grey);margin-top:10px;padding-top:12px;border-top:1px dashed var(--line);">
+        2026 年 1-7 月,字节系整体时长占比 <b style="color:#fff;">40.9%</b>,腾讯系 <b style="color:#fff;">29.1%</b>(产品矩阵口径)
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:14px;">
+      <div class="card">
+        <div class="tag">SIZE</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.03em;">10.09<span style="font-size:12px;color:var(--muted);">亿</span></div>
+        <p style="font-size:12px;margin-top:6px;">主 App MAU,同比 +14.4%</p>
+      </div>
+      <div class="card">
+        <div class="tag">MATRIX</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.03em;">12.65<span style="font-size:12px;color:var(--muted);">亿</span></div>
+        <p style="font-size:12px;margin-top:6px;">去重总规模(含极速版 3.3 亿)</p>
+      </div>
+      <div class="card">
+        <div class="tag">STICKINESS</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:-.03em;color:var(--cyan);">76.3<span style="font-size:12px;">%</span></div>
+        <p style="font-size:12px;margin-top:6px;">DAU/MAU,四分之三的人每天都来</p>
+      </div>
+    </div>
+    <div class="callout-cyan callout" style="margin-top:14px;">
+      <b>流量规模已经饱和了。</b>MAU 接近中国移动互联网用户上限,增长只能靠:极速版(下沉 + 银发)、场景延伸(电商、本地生活、搜索、AI)。
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">人群:从「年轻人」到「全年龄段」</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">STRUCTURE</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--grey);">35 岁以下</span><span style="font-weight:600;">约 73%,仍是主力</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--grey);">51 岁及以上</span><span style="font-weight:600;">22.2%,银发月活超 2.14 亿</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--grey);">三线及以下</span><span style="font-weight:600;">54-58%,下沉月活超 5 亿</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--grey);">全域覆盖</span><span style="font-weight:600;">不是单一的下沉叙事</span></div>
+      </div>
+    </div>
+    <div class="grid-4" style="margin-top:14px;">
+      <div class="card">
+        <div class="tag">ROLE 01</div>
+        <h3>内容消费者</h3>
+        <p>刷、搜、看直播。</p>
+        <div class="note">贡献时长与广告库存</div>
+      </div>
+      <div class="card">
+        <div class="tag">ROLE 02</div>
+        <h3>创作者</h3>
+        <p>拍、剪、播。</p>
+        <div class="note">贡献内容供给</div>
+      </div>
+      <div class="card">
+        <div class="tag">ROLE 03</div>
+        <h3>商家</h3>
+        <p>开店、投流、团购。</p>
+        <div class="note">贡献 GMV 与广告收入</div>
+      </div>
+      <div class="card">
+        <div class="tag">ROLE 04</div>
+        <h3>服务商</h3>
+        <p>代运营、MCN、DP。</p>
+        <div class="note">贡献生态能力</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>抖音是一个「四边平台」:用户、创作者、商家、服务商,互相喂养。</b>
+      它的用户需求(免费内容)和商家需求(精准流量)是相反的——平台的价值,就是撮合这对矛盾。
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">场景:从「刷」到「搜」到「买」</span>
+      <span class="sec-en">Scenes</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">SIX MOMENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--grey);">kill time</span><span style="font-weight:600;">通勤、排队、睡前,无目的刷 → 广告</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--grey);">搜索</span><span style="font-weight:600;">有明确需求时,搜攻略、搜商品、搜店 → 搜索广告</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--grey);">种草</span><span style="font-weight:600;">看测评、看直播 → 兴趣电商</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--grey);">比价</span><span style="font-weight:600;">看团购、看评价 → 本地生活</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--grey);">下单</span><span style="font-weight:600;">直播间、商城、团购 → 电商 / 到店</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--grey);">复购</span><span style="font-weight:600;">回搜、回购 → 货架电商</span></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card red-card" style="padding:24px 26px;">
+        <div class="tag">SHIFT 01</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">从「刷」到「搜」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          2026 年以来,平台搜索 GMV 同比增长 <b style="color:var(--red);">55%</b>。用户开始把抖音当搜索引擎:搜攻略、搜测评、搜店。
+        </p>
+        <div class="note" style="border-top-color:rgba(254,44,85,.3);"><b>「刷」是杀时间,「搜」是省时间。抖音两个都要。</b></div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">SHIFT 02</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">本地生活的场景革命</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          2-4 人餐 GMV 占比已达 <b style="color:var(--cyan);">43.8%</b>;工作日下单用户数同比增长 <b style="color:var(--cyan);">847%</b>;快餐小吃交易额 +114%。
+        </p>
+        <div class="note">场景从「单人食」到「轻社交」,时段从「午晚」到「清晨午后」</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">需求:五层,而且「双边」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="grid-2" style="align-items:center;">
+      <div class="card" style="padding:26px 30px;">
+        <div class="pyr">
+          <div class="pyr-row">赚钱 · 我也能靠抖音赚钱</div>
+          <div class="pyr-row">社交 · 被看见 / 找到同类</div>
+          <div class="pyr-row">消费 · 买到便宜 / 找到好店</div>
+          <div class="pyr-row">娱乐 + 信息 · 打发时间 / 知道发生了什么</div>
+        </div>
+      </div>
+      <div class="card" style="padding:26px 28px;">
+        <div class="tag">THE DOUBLE SIDE</div>
+        <h3 style="font-size:20px;line-height:1.5;margin-bottom:12px;">用户要「免费内容」<br>商家要「精准流量」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          抖音的商业模式,是把用户的注意力卖给商家。用户付出时间,得到内容;商家付出广告费,得到注意力;平台赚差价。
+        </p>
+        <div class="note" style="border-top-style:solid;">
+          <b>这是典型的双边市场:平台的价值,就是撮合这对矛盾。</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">商业:广告、电商、本地生活</span>
+      <span class="sec-en">Business</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">CURVE 01 · ADS</div>
+        <h3>广告</h3>
+        <p>开屏、信息流、搜索。成熟的基本盘,受宏观消费影响。</p>
+        <div class="note">现在</div>
+      </div>
+      <div class="card">
+        <div class="tag">CURVE 02 · E-COMMERCE</div>
+        <h3>电商</h3>
+        <p>2026 H1 支付 GMV 约 2.4 万亿(2025 同期 2.1 万亿);Q2 增速回落至低双位数。</p>
+        <div class="note">规模</div>
+      </div>
+      <div class="card red-card">
+        <div class="tag">CURVE 03 · LOCAL</div>
+        <h3>本地生活</h3>
+        <p>2026 H1 交易额 +50%+;到店 GTV 全年预计 1.2 万亿,逼近美团(1.18 万亿)。</p>
+        <div class="note">增量</div>
+      </div>
+    </div>
+    <div class="flow">
+      <b>广告</b> 是现在 <span class="arrow">|</span>
+      <b>电商</b> 是规模 <span class="arrow">|</span>
+      <b>本地生活</b> 是增量
+      <span style="margin-left:auto;color:var(--grey);font-size:12px;">从「媒体」变成「商业基础设施」</span>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>护城河是「算法 + 时长」,不是内容</h3>
+          <p>内容可以买、抄、挖;但「推荐算法 + 用户时长」是飞轮。<b>时长份额首超微信,是这台机器成熟的标志。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>「刷」是杀时间,「搜」是省时间</h3>
+          <p>短视频的本质是杀时间;但抖音正在用搜索切入省时间的场景。<b>它想同时占据「无聊」和「需要」。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>增长见顶后,变现靠电商和本地生活</h3>
+          <p>广告有天花板(受周期影响);电商和本地生活,是把注意力直接变成交易。<b>这是从媒体到商业基础设施的关键。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:30px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>本地生活是「降维打击」</h3>
+          <p>美团是「人找店」,抖音是「店找人」。短视频 + 团购,把种草和下单压缩成一步。<b>但履约、商家运营、口碑,仍是美团的护城河。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>最大的风险是「用户疲劳」</h3>
+          <p>时长已经 112 分钟,接近生理极限;内容同质化、广告密度上升,会加速疲劳。<b>当「刷」变成负担,时长就会掉。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>AI 是下一个变量</h3>
+          <p>字节在 AI 上投入巨大(豆包、即梦)。AI 会改变内容生产和分发。<b>抖音的下一台机器,可能是 AI 原生的。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">用户疲劳</div>
+      <div class="risk-desc">时长接近极限,内容同质化。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">监管</div>
+      <div class="risk-desc">内容审核、未成年人、算法治理。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">电商增速放缓</div>
+      <div class="risk-desc">Q2 GMV 增速回落至低双位数。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">本地生活竞争</div>
+      <div class="risk-desc">美团反击,淘宝闪购入场。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">广告周期</div>
+      <div class="risk-desc">宏观消费疲软,广告预算收缩。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">AI 投入</div>
+      <div class="risk-desc">资本开支大,短期侵蚀利润。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">出海不确定</div>
+      <div class="risk-desc">TikTok 面临地缘政治风险。</div>
+      <div class="stars">★★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · QuestMobile、野村证券、虎嗅、网经社、百度百科等公开报道。<br>
+    <b>说明</b> · 部分数据为企业披露或媒体估算,已标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《抖音:一台 10 亿人的「注意力机器」》</a>
+  </footer>
+
+</div>
+</body>
+</html>
