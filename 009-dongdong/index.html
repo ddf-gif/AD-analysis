@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>东东电竞 · 人群 · 场景 · 需求拆解</title>
+<style>
+  :root{
+    --bg:#F5F3EF;
+    --card:#FFFFFF;
+    --ink:#1A1A1A;
+    --ink2:#4D4A46;
+    --ink3:#948F88;
+    --line:#E6E0D8;
+    --orange:#FF4D2E;
+    --orange-deep:#C9331A;
+    --orange-soft:#FFE9E3;
+    --purple:#7C3AED;
+    --dark:#17171B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:44px 40px 90px;}
+
+  .hero{display:grid;grid-template-columns:1.32fr .68fr;gap:40px;align-items:center;padding:20px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--orange-deep);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--orange-deep);display:block;}
+  h1{font-size:clamp(46px,6.4vw,84px);line-height:.98;letter-spacing:-.045em;font-weight:900;margin-bottom:14px;}
+  h1 .mark{color:var(--orange);}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(23px,2.8vw,34px);line-height:1.38;font-weight:600;margin-bottom:24px;}
+  .subtitle em{font-style:normal;background:linear-gradient(transparent 62%,#FFC9BC 62%);padding:0 2px;}
+  .lede{font-size:16px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;background:linear-gradient(transparent 64%,#FFC9BC 64%);padding:0 2px;}
+
+  .wave-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:22px;min-height:300px;}
+  .wave-card{
+    width:250px;height:190px;border-radius:22px;background:var(--dark);
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    box-shadow:0 30px 60px -28px rgba(255,77,46,.55);
+    position:relative;transform:rotate(-3deg);
+  }
+  .wave-card span{width:8px;border-radius:4px;background:linear-gradient(180deg,#FF8A6B,var(--orange));}
+  .wave-card span:nth-child(1){height:26px;}
+  .wave-card span:nth-child(2){height:52px;}
+  .wave-card span:nth-child(3){height:78px;}
+  .wave-card span:nth-child(4){height:44px;}
+  .wave-card span:nth-child(5){height:96px;}
+  .wave-card span:nth-child(6){height:62px;}
+  .wave-card span:nth-child(7){height:34px;}
+  .wave-card .live{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:9.5px;letter-spacing:.24em;color:rgba(255,255,255,.55);font-weight:700;}
+  .wave-card .dot-live{position:absolute;top:14px;left:16px;display:flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.14em;color:var(--orange);font-weight:700;}
+  .wave-card .dot-live i{width:6px;height:6px;border-radius:50%;background:var(--orange);display:block;}
+  .wave-label{font-size:10.5px;letter-spacing:.18em;color:var(--ink3);}
+
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 16px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:25px;font-weight:900;letter-spacing:-.03em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:12.5px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .hl{color:var(--orange-deep);}
+  .metric .k{font-size:11px;color:var(--ink3);margin-top:7px;letter-spacing:.04em;}
+
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.16em;color:#fff;background:var(--orange);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card .tag{display:inline-block;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-bottom:12px;}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:13px;line-height:1.78;color:var(--ink2);}
+  .card .note{font-size:12px;color:var(--ink3);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);}
+  .orange-card{background:var(--orange-soft);border-color:#FFCFC3;}
+  .orange-card .tag{color:var(--orange-deep);}
+
+  .tl{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);}
+  .tl-item{padding:18px 14px 0 0;border-right:1px solid var(--line);position:relative;}
+  .tl-item:last-child{border-right:none;}
+  .tl-item::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;border-radius:50%;background:var(--orange);}
+  .tl-year{font-size:11.5px;font-weight:800;color:var(--orange-deep);margin-bottom:5px;}
+  .tl-name{font-size:13.5px;font-weight:700;margin-bottom:5px;}
+  .tl-desc{font-size:11.5px;color:var(--ink2);line-height:1.65;}
+
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;}
+  .pyr-row{padding:11px 18px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:46px;}
+  .pyr-row:nth-child(1){width:48%;background:var(--dark);color:#fff;}
+  .pyr-row:nth-child(2){width:64%;background:#3D3A36;color:#fff;}
+  .pyr-row:nth-child(3){width:80%;background:var(--orange);color:#fff;}
+  .pyr-row:nth-child(4){width:96%;background:var(--orange-soft);color:var(--orange-deep);}
+
+  .judgments{background:var(--dark);color:#fff;border-radius:24px;padding:44px 44px 40px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--orange);color:#fff;}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:18px;}
+  .j-num{font-size:10.5px;letter-spacing:.16em;color:#FF8A6B;font-weight:800;margin-bottom:10px;}
+  .j-item h3{font-size:16px;font-weight:700;margin-bottom:9px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,.7);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  .risk-row{display:grid;grid-template-columns:180px 1fr 100px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .risk-row:first-of-type{border-top:1px solid var(--ink);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12.5px;}
+  .stars{color:var(--orange-deep);letter-spacing:2px;font-size:12px;text-align:right;}
+
+  .callout{background:var(--orange-soft);border:1px solid #FFCFC3;border-radius:14px;padding:18px 22px;font-size:13.5px;line-height:1.8;color:#7A2A1C;}
+  .callout b{color:#5A1A0F;}
+  .callout-dark{background:#F0EDE8;border-color:#DDD7CE;color:#3D3A36;}
+  .callout-dark b{color:var(--ink);}
+
+  .flow{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:12.5px;color:var(--ink2);display:flex;flex-wrap:wrap;align-items:center;gap:9px;}
+  .flow b{color:var(--ink);font-weight:700;}
+  .flow .arrow{color:var(--orange-deep);font-weight:800;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--orange-deep);text-decoration:none;border-bottom:1px solid #FFCFC3;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .wave-card{width:210px;height:160px;}
+    .wave-wrap{min-height:auto;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric{border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+    .tl{grid-template-columns:1fr;border-top:none;}
+    .tl-item{border-right:none;border-top:1px solid var(--line);padding:14px 0 0;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:30px 24px;}
+    .risk-row{grid-template-columns:1fr;gap:4px;}
+    .stars{text-align:left;}
+    .card div[style*="justify-content:space-between"]{flex-direction:column;gap:2px;}
+    .card div[style*="justify-content:space-between"] span:last-child{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.pyr-row,.metric,.sec-num,.wave-card{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Esports Teardown · Day 009</div>
+      <h1>东东电竞<span class="mark">.</span></h1>
+      <div class="subtitle">把「陪玩」做成<br><em>电竞版海底捞</em></div>
+      <p class="lede">
+        它卖的不是「陪玩」,是「游戏里的<strong>陪伴和面子</strong>」。
+        用户买的不是「一个高手」,是「一个愿意陪我、捧我的人」。
+      </p>
+    </div>
+    <div class="wave-wrap">
+      <div class="wave-card">
+        <div class="dot-live"><i></i>LIVE</div>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <div class="live">ONLINE · 开黑中</div>
+      </div>
+      <div class="wave-label">CO-PLAY · 有人陪你打</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">500<small>万+</small></div><div class="k">注册用户</div></div>
+    <div class="metric"><div class="v"><small>¥</small><span class="hl">2</span><small>亿</small></div><div class="k">月流水(企业口径)</div></div>
+    <div class="metric"><div class="v">4,000<small>+</small></div><div class="k">陪玩师</div></div>
+    <div class="metric"><div class="v">47<small>万</small></div><div class="k">月单量</div></div>
+    <div class="metric"><div class="v">1,000<small>万</small></div><div class="k">月纳税</div></div>
+    <div class="metric"><div class="v"><span class="hl">2,000</span><small>万</small></div><div class="k">赛事奖金</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:从网咖到陪玩平台</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-year">2022</div>
+        <div class="tl-name">线下起家</div>
+        <div class="tl-desc">河北定州,第一家线下电竞门店。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2023.6</div>
+        <div class="tl-name">公司化</div>
+        <div class="tl-desc">成立淮南东东娱乐文化传媒。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2025.4</div>
+        <div class="tl-name">平台化</div>
+        <div class="tl-desc">成立淮南东东网络科技。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2025.7</div>
+        <div class="tl-name">App 上线</div>
+        <div class="tl-desc">安卓 / iOS 双端公测。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2025.10</div>
+        <div class="tl-name">全国加盟</div>
+        <div class="tl-desc">发布俱乐部招募令,启动加盟。</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>它是一条「反向」路径:大多数平台是线上起家再开线下店,东东电竞是先有线下服务经验,再做线上平台。</b>
+      这决定了它的基因:重服务、重管理、重口碑。
+    </div>
+    <div class="flow">
+      <b>陪玩</b> 按段位、价格、性别筛选 <span class="arrow">|</span>
+      <b>语音房</b> 排位、K 歌、聊天 <span class="arrow">|</span>
+      <b>赛事</b> 水友赛、赏金赛 <span class="arrow">|</span>
+      <b>俱乐部</b> 入驻、加盟
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">人群:两种人,一个场</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="grid-2">
+      <div class="card orange-card" style="padding:24px 26px;">
+        <div class="tag">DEMAND · 老板(下单者)</div>
+        <h3 style="font-size:19px;margin-bottom:10px;">他买的不是技术,是「被重视」</h3>
+        <div style="font-size:12.5px;">
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid #FFCFC3;"><span style="color:#9A5A44;">性别</span><span style="font-weight:600;">男性为主</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid #FFCFC3;"><span style="color:#9A5A44;">年龄</span><span style="font-weight:600;">25-40 岁</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid #FFCFC3;"><span style="color:#9A5A44;">特征</span><span style="font-weight:600;">有消费力、孤独、需要被捧</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid #FFCFC3;"><span style="color:#9A5A44;">动机</span><span style="font-weight:600;">上分、打发时间、被叫「老板」</span></div>
+        </div>
+        <div class="note" style="border-top-color:#FFCFC3;">
+          在游戏里他可能是普通玩家;在这里,他是「老板」。
+        </div>
+      </div>
+      <div class="card" style="padding:24px 26px;">
+        <div class="tag">SUPPLY · 陪玩(服务者)</div>
+        <h3 style="font-size:19px;margin-bottom:10px;">技术、声音、颜值,都是「可售卖的服务」</h3>
+        <div style="font-size:12.5px;">
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">年龄</span><span style="font-weight:600;">18-30 岁</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">特征</span><span style="font-weight:600;">技术好 / 声音好 / 颜值高</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">身份</span><span style="font-weight:600;">兼职为主,也有全职</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">收入</span><span style="font-weight:600;">订单分成,平台抽成</span></div>
+        </div>
+        <div class="note" style="border-top-style:solid;">
+          <b>平台最不稳定的部分:收入不稳、管理严、流动性大。</b>
+        </div>
+      </div>
+    </div>
+    <div class="callout-dark callout" style="margin-top:14px;">
+      <b>三方结构:</b>老板(需求)←→ 平台(撮合 + 抽成 + 管理)←→ 陪玩(供给),俱乐部在上游组织陪玩、加盟扩张。
+      平台的价值是「撮合 + 管理」,俱乐部的价值是「组织 + 培训」。
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">场景:五个「开黑时刻」</span>
+      <span class="sec-en">Scenes</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">FIVE MOMENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">排位上分</span><span style="font-weight:600;">晚上、周末 → 技术陪玩</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">娱乐开黑</span><span style="font-weight:600;">随时 → 娱乐陪玩</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">深夜孤独</span><span style="font-weight:600;">23:00-02:00 → 语音房</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);">赛事围观</span><span style="font-weight:600;">比赛日 → 赛事、水友赛</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);">社交扩列</span><span style="font-weight:600;">周末 → 社区、语音房</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>所有场景,都指向同一个前提:一个人打游戏,太孤独了。</b>
+      一个人排位,输了没人安慰;一个人开黑,没人配合;一个人深夜,没人说话。
+      它卖的不是「游戏服务」,是「游戏里的陪伴」。
+    </div>
+    <div class="callout-dark callout" style="margin-top:12px;">
+      <b>一个被忽略的场景:「被服务」。</b>陪玩会叫「老板」、会等你、会夸你——这是一种「角色反转」:在现实里他可能是普通打工人,在游戏里他是「老板」。
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">需求:五层,本质是「被服务的感觉」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="grid-2" style="align-items:center;">
+      <div class="card" style="padding:26px 30px;">
+        <div class="pyr">
+          <div class="pyr-row">面子 · 我点得起贵的陪玩</div>
+          <div class="pyr-row">社交 · 有人陪我玩、陪我聊</div>
+          <div class="pyr-row">情绪 · 被夸、被重视、被叫老板</div>
+          <div class="pyr-row">技术 + 娱乐 · 上分 / 打发时间</div>
+        </div>
+      </div>
+      <div class="card orange-card" style="padding:26px 28px;">
+        <div class="tag">THE CORE</div>
+        <h3 style="font-size:21px;line-height:1.5;margin-bottom:12px;">用户要的不是「一个高手」<br>是「一个愿意陪我、捧我的人」</h3>
+        <p style="font-size:13px;line-height:1.85;">
+          技术可以练,情绪买不到。陪玩的核心竞争力,是「会说话」「会来事」。
+        </p>
+        <div class="note" style="border-top-color:#FFCFC3;">
+          这和海底捞的逻辑一模一样:<b>你吃的不是火锅,是「被服务的感觉」。</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">模式:平台、俱乐部、陪玩的三方分成</span>
+      <span class="sec-en">Business Model</span>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tag">REVENUE 01</div>
+        <h3>订单抽成</h3>
+        <p>陪玩接单,平台抽成。</p>
+        <div class="note">主收入</div>
+      </div>
+      <div class="card">
+        <div class="tag">REVENUE 02</div>
+        <h3>考核费</h3>
+        <p>娱乐 / 技术考核,500 钻石/轮。</p>
+        <div class="note">门槛收入</div>
+      </div>
+      <div class="card">
+        <div class="tag">REVENUE 03</div>
+        <h3>俱乐部加盟</h3>
+        <p>加盟费、管理费。</p>
+        <div class="note">规模收入</div>
+      </div>
+      <div class="card">
+        <div class="tag">REVENUE 04</div>
+        <h3>赛事 / 活动</h3>
+        <p>赞助、报名费。</p>
+        <div class="note">品牌收入</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px;padding:24px 26px;">
+      <div class="tag">A HEAVY MODEL</div>
+      <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;">
+        <div><span style="color:var(--ink3);">运营团队</span> <b style="color:var(--orange-deep);">近 300 人</b></div>
+        <div><span style="color:var(--ink3);">陪玩师</span> <b style="color:var(--orange-deep);">4,000+</b></div>
+        <div><span style="color:var(--ink3);">比例</span> <b>约 1 : 13</b></div>
+        <div><span style="color:var(--ink3);">性质</span> <b>重服务,不是轻平台</b></div>
+      </div>
+      <div class="note" style="border-top-style:solid;">
+        <b>重服务的好处:体验可控、口碑好;坏处:成本高、扩张慢。</b>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">争议:野蛮生长的代价</span>
+      <span class="sec-en">Controversy</span>
+    </div>
+    <div class="card" style="padding:24px 26px;">
+      <div class="tag">FOUR EVENTS</div>
+      <div style="font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);flex:none;">2026.3</span><span style="text-align:right;">与 PeRo 陪玩店互撕,涉及「挖打手」「举报偷税」</span></div>
+        <div style="display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);flex:none;">2026.4</span><span style="text-align:right;">陪玩「ybb 事件」,平台处罚引发舆论</span></div>
+        <div style="display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid var(--line);"><span style="color:var(--ink3);flex:none;">2026.5</span><span style="text-align:right;">2,000 万奖金《三角洲行动》赛事,官宣 24 小时后被官方叫停</span></div>
+        <div style="display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);"><span style="color:var(--ink3);flex:none;">2026.7</span><span style="text-align:right;">CEO 为「Bug 强制结单」致歉,直播自证被封</span></div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:14px;">
+      <div class="card">
+        <div class="tag">MEANING 01</div>
+        <h3>行业在灰色地带</h3>
+        <p>陪玩、语音、打赏,天然靠近「软色情」「未成年人」的监管红线。平台越规范,越容易被不规范的同行的拖下水。</p>
+      </div>
+      <div class="card">
+        <div class="tag">MEANING 02</div>
+        <h3>与官方的利益冲突</h3>
+        <p>陪玩平台做大,会分流官方赛事的流量和商业价值。2,000 万赛事被叫停,是「平台 vs 官方」的典型冲突。</p>
+      </div>
+      <div class="card">
+        <div class="tag">MEANING 03</div>
+        <h3>平台与陪玩不对等</h3>
+        <p>平台掌握规则、罚款、封号权;陪玩是弱势一方,容易引发舆论反弹。</p>
+      </div>
+    </div>
+    <div class="callout-dark callout" style="margin-top:14px;">
+      <b>但它也有正面的一面:</b>提供 4,000+ 陪玩就业、近 300 人运营岗位;负责人称「一个月纳税 1,000 万」;实名、考核、禁止私单、禁止色情。
+      <b>它是一个「争议很大,但确实在解决问题」的公司。</b>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>它卖的是「情绪服务」,不是技术</h3>
+          <p>技术可以练,情绪买不到。陪玩的核心竞争力是「会说话」「会来事」。<b>「电竞界海底捞」比「技术最强」更值钱。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>护城河是「管理」,不是流量</h3>
+          <p>流量可以买;但「4,000 个陪玩的考核、培训、管理」是重活。<b>重活,才是壁垒。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>陪玩行业的终局,是「正规化」</h3>
+          <p>监管趋严,灰色平台会被淘汰。<b>谁能把「陪玩」做成「正规服务」,谁就能活下来。东东电竞的「严」,是在赌这个终局。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:30px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>最大风险是「舆论」和「监管」</h3>
+          <p>一次事件可能毁掉多年口碑;陪玩行业的「原罪」很难彻底洗白。<b>它必须比同行更干净,才能活下去。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>线下是它的「根」,也是「锚」</h3>
+          <p>从网咖起家,让它懂「服务」;线下门店,是「信任」的载体。<b>纯线上平台,很难建立这种服务基因。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>它可能成为「电竞行业的链家」</h3>
+          <p>链家做的是「撮合 + 规范 + 服务」;东东电竞做的是「撮合陪玩 + 规范行业 + 服务老板」。<b>如果它能定义标准,就不只是一个平台。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">风险清单</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">监管风险</div>
+      <div class="risk-desc">陪玩、语音、未成年人、软色情。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">舆论风险</div>
+      <div class="risk-desc">单次事件可能引发全网抵制。</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">与官方冲突</div>
+      <div class="risk-desc">赛事被叫停、游戏官方限制。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">陪玩流失</div>
+      <div class="risk-desc">收入不稳定、管理严、流动性大。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">税务合规</div>
+      <div class="risk-desc">高流水、多主体,税务风险。</div>
+      <div class="stars">★★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">竞争</div>
+      <div class="risk-desc">PeRo 等老牌陪玩店、其他平台。</div>
+      <div class="stars">★★★</div>
+    </div>
+    <div class="risk-row">
+      <div class="risk-name">扩张管理</div>
+      <div class="risk-desc">加盟模式,品控难。</div>
+      <div class="stars">★★★</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 百度百科、应用商店、虎扑、17173、新浪等公开报道。<br>
+    <b>说明</b> · 部分数据为企业口径或媒体估算,存在不同版本,已标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《东东电竞:把「陪玩」做成「电竞版海底捞」》</a>
+  </footer>
+
+</div>
+</body>
+</html>
