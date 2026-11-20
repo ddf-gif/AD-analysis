@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>豆包 · 定位 · 人群 · 场景 · 需求拆解</title>
+<style>
+  :root{
+    --bg:#070A14;
+    --card:#0F1628;
+    --card2:#121B31;
+    --line:#1E2740;
+    --line2:#27334F;
+    --ink:#EDF1FB;
+    --ink2:#A7B2CC;
+    --ink3:#6C7897;
+    --blue:#4E6EF2;
+    --blue-l:#8FA5FF;
+    --violet:#8B5CF6;
+    --cyan:#22D3EE;
+    --grad:linear-gradient(120deg,#4E6EF2 0%,#8B5CF6 58%,#22D3EE 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:var(--bg);}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  body::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:760px;pointer-events:none;
+    background:
+      radial-gradient(680px 400px at 78% 8%,rgba(78,110,242,.22),transparent 62%),
+      radial-gradient(520px 340px at 12% 0%,rgba(139,92,246,.14),transparent 60%);
+    z-index:0;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:48px 40px 90px;position:relative;z-index:1;}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;grid-template-columns:1.28fr .72fr;gap:44px;align-items:center;padding:16px 0 46px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-l);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--blue),var(--violet));display:block;}
+  h1{font-size:clamp(52px,7vw,92px);line-height:.96;letter-spacing:-.055em;font-weight:900;margin-bottom:16px;}
+  h1 .mark{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(24px,2.9vw,36px);line-height:1.4;font-weight:600;margin-bottom:24px;letter-spacing:-.01em;}
+  .subtitle em{font-style:normal;color:#fff;background:linear-gradient(transparent 64%,rgba(78,110,242,.42) 64%);padding:0 3px;}
+  .lede{font-size:16px;line-height:1.95;color:var(--ink2);max-width:590px;}
+  .lede strong{color:#fff;font-weight:700;background:linear-gradient(transparent 64%,rgba(78,110,242,.42) 64%);padding:0 2px;}
+
+  /* chat visual */
+  .chat-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;min-height:330px;justify-content:center;}
+  .chat-card{
+    width:288px;border-radius:26px;background:linear-gradient(180deg,#101A31,#0B1224);
+    border:1px solid var(--line2);padding:16px 16px 14px;
+    box-shadow:0 44px 90px -34px rgba(78,110,242,.65),0 0 0 1px rgba(255,255,255,.02) inset;
+    transform:rotate(-2deg);position:relative;
+  }
+  .chat-top{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+  .avatar{width:36px;height:36px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;box-shadow:0 6px 18px -6px rgba(139,92,246,.9);}
+  .chat-name{font-size:13px;font-weight:700;letter-spacing:.02em;}
+  .chat-status{font-size:9px;color:var(--ink3);display:flex;align-items:center;gap:5px;margin-top:1px;letter-spacing:.06em;}
+  .chat-status i{width:5px;height:5px;border-radius:50%;background:#34D399;display:block;box-shadow:0 0 8px #34D399;}
+  .bubble{font-size:11.5px;line-height:1.6;padding:8px 11px;border-radius:12px;margin-top:9px;max-width:86%;}
+  .b1{background:#1A2540;color:var(--ink2);border-bottom-left-radius:3px;}
+  .b2{background:#16203A;color:var(--ink);border-bottom-left-radius:3px;}
+  .b3{margin-left:auto;background:linear-gradient(120deg,#4E6EF2,#7C5CF0);color:#fff;border-bottom-right-radius:3px;text-align:right;}
+  .typing{display:flex;gap:4px;align-items:center;background:#16203A;width:46px;padding:10px 11px;border-bottom-left-radius:3px;}
+  .typing span{width:4px;height:4px;border-radius:50%;background:var(--blue-l);animation:blink 1.4s infinite;}
+  .typing span:nth-child(2){animation-delay:.2s;}
+  .typing span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,100%{opacity:.25;transform:translateY(0);}50%{opacity:1;transform:translateY(-2px);}}
+  .chat-foot{font-size:9px;color:var(--ink3);letter-spacing:.14em;text-align:center;padding-top:12px;margin-top:12px;border-top:1px solid var(--line);}
+  .chat-label{font-size:10px;letter-spacing:.2em;color:var(--ink3);}
+
+  /* ---------- metrics ---------- */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid rgba(255,255,255,.22);border-bottom:1px solid var(--line);margin-bottom:66px;}
+  .metric{padding:22px 14px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:24px;font-weight:900;letter-spacing:-.035em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:12px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .metric .k{font-size:10.5px;color:var(--ink3);margin-top:7px;letter-spacing:.04em;}
+
+  /* ---------- sections ---------- */
+  .sec{margin-bottom:68px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.14em;color:#fff;background:linear-gradient(120deg,#4E6EF2,#8B5CF6);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;}
+  .card .tag{display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--ink3);margin-bottom:11px;text-transform:uppercase;}
+  .card h3{font-size:16.5px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;line-height:1.4;}
+  .card p{font-size:12.5px;line-height:1.8;color:var(--ink2);margin-bottom:12px;}
+  .card .note{font-size:11.5px;color:var(--ink3);margin-top:auto;padding-top:12px;border-top:1px dashed var(--line2);}
+  .card .note b{color:var(--blue-l);font-weight:700;}
+  .hl-card{background:linear-gradient(170deg,rgba(78,110,242,.14),rgba(139,92,246,.06));border-color:#2C3C6B;}
+
+  /* 定位 compare */
+  .pos{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+  .pos-col{padding:22px;border-right:1px solid var(--line);}
+  .pos-col:last-child{border-right:none;}
+  .pos-col.dim{background:#0B1120;color:var(--ink3);}
+  .pos-col.win{background:linear-gradient(165deg,rgba(78,110,242,.16),rgba(34,211,238,.05));}
+  .pos-h{font-size:11px;letter-spacing:.16em;color:var(--ink3);font-weight:700;margin-bottom:12px;}
+  .pos-col.win .pos-h{color:var(--blue-l);}
+  .pos-big{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px;}
+  .pos-col.win .pos-big{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .pos-line{font-size:12px;line-height:1.9;color:var(--ink2);}
+  .pos-col.dim .pos-line{color:var(--ink3);}
+  .pos-line b{color:var(--ink);font-weight:600;}
+
+  .stack{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+  .stack-row{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;padding:13px 18px;border-radius:12px;border:1px solid var(--line);background:var(--card);}
+  .stack-row .lv{font-size:10.5px;letter-spacing:.14em;color:var(--ink3);font-weight:700;}
+  .stack-row .tx{font-size:13px;color:var(--ink2);}
+  .stack-row .tx b{color:#fff;font-weight:700;}
+  .stack-row:nth-child(2){background:linear-gradient(90deg,rgba(78,110,242,.1),var(--card));border-color:#22315A;}
+  .stack-row:nth-child(3){background:linear-gradient(90deg,rgba(139,92,246,.14),var(--card));border-color:#332A5C;}
+
+  /* 人群 strip */
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:14px;}
+  .strip div{background:var(--card);padding:15px 16px;}
+  .strip .sv{font-size:17px;font-weight:800;letter-spacing:-.02em;color:#fff;}
+  .strip .sv small{font-size:11px;color:var(--ink2);font-weight:700;}
+  .strip .sk{font-size:10.5px;color:var(--ink3);margin-top:3px;}
+
+  /* 场景 */
+  .scene{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 15px;position:relative;overflow:hidden;}
+  .scene::after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--grad);opacity:.7;}
+  .scene .t{font-size:9.5px;letter-spacing:.12em;color:var(--blue-l);font-weight:700;font-variant-numeric:tabular-nums;}
+  .scene h4{font-size:14px;font-weight:700;margin:6px 0 4px;}
+  .scene p{font-size:11.5px;line-height:1.7;color:var(--ink3);}
+
+  /* 需求 */
+  .need{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;}
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .pyr-row{display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border-radius:9px;font-size:13.5px;font-weight:700;letter-spacing:.02em;color:#fff;position:relative;}
+  .pyr-row span.n{font-size:9.5px;opacity:.6;font-weight:700;letter-spacing:.1em;}
+  .pyr-row:nth-child(1){width:44%;background:linear-gradient(120deg,#8B5CF6,#A78BFA);}
+  .pyr-row:nth-child(2){width:58%;background:linear-gradient(120deg,#6D5BE8,#8B5CF6);}
+  .pyr-row:nth-child(3){width:73%;background:linear-gradient(120deg,#4E6EF2,#6D5BE8);}
+  .pyr-row:nth-child(4){width:88%;background:linear-gradient(120deg,#2F80ED,#4E6EF2);}
+  .pyr-row:nth-child(5){width:100%;background:linear-gradient(120deg,#0EA5C6,#2F80ED);}
+  .pyr-note{font-size:10.5px;color:var(--ink3);letter-spacing:.08em;margin-top:10px;}
+
+  .need-side h3{font-size:15px;font-weight:700;margin-bottom:12px;}
+  .need-side ul{list-style:none;display:flex;flex-direction:column;gap:11px;}
+  .need-side li{font-size:12.5px;line-height:1.8;color:var(--ink2);padding-left:16px;position:relative;}
+  .need-side li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:2px;background:var(--grad);}
+  .need-side li b{color:#fff;font-weight:700;}
+  .quote{margin-top:18px;border-left:2px solid var(--blue);padding:12px 0 12px 16px;font-family:"Songti SC","STSong","Noto Serif CJK SC",serif;font-size:16px;line-height:1.7;color:#fff;}
+  .quote small{display:block;font-family:inherit;font-size:10.5px;letter-spacing:.14em;color:var(--ink3);margin-top:8px;}
+
+  /* 营销机制 */
+  .mech{display:grid;grid-template-columns:38px 1fr auto;gap:16px;align-items:start;padding:15px 0;border-bottom:1px solid var(--line);}
+  .mech:first-of-type{border-top:1px solid var(--line2);}
+  .mech .n{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--blue-l);padding-top:2px;}
+  .mech h4{font-size:14px;font-weight:700;margin-bottom:3px;}
+  .mech p{font-size:12px;line-height:1.75;color:var(--ink2);}
+  .mech .chip{font-size:10.5px;color:var(--blue-l);border:1px solid #2A3A66;background:rgba(78,110,242,.1);border-radius:999px;padding:3px 10px;white-space:nowrap;margin-top:2px;font-variant-numeric:tabular-nums;}
+
+  /* 传播链 */
+  .chain{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
+  .chain-item{padding:16px 13px;border-right:1px solid var(--line);position:relative;}
+  .chain-item:last-child{border-right:none;}
+  .chain-item .n{font-size:9px;letter-spacing:.12em;color:var(--ink3);font-weight:700;}
+  .chain-item h4{font-size:12.5px;font-weight:700;margin:5px 0 3px;}
+  .chain-item p{font-size:10.5px;line-height:1.6;color:var(--ink3);}
+  .chain-item:last-child{background:linear-gradient(160deg,rgba(78,110,242,.2),rgba(34,211,238,.06));}
+  .chain-item:last-child h4{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+  /* 对比 */
+  .cmp{border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .cmp-row{display:grid;grid-template-columns:150px 1.05fr 1fr;gap:18px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:baseline;}
+  .cmp-row:last-child{border-bottom:none;}
+  .cmp-head{background:#0B1120;font-size:10px;letter-spacing:.14em;color:var(--ink3);font-weight:700;padding:11px 20px;}
+  .cmp-name{font-weight:700;color:#fff;font-size:13px;}
+  .cmp-a{color:var(--ink2);}
+  .cmp-b{color:var(--ink3);}
+  .cmp-row.win{background:linear-gradient(90deg,rgba(78,110,242,.16),rgba(34,211,238,.05));}
+  .cmp-row.win .cmp-name{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .cmp-row.win .cmp-b{color:var(--ink2);}
+
+  /* 商业化 */
+  .price{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;}
+  .price .p-name{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-weight:700;}
+  .price .p-v{font-size:30px;font-weight:900;letter-spacing:-.04em;margin:8px 0 2px;font-feature-settings:"tnum";}
+  .price .p-v small{font-size:12px;font-weight:600;color:var(--ink3);letter-spacing:0;}
+  .price .p-y{font-size:11.5px;color:var(--ink3);}
+  .price.win{border-color:#33477F;background:linear-gradient(170deg,rgba(78,110,242,.16),var(--card));}
+  .price.win .p-v{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+  .callout{border-radius:12px;padding:16px 20px;font-size:12.5px;line-height:1.8;background:linear-gradient(120deg,rgba(78,110,242,.14),rgba(139,92,246,.06));border:1px solid #2C3C6B;color:var(--ink2);}
+  .callout b{color:#fff;}
+
+  .risk-row{display:grid;grid-template-columns:150px 1fr 100px;gap:18px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+  .risk-row:first-of-type{border-top:1px solid var(--line2);}
+  .risk-name{font-weight:700;color:#fff;}
+  .risk-desc{color:var(--ink2);font-size:12px;}
+  .stars{color:var(--blue-l);letter-spacing:2px;font-size:11.5px;text-align:right;}
+
+  /* 判断 */
+  .judgments{background:linear-gradient(160deg,#0E1730,#0A0F1E);border:1px solid #1E2A47;border-radius:24px;padding:40px 44px 42px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-title{color:#fff;}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:16px;}
+  .j-num{font-size:9.5px;letter-spacing:.16em;color:var(--blue-l);font-weight:800;margin-bottom:9px;}
+  .j-item h3{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12px;line-height:1.85;color:rgba(255,255,255,.62);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  footer{margin-top:66px;padding-top:22px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--blue-l);text-decoration:none;border-bottom:1px solid #2C3C6B;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    body::before{height:520px;}
+    .hero{grid-template-columns:1fr;gap:26px;}
+    .chat-wrap{min-height:auto;}
+    .chat-card{width:262px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .grid-2,.grid-3,.grid-4,.need{grid-template-columns:1fr;}
+    .pos{grid-template-columns:1fr;}
+    .pos-col{border-right:none;border-bottom:1px solid var(--line);}
+    .pos-col:last-child{border-bottom:none;}
+    .strip{grid-template-columns:1fr 1fr;}
+    .mech{grid-template-columns:28px 1fr;}
+    .mech .chip{grid-column:2;justify-self:start;margin-top:6px;}
+    .chain{grid-template-columns:1fr 1fr;}
+    .chain-item{border-right:none;border-bottom:1px solid var(--line);}
+    .cmp-row{grid-template-columns:1fr;gap:3px;padding:13px 16px;}
+    .cmp-head{display:none;}
+    .cmp-name{font-size:13.5px;}
+    .cmp-a::before{content:"强在 · ";color:var(--ink3);}
+    .cmp-b::before{content:"没留住 · ";color:var(--ink3);}
+    .risk-row{grid-template-columns:1fr;gap:3px;}
+    .stars{text-align:left;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:28px 22px 30px;}
+    .stack-row{grid-template-columns:1fr;gap:4px;}
+    .card div[style*="justify-content:space-between"]{flex-direction:column;gap:2px;}
+    .card div[style*="justify-content:space-between"] span:last-child{text-align:left;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.metric,.sec-num,.pos-col.win,.pyr-row,.chat-card,.chain-item:last-child{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">AI Assistant Teardown · Day 010</div>
+      <h1>豆包<span class="mark">.</span></h1>
+      <div class="subtitle">把 AI 做成一个<br><em>「人」</em></div>
+      <p class="lede">
+        别人在做「<strong>更强的 AI</strong>」,豆包在做「<strong>更顺手的 AI</strong>」。
+        顺手到极致,它就不再是一个工具,而是「一个随叫随到、不要钱、不嫌你笨的人」。
+      </p>
+    </div>
+    <div class="chat-wrap">
+      <div class="chat-card">
+        <div class="chat-top">
+          <div class="avatar">豆</div>
+          <div>
+            <div class="chat-name">豆包</div>
+            <div class="chat-status"><i></i>在线 · 随时可聊</div>
+          </div>
+        </div>
+        <div class="bubble b1">在吗?</div>
+        <div class="bubble b2">在的。今天想聊点什么?</div>
+        <div class="bubble b3">帮我写个周报,再配张图</div>
+        <div class="bubble typing"><span></span><span></span><span></span></div>
+        <div class="chat-foot">语音 · 拍照 · 生图 · 视频</div>
+      </div>
+      <div class="chat-label">NOT A TOOL · A SOMEONE</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v"><span class="hl">4.19</span><small>亿</small></div><div class="k">MAU(2026.9)</div></div>
+    <div class="metric"><div class="v">1.59<small>亿</small></div><div class="k">峰值 DAU(除夕)</div></div>
+    <div class="metric"><div class="v">19<small>亿次</small></div><div class="k">除夕 AI 互动</div></div>
+    <div class="metric"><div class="v">800<small>万+</small></div><div class="k">用户自建智能体 · 2024</div></div>
+    <div class="metric"><div class="v">40<small>%</small></div><div class="k">语音通话渗透率</div></div>
+    <div class="metric"><div class="v"><small>¥</small><span class="hl">68</span></div><div class="k">付费起价 / 月</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">定位:不是工具,是「搭子」</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="pos">
+      <div class="pos-col dim">
+        <div class="pos-h">BEFORE · 搜索引擎</div>
+        <div class="pos-big">搜</div>
+        <div class="pos-line">你输入关键词,它给你<b>十个链接</b>。<br>关系是:一次性的信息交换。</div>
+      </div>
+      <div class="pos-col dim">
+        <div class="pos-h">OTHERS · 工具型 AI</div>
+        <div class="pos-big">用</div>
+        <div class="pos-line">你带着任务来,它给你<b>结果</b>。<br>关系是:完成任务,然后离开。</div>
+      </div>
+      <div class="pos-col win">
+        <div class="pos-h">DOUBAO · AI 搭子</div>
+        <div class="pos-big">聊</div>
+        <div class="pos-line">你随时来,它<b>一直在</b>。<br>关系是:长期、无压力、不用付费。</div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="stack-row"><div class="lv">产品层</div><div class="tx"><b>全能助手</b> — 问答、写作、翻译、生图、视频、语音、拍照识物、智能体</div></div>
+      <div class="stack-row"><div class="lv">心智层</div><div class="tx"><b>「遇事不决问豆包」</b> — 把过去「遇事不决找百度」的动作,迁移进一个对话框</div></div>
+      <div class="stack-row"><div class="lv">情感层</div><div class="tx"><b>「赛博搭子」</b> — 树洞、陪聊、角色扮演、赛博孩子、赛博男友</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>它不承诺「最聪明」,它承诺三件事:一直在、什么都能聊、不要钱。</b>
+      所以它的定位不是「AI 助手」,而是「国民级 AI 生活助手」——更准确地说,一个 <b>AI 搭子</b>。
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">人群:它不筛人,它收人</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">12-22 岁</div>
+        <h3>学生</h3>
+        <p>作业、作文、口语、错题讲解、考前突击。</p>
+        <div class="note">真实需求:<b>有人随时能问,还不挨骂</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">22-40 岁</div>
+        <h3>上班族</h3>
+        <p>周报、PPT、邮件、翻译、会议纪要、面试模拟。</p>
+        <div class="note">真实需求:<b>少加班,别露怯</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">28-45 岁</div>
+        <h3>宝妈 / 家长</h3>
+        <p>辅导作业、辅食、健康问答、家校沟通、亲子内容。</p>
+        <div class="note">真实需求:<b>一个人带娃,想有个帮手</b></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card">
+        <div class="tag">55 岁 +</div>
+        <h3>银发族</h3>
+        <p>「打电话」问事、聊天、看体检报告、防骗、学用手机。</p>
+        <div class="note">真实需求:<b>不想麻烦子女,又怕落伍</b></div>
+      </div>
+      <div class="card hl-card">
+        <div class="tag">18-35 岁 · 增量最大</div>
+        <h3>下沉市场 &amp; 情感用户</h3>
+        <p>角色扮演、树洞、恋爱模拟、陪聊、追星、写小说。</p>
+        <div class="note">真实需求:<b>被回应、被需要、不孤单</b></div>
+      </div>
+    </div>
+    <div class="strip">
+      <div><div class="sv">57<small> / 43</small></div><div class="sk">男女比例(趋于均衡)</div></div>
+      <div><div class="sv">~30<small>%</small></div><div class="sk">四线及以下用户占比</div></div>
+      <div><div class="sv">~40<small>%</small></div><div class="sk">语音通话渗透率</div></div>
+      <div><div class="sv">↑</div><div class="sk">中高龄用户持续上升</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>反常识:竞品都在「筛」用户,豆包在「收」用户。</b>
+      DeepSeek 筛技术敏感人群,Kimi 筛长文本用户,夸克筛学生,元宝筛微信里的人——只有豆包在做「普适」。
+      它的用户画像不是「一群人的画像」,是「中国人的画像」。
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">场景:八个「生活时刻」</span>
+      <span class="sec-en">Scenarios</span>
+    </div>
+    <div class="grid-4">
+      <div class="scene"><div class="t">19:00 — 21:00</div><h4>写作业</h4><p>讲题、批改、听写、作文</p></div>
+      <div class="scene"><div class="t">09:00 — 18:00</div><h4>写材料</h4><p>周报、PPT 大纲、邮件、翻译</p></div>
+      <div class="scene"><div class="t">随时</div><h4>拍照识物</h4><p>认植物、认药、翻译菜单、读说明书</p></div>
+      <div class="scene"><div class="t">随时</div><h4>生图 / 做视频</h4><p>头像、海报、朋友圈素材</p></div>
+      <div class="scene"><div class="t">22:00 — 01:00</div><h4>语音通话</h4><p>陪聊、哄睡、练口语、吐槽</p></div>
+      <div class="scene"><div class="t">深夜 / 周末</div><h4>角色扮演</h4><p>霸总、前任、老师、虚拟恋人</p></div>
+      <div class="scene"><div class="t">早上 / 饭点</div><h4>生活决策</h4><p>穿什么、吃什么、去哪、怎么选</p></div>
+      <div class="scene"><div class="t">白天</div><h4>银发问事</h4><p>问病、问政策、问手机怎么用</p></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>注意时间分布:白天是「效率场景」,深夜是「情绪场景」。</b>
+      这解释了它为什么能拿到这么高的频次——<b>它同时占住了「工具时间」和「情绪时间」。</b>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">需求:五层,本质是「我不想学 AI」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="need">
+      <div>
+        <div class="pyr">
+          <div class="pyr-row"><span class="n">05</span>陪 伴</div>
+          <div class="pyr-row"><span class="n">04</span>情 绪</div>
+          <div class="pyr-row"><span class="n">03</span>省 心</div>
+          <div class="pyr-row"><span class="n">02</span>省 钱</div>
+          <div class="pyr-row"><span class="n">01</span>省 事</div>
+        </div>
+        <div class="pyr-note">越往下越基础,越往上越值钱</div>
+      </div>
+      <div class="need-side">
+        <h3>五层需求,逐层加码</h3>
+        <ul>
+          <li><b>省事</b> — 说话就行,拍照就行,不用学 prompt</li>
+          <li><b>省钱</b> — 免费,试错成本为零</li>
+          <li><b>省心</b> — 一个 App 覆盖搜索、写作、翻译、生图、学习</li>
+          <li><b>情绪</b> — 它永远有耐心,永远不评判你</li>
+          <li><b>陪伴</b> — 深夜、独处、没人说话的时候,它在</li>
+        </ul>
+        <div class="quote">
+          「我不想学 AI,<br>我只想有个人帮我。」
+          <small>用户买的不是大模型,是一个随叫随到的人</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">营销策略:一套「去营销化」的系统</span>
+      <span class="sec-en">Marketing</span>
+    </div>
+    <div class="mech">
+      <div class="n">01</div>
+      <div><h4>人格化:名字、头像、声音、开场白</h4><p>从 Grace 改名「豆包」(双关「抖 bot」);波波头女孩形象;温柔女声、可打断;第一次打开主动打招呼。把抽象的 AI,压缩成一个「可以说话的人」。</p></div>
+      <div class="chip">名字像小名</div>
+    </div>
+    <div class="mech">
+      <div class="n">02</div>
+      <div><h4>免费与降价:先把门槛拆了</h4><p>2024.5 火山引擎把主力模型价格打到行业 1% 量级,C 端直接免费。免费不是促销,是用户教育——让第一次用 AI 的人没有「值不值」的心理负担。</p></div>
+      <div class="chip">降价 99%</div>
+    </div>
+    <div class="mech">
+      <div class="n">03</div>
+      <div><h4>字节生态灌溉:抖音是最大的广告位</h4><p>抖音 7 亿级 DAU 是冷启动池;剪映的 AI 修图/视频能力被复用;头条、番茄、飞书、输入法、浏览器都是入口;并有报道称字节限制了竞品在体系内投放。</p></div>
+      <div class="chip">自家水浇自家地</div>
+    </div>
+    <div class="mech">
+      <div class="n">04</div>
+      <div><h4>内容营销:官方不造梗,用户替它造</h4><p>「豆包帮我搭配衣服」「监督孩子写作业」「扮演班主任催作业」「扮演前任道歉」「赛博孩子」——轮番上热搜,几乎都不是官方投放,而是用户自发创作。</p></div>
+      <div class="chip">自来水</div>
+    </div>
+    <div class="mech">
+      <div class="n">05</div>
+      <div><h4>事件营销:春晚,一次国民级「告知」</h4><p>2026 年成为总台春晚独家 AI 云合作伙伴,除夕 AI 互动 19 亿次、日活峰值 1.59 亿。春晚的价值不在当晚,而在把「解释成本」降到最低。</p></div>
+      <div class="chip">19 亿次</div>
+    </div>
+    <div class="mech">
+      <div class="n">06</div>
+      <div><h4>产品即渠道:把豆包做成「插件化」入口</h4><p>聊天框里长出抖音商城蓝链、汽水音乐、豆包爱学、800 万+ 智能体。和微信小程序同一个逻辑:你不用记住一堆 App,只要记住「问豆包」。</p></div>
+      <div class="chip">一个入口</div>
+    </div>
+    <div class="mech">
+      <div class="n">07</div>
+      <div><h4>硬件入口:抢占「随时开口」的场景</h4><p>Ola Friend 耳机、AI 眼镜、学习机、AI 玩具、豆包手机。硬件的意义不是卖货,而是缩短「离嘴的距离」——语音助手的护城河在这里。</p></div>
+      <div class="chip">离嘴越近越好</div>
+    </div>
+    <div class="flow" style="margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 20px;font-size:12.5px;color:var(--ink2);">
+      <b style="color:#fff;">投放节奏</b> · 2024.6 单月冲高 1.24 亿元 <span style="color:var(--blue-l);font-weight:800;">→</span>
+      2024 下半年收缩 <span style="color:var(--blue-l);font-weight:800;">→</span>
+      2025.11 投放素材份额仅约 11%(元宝 46%、千问 34%) <span style="color:var(--blue-l);font-weight:800;">→</span>
+      <b style="color:#fff;">但 MAU 仍是第一</b>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>最反直觉的一组数:投放份额只有对手的三分之一,规模却是第一。</b>
+      这说明豆包的增长引擎,已经从「买量」切换成了「生态 + 口碑」。<b>这是质变,不是量变。</b>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">传播:一条「从刷到,到教会爸妈」的链</span>
+      <span class="sec-en">Diffusion</span>
+    </div>
+    <div class="chain">
+      <div class="chain-item"><div class="n">01</div><h4>刷到</h4><p>抖音、热搜、朋友转发</p></div>
+      <div class="chain-item"><div class="n">02</div><h4>下载</h4><p>免费,零决策成本</p></div>
+      <div class="chain-item"><div class="n">03</div><h4>用上</h4><p>语音、拍照,不用学</p></div>
+      <div class="chain-item"><div class="n">04</div><h4>「哇」时刻</h4><p>它居然懂我</p></div>
+      <div class="chain-item"><div class="n">05</div><h4>玩梗</h4><p>拍成视频发出去</p></div>
+      <div class="chain-item"><div class="n">06</div><h4>默认</h4><p>遇事不决问豆包</p></div>
+    </div>
+    <div class="grid-3" style="margin-top:14px;">
+      <div class="card">
+        <div class="tag">ENGINE 01</div>
+        <h3>流量引擎</h3>
+        <p>抖音、剪映、头条、番茄、飞书——一次性、大规模、可控。</p>
+      </div>
+      <div class="card">
+        <div class="tag">ENGINE 02</div>
+        <h3>内容引擎</h3>
+        <p>用户玩梗、热搜、二创——自发性、低成本、可信。</p>
+      </div>
+      <div class="card hl-card">
+        <div class="tag">ENGINE 03 · 最关键</div>
+        <h3>关系引擎</h3>
+        <p>子女教父母、朋友推荐——慢,但一旦形成就极难逆转。</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>「慢慢普及」的秘密,在第三个引擎。</b>
+      流量可以买,内容可以蹭,但「教会爸妈用」只能靠关系。而爸妈一旦学会用豆包打电话问事,这个习惯几乎不会迁移——<b>因为它抢的不是「AI 用户」,是「第一次上网的人」。</b>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">为什么被接受:四个「刚刚好」</span>
+      <span class="sec-en">Why It Works</span>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tag">门槛</div>
+        <h3>会说话就会用</h3>
+        <p>不用学 prompt,不用懂「提示词」。语音、拍照、一句「帮我写个……」就够了。</p>
+        <div class="note">证据:<b>语音通话渗透率近四成</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">成本</div>
+        <h3>免费,试错零成本</h3>
+        <p>直到 2026 年 5 月才开始收费。此前三年,用户用它是「没有心理负担」的。</p>
+        <div class="note">证据:<b>4.19 亿 MAU 建立在免费之上</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">情绪</div>
+        <h3>它像「人」,不像「工具」</h3>
+        <p>会接话、会夸人、会陪你演。在一线 AI 助手里,它几乎是唯一一个「不完成任务也有理由打开」的。</p>
+        <div class="note">证据:<b>800 万+ 自建智能体、大量陪聊</b></div>
+      </div>
+      <div class="card hl-card">
+        <div class="tag">触达</div>
+        <h3>抖音 + 春晚 + 教爸妈</h3>
+        <p>流量管够,事件管大,关系管深。三条路同时把人拉进来,再留下来。</p>
+        <div class="note">证据:<b>除夕 19 亿次互动、峰值 1.59 亿 DAU</b></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>四个「刚刚好」叠在一起,就变成了「默认」:</b>
+      门槛刚刚好低、成本刚刚好为零、情绪刚刚好够、触达刚刚好广。
+      少一个,它都只是一个「还不错的 AI」,而不是「大家都在用的 AI」。
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">为什么不是别的 AI</span>
+      <span class="sec-en">Competition</span>
+    </div>
+    <div class="cmp">
+      <div class="cmp-row cmp-head"><div>产品</div><div>它强在哪</div><div>为什么没成为「默认」</div></div>
+      <div class="cmp-row"><div class="cmp-name">DeepSeek</div><div class="cmp-a">推理、代码、开源,技术口碑极强</div><div class="cmp-b">太「专业」,像实验室;多模态弱,产品体验偏极客</div></div>
+      <div class="cmp-row"><div class="cmp-name">腾讯元宝</div><div class="cmp-a">微信入口、社交关系链</div><div class="cmp-b">有入口,没习惯;用户「知道」但不「常用」</div></div>
+      <div class="cmp-row"><div class="cmp-name">阿里千问</div><div class="cmp-a">阿里生态、办事、电商闭环</div><div class="cmp-b">「交易感」重,C 端心智弱</div></div>
+      <div class="cmp-row"><div class="cmp-name">Kimi</div><div class="cmp-a">长文本、文档处理</div><div class="cmp-b">场景窄,用完即走</div></div>
+      <div class="cmp-row"><div class="cmp-name">夸克</div><div class="cmp-a">工具、学生、搜索</div><div class="cmp-b">「工具感」强,不做陪伴</div></div>
+      <div class="cmp-row win"><div class="cmp-name">豆包</div><div class="cmp-a">全能 + 免费 + 人格化 + 生态</div><div class="cmp-b">什么都不最强,但什么都能用</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>别人在「做更强的 AI」,豆包在「做更顺手的 AI」。</b>
+      2026 年 9 月,豆包 MAU 4.19 亿,第二名千问 1.58 亿——豆包约为第二名的 2.6 倍。
+      而「顺手」一旦形成习惯,比「更强」更难替代——因为用户换 AI 的成本不是钱,是<b>「重新建立一段关系」</b>。
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">商业化:免费是地基,付费是赌注</span>
+      <span class="sec-en">Business</span>
+    </div>
+    <div class="grid-3">
+      <div class="price">
+        <div class="p-name">STANDARD · 标准版</div>
+        <div class="p-v">¥68<small> / 月</small></div>
+        <div class="p-y">连续包年 688 元</div>
+      </div>
+      <div class="price win">
+        <div class="p-name">PLUS · 加强版</div>
+        <div class="p-v">¥200<small> / 月</small></div>
+        <div class="p-y">连续包年 2,048 元</div>
+      </div>
+      <div class="price">
+        <div class="p-name">PRO · 专业版</div>
+        <div class="p-v">¥500<small> / 月</small></div>
+        <div class="p-y">连续包年 5,088 元</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>代价:推付费版后,三个月流失约 1,865 万月活。</b>
+      媒体形容:大半是被「要钱」两个字吓跑的。这是豆包最危险的时刻——<b>它过去卖的是「免费」,现在要卖「不免费」。</b>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card">
+        <div class="tag">收入结构 · 推测</div>
+        <h3>C 端做规模,B 端做收入</h3>
+        <p>会员 68-500 元/月刚起步;豆包工作(DAU 800 万、ARR 20 亿)+ 火山引擎;B 端与广告/电商导流;硬件(耳机、眼镜、学习机、手机)。</p>
+      </div>
+      <div class="card">
+        <div class="tag">核心悖论</div>
+        <h3>在三条线之间走钢丝</h3>
+        <p>免费 → 规模大,但赚不到钱;收费 → 收入来,但规模掉;广告 → 收入来,但伤害「陪伴感」。豆包必须同时做到:不像广告、不像收费、不像工具。</p>
+      </div>
+    </div>
+    <div style="margin-top:24px;">
+      <div class="risk-row"><div class="risk-name">留存</div><div class="risk-desc">碎片化调用,「用完即走」,难复制抖音时长</div><div class="stars">★★★★★</div></div>
+      <div class="risk-row"><div class="risk-name">付费反噬</div><div class="risk-desc">已流失约 1,865 万 MAU,免费心智难逆转</div><div class="stars">★★★★★</div></div>
+      <div class="risk-row"><div class="risk-name">技术非最强</div><div class="risk-desc">推理、代码被 DeepSeek 压制,模型口碑弱于产品口碑</div><div class="stars">★★★★</div></div>
+      <div class="risk-row"><div class="risk-name">同质化</div><div class="risk-desc">千问、元宝都在追「全能 + 免费」</div><div class="stars">★★★★</div></div>
+      <div class="risk-row"><div class="risk-name">监管</div><div class="risk-desc">情感陪伴、未成年人、AI 生成内容</div><div class="stars">★★★★</div></div>
+      <div class="risk-row"><div class="risk-name">算力成本</div><div class="risk-desc">4 亿 MAU 的推理成本是天文数字</div><div class="stars">★★★★</div></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">10</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>胜利是「产品定义」的,不是「技术」的</h3>
+          <p>它没有最强的模型,但有最准的定义:<b>把 AI 定义成「人」,而不是「能力」。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>护城河是「生态 + 习惯」,不是「模型」</h3>
+          <p>模型会被追平,生态和习惯不会。<b>用户换 AI 的成本,是重新建立一段关系。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>「人格化」是最被低估的营销资产</h3>
+          <p>名字、头像、声音、开场白——这些「不技术」的东西,恰恰是它和对手最大的差别。</p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:28px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>增长已从「买量」切换到「口碑」</h3>
+          <p>投放份额只有对手三分之一,MAU 却是第一。<b>它已经跨过了「用钱换规模」的阶段。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>付费是最危险的一步</h3>
+          <p>它卖的是「免费」,现在要卖「不免费」。<b>1,865 万流失只是开始,真正的考验是「谁会付钱」。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>终局:可能成为「AI 时代的微信」</h3>
+          <p>不是因为它最强,而是因为<b>它最像「默认动作」</b>。但前提是——它得先留住人。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · QuestMobile、AppGrowing、DataEye(媒体转引);界面新闻、澎湃新闻、36 氪、钛媒体、北京商报、每日经济新闻、腾讯新闻等公开报道。<br>
+    <b>说明</b> · 部分数据为企业口径或媒体估算,不同来源存在差异,已在文中标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《豆包:把 AI 做成一个「人」》</a>
+  </footer>
+
+</div>
+</body>
+</html>

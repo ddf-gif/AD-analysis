@@ -5,7 +5,7 @@
 
 ## 进度
 
-**9 / 180**
+**10 / 180**
 
 | # | 对象 | 赛道 | 日期 | 可视化 | 长文 |
 |:--:|---|---|---|:--:|:--:|
@@ -18,6 +18,7 @@
 | 007 | **泡泡玛特** | IP 潮玩 / 情绪消费 | 2026-11-17 | [HTML](007-popmart/index.html) · [预览图](007-popmart/preview.png) | [analysis.md](007-popmart/analysis.md) |
 | 008 | **抖音** | 短视频 / 注意力平台 | 2026-11-18 | [HTML](008-douyin/index.html) · [预览图](008-douyin/preview.png) | [analysis.md](008-douyin/analysis.md) |
 | 009 | **东东电竞** | 电竞陪玩 / 服务型平台 | 2026-11-19 | [HTML](009-dongdong/index.html) · [预览图](009-dongdong/preview.png) | [analysis.md](009-dongdong/analysis.md) |
+| 010 | **豆包** | AI 助手 / 国民级入口 | 2026-11-20 | [HTML](010-doubao/index.html) · [预览图](010-doubao/preview.png) | [analysis.md](010-doubao/analysis.md) |
 
 ## 每篇包含什么
 
