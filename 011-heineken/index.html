@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>喜力 Heineken · 定位 · 人群 · 场景 · 需求拆解</title>
+<style>
+  :root{
+    --bg:#F3EFE4;
+    --card:#FFFFFF;
+    --ink:#0E1F17;
+    --ink2:#43544A;
+    --ink3:#8B968D;
+    --line:#E3DDCC;
+    --line2:#D6CEB9;
+    --green:#0B6E3B;
+    --green2:#159B54;
+    --green-deep:#07452A;
+    --green-soft:#E6F0E7;
+    --red:#E4002B;
+    --red-soft:#FBE7EA;
+    --dark:#0C2018;
+    --gold:#B8892B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:var(--bg);}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:1180px;margin:0 auto;padding:46px 40px 90px;}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center;padding:14px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--green);display:block;}
+  h1{font-size:clamp(50px,6.8vw,88px);line-height:.98;letter-spacing:-.05em;font-weight:900;margin-bottom:14px;}
+  h1 .mark{color:var(--red);}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(23px,2.8vw,34px);line-height:1.42;font-weight:600;margin-bottom:22px;}
+  .subtitle em{font-style:normal;border-bottom:5px solid #CBE3D1;padding-bottom:3px;}
+  .lede{font-size:15.5px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;border-bottom:3px solid #CBE3D1;padding-bottom:2px;}
+
+  /* label art */
+  .label-wrap{position:relative;width:330px;height:350px;margin:0 auto;display:flex;align-items:center;justify-content:center;}
+  .label-card{
+    position:absolute;width:232px;height:300px;border-radius:10px;
+    background:linear-gradient(165deg,#14904C 0%,#0A6B3A 52%,#064628 100%);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 40px 70px -30px rgba(7,69,42,.65),inset 0 1px 0 rgba(255,255,255,.18);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    transform:rotate(-5deg);z-index:2;
+  }
+  .label-card::before{content:"";position:absolute;inset:10px;border:1px solid rgba(255,255,255,.14);border-radius:6px;}
+  .star{font-size:42px;line-height:1;color:var(--red);text-shadow:0 2px 0 rgba(0,0,0,.12);}
+  .brand{font-family:Georgia,"Times New Roman","Songti SC",serif;font-size:27px;letter-spacing:.14em;color:#fff;font-weight:700;}
+  .lager{font-size:8px;letter-spacing:.36em;color:rgba(255,255,255,.72);}
+  .label-meta{display:flex;gap:16px;font-size:8.5px;letter-spacing:.16em;color:rgba(255,255,255,.62);margin-top:4px;}
+  .label-back{
+    position:absolute;width:98px;height:98px;border-radius:50%;background:var(--bg);
+    border:1px solid var(--line2);transform:rotate(-10deg);
+    bottom:26px;right:4px;z-index:3;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    box-shadow:0 16px 30px -18px rgba(7,69,42,.65);
+  }
+  .label-back .zero{font-family:Georgia,serif;font-size:27px;font-weight:700;color:var(--red);line-height:1;}
+  .label-back .zlab{font-size:6.5px;letter-spacing:.16em;color:var(--ink3);}
+  .label-note{position:absolute;bottom:0;font-size:9.5px;letter-spacing:.22em;color:var(--ink3);}
+
+  /* ---------- metrics ---------- */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 14px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:24px;font-weight:900;letter-spacing:-.035em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:12px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .hl{color:var(--green);}
+  .metric .v .red{color:var(--red);}
+  .metric .k{font-size:10.5px;color:var(--ink3);margin-top:7px;letter-spacing:.03em;}
+
+  /* ---------- sections ---------- */
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.14em;color:#fff;background:var(--green);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+  .mbr{display:none;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;}
+  .card .tag{display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--ink3);margin-bottom:11px;text-transform:uppercase;}
+  .card h3{font-size:16.5px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;line-height:1.4;}
+  .card p{font-size:12.5px;line-height:1.8;color:var(--ink2);margin-bottom:12px;}
+  .card .note{font-size:11.5px;color:var(--ink3);margin-top:auto;padding-top:12px;border-top:1px dashed var(--line2);}
+  .card .note b{color:var(--green);font-weight:700;}
+  .hl-card{background:var(--green-soft);border-color:#C4DCC9;}
+  .hl-card .tag{color:var(--green);}
+  .red-card{background:var(--red-soft);border-color:#F2C6CD;}
+  .red-card .tag{color:var(--red);}
+
+  /* timeline */
+  .tl{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);}
+  .tl-item{padding:18px 12px 0 0;border-right:1px solid var(--line);position:relative;}
+  .tl-item:last-child{border-right:none;}
+  .tl-item::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;border-radius:50%;background:var(--green);}
+  .tl-item:nth-child(2)::before,.tl-item:nth-child(5)::before{background:var(--red);}
+  .tl-year{font-size:11px;font-weight:800;color:var(--green);margin-bottom:5px;letter-spacing:.02em;}
+  .tl-name{font-size:13px;font-weight:700;margin-bottom:5px;line-height:1.4;}
+  .tl-desc{font-size:11px;color:var(--ink2);line-height:1.65;}
+
+  /* 定位 / 价格带 */
+  .price-block{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:start;}
+  .price-row{display:grid;grid-template-columns:96px 1fr 74px;gap:12px;align-items:center;padding:9px 0;}
+  .price-name{font-size:12.5px;font-weight:700;white-space:nowrap;}
+  .price-name small{display:block;font-size:9.5px;color:var(--ink3);font-weight:400;letter-spacing:.04em;}
+  .bar-track{height:20px;background:#EAE5D7;border-radius:4px;overflow:hidden;}
+  .bar{height:100%;border-radius:4px;background:linear-gradient(90deg,#0B6E3B,#1AA45B);}
+  .bar.red{background:linear-gradient(90deg,#C40025,#E4002B);}
+  .price-val{font-size:11.5px;font-weight:700;color:var(--ink2);text-align:right;font-feature-settings:"tnum";}
+  .price-cap{font-size:11px;color:var(--ink3);margin-top:10px;line-height:1.7;}
+
+  .stack{display:flex;flex-direction:column;gap:9px;}
+  .stack-row{padding:14px 18px;border-radius:12px;border:1px solid var(--line);background:var(--card);}
+  .stack-row .lv{font-size:10px;letter-spacing:.16em;color:var(--ink3);font-weight:700;margin-bottom:4px;}
+  .stack-row .tx{font-size:12.5px;color:var(--ink2);line-height:1.7;}
+  .stack-row .tx b{color:var(--ink);font-weight:700;}
+  .stack-row.g1{background:var(--green-soft);border-color:#C4DCC9;}
+  .stack-row.g2{background:var(--card);}
+  .stack-row.g3{background:#F7F3E7;border-color:var(--line2);}
+
+  /* 场景 */
+  .scene{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px 17px 16px;position:relative;overflow:hidden;}
+  .scene::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green);opacity:.75;}
+  .scene.alt::after{background:var(--red);}
+  .scene .t{font-size:9.5px;letter-spacing:.12em;color:var(--green);font-weight:700;font-variant-numeric:tabular-nums;}
+  .scene.alt .t{color:var(--red);}
+  .scene h4{font-size:14px;font-weight:700;margin:6px 0 4px;}
+  .scene p{font-size:11.5px;line-height:1.7;color:var(--ink3);}
+
+  /* 需求 */
+  .need{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;}
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .pyr-row{display:flex;align-items:center;justify-content:center;gap:10px;height:50px;border-radius:8px;font-size:13px;font-weight:700;color:#fff;}
+  .pyr-row span.n{font-size:9px;opacity:.62;font-weight:700;letter-spacing:.1em;}
+  .pyr-row:nth-child(1){width:44%;background:linear-gradient(120deg,#9A1428,#C4002A);}
+  .pyr-row:nth-child(2){width:58%;background:linear-gradient(120deg,#B2402E,#C23A33);}
+  .pyr-row:nth-child(3){width:73%;background:linear-gradient(120deg,#8A6B2E,#A9822F);}
+  .pyr-row:nth-child(4){width:88%;background:linear-gradient(120deg,#0E7A44,#159B54);}
+  .pyr-row:nth-child(5){width:100%;background:linear-gradient(120deg,#0A5E34,#0E7A44);}
+  .pyr-note{font-size:10.5px;color:var(--ink3);letter-spacing:.06em;margin-top:10px;}
+
+  .need-side h3{font-size:15px;font-weight:700;margin-bottom:12px;}
+  .need-side ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .need-side li{font-size:12.5px;line-height:1.8;color:var(--ink2);padding-left:16px;position:relative;}
+  .need-side li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--red);}
+  .need-side li b{color:var(--ink);font-weight:700;}
+  .quote{margin-top:18px;border-left:2px solid var(--red);padding:10px 0 10px 16px;font-family:"Songti SC","STSong","Noto Serif CJK SC",serif;font-size:16px;line-height:1.7;color:var(--ink);}
+  .quote small{display:block;font-family:inherit;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-top:8px;}
+
+  /* 营销 */
+  .mech{display:grid;grid-template-columns:36px 1fr auto;gap:16px;align-items:start;padding:15px 0;border-bottom:1px solid var(--line);}
+  .mech:first-of-type{border-top:1px solid var(--line2);}
+  .mech .n{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--green);padding-top:2px;}
+  .mech h4{font-size:14px;font-weight:700;margin-bottom:3px;}
+  .mech p{font-size:12px;line-height:1.75;color:var(--ink2);}
+  .mech .chip{font-size:10.5px;color:var(--green);border:1px solid #C4DCC9;background:var(--green-soft);border-radius:999px;padding:3px 10px;white-space:nowrap;margin-top:2px;font-variant-numeric:tabular-nums;}
+
+  /* 中国战事 */
+  .share-row{display:grid;grid-template-columns:150px 1fr 1fr;gap:32px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+  .share-row:first-of-type{border-top:1px solid var(--line2);}
+  .share-name{font-weight:700;}
+  .share-before,.share-after{display:flex;align-items:center;gap:8px;}
+  .stag{font-size:9px;letter-spacing:.06em;color:var(--ink3);white-space:nowrap;flex:none;}
+  .share-track{flex:1;height:16px;background:#EAE5D7;border-radius:3px;overflow:hidden;}
+  .share-fill{height:100%;border-radius:3px;}
+  .share-fill.b{background:linear-gradient(90deg,#C9A227,#E0B93C);}
+  .share-fill.g{background:linear-gradient(90deg,#0B6E3B,#1AA45B);}
+  .share-fill.r{background:linear-gradient(90deg,#C40025,#E4002B);}
+  .share-num{font-size:11px;font-weight:700;color:var(--ink2);width:34px;text-align:right;font-variant-numeric:tabular-nums;}
+  .share-cap{font-size:10px;letter-spacing:.1em;color:var(--ink3);margin:4px 0 6px;}
+
+  .num-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:14px;}
+  .num-strip div{background:var(--card);padding:14px 15px;}
+  .num-strip .nv{font-size:19px;font-weight:900;letter-spacing:-.02em;color:var(--green);font-feature-settings:"tnum";}
+  .num-strip .nv small{font-size:11px;font-weight:700;}
+  .num-strip .nk{font-size:10.5px;color:var(--ink3);margin-top:2px;}
+
+  /* 对比 */
+  .cmp{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
+  .cmp-row{display:grid;grid-template-columns:150px 1.05fr 1fr;gap:18px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:baseline;}
+  .cmp-row:last-child{border-bottom:none;}
+  .cmp-head{background:#EFEBDD;font-size:10px;letter-spacing:.14em;color:var(--ink3);font-weight:700;padding:11px 20px;}
+  .cmp-name{font-weight:700;font-size:13px;}
+  .cmp-a{color:var(--ink2);}
+  .cmp-b{color:var(--ink3);}
+  .cmp-row.win{background:var(--green-soft);}
+  .cmp-row.win .cmp-name{color:var(--green);}
+  .cmp-row.win .cmp-b{color:var(--ink2);}
+
+  /* 隐忧 */
+  .risk-row{display:grid;grid-template-columns:150px 1fr 100px;gap:18px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+  .risk-row:first-of-type{border-top:1px solid var(--line2);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12px;}
+  .stars{color:var(--red);letter-spacing:2px;font-size:11.5px;text-align:right;}
+
+  /* 判断 */
+  .judgments{background:var(--dark);color:#fff;border-radius:24px;padding:40px 44px 42px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--red);}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:16px;}
+  .j-num{font-size:9.5px;letter-spacing:.16em;color:#7DD3A0;font-weight:800;margin-bottom:9px;}
+  .j-item h3{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12px;line-height:1.85;color:rgba(255,255,255,.62);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  .callout{border-radius:12px;padding:16px 20px;font-size:12.5px;line-height:1.8;background:var(--green-soft);border:1px solid #C4DCC9;color:#22402D;}
+  .callout b{color:var(--green-deep);}
+  .callout.red{background:var(--red-soft);border-color:#F2C6CD;color:#6B1420;}
+  .callout.red b{color:#8A0018;}
+
+  footer{margin-top:66px;padding-top:22px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--green);text-decoration:none;border-bottom:1px solid #C4DCC9;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .label-wrap{width:290px;height:330px;}
+    .label-card{width:206px;height:266px;}
+    .brand{font-size:23px;}
+    .label-back{width:84px;height:84px;bottom:20px;right:0;}
+    .label-back .zero{font-size:23px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .mbr{display:inline;}
+    .grid-2,.grid-3,.grid-4,.need,.price-block{grid-template-columns:1fr;}
+    .tl{grid-template-columns:1fr;border-top:none;}
+    .tl-item{border-right:none;border-top:1px solid var(--line);padding:14px 0 0 14px;}
+    .tl-item::before{left:0;top:18px;}
+    .mech{grid-template-columns:26px 1fr;}
+    .mech .chip{grid-column:2;justify-self:start;margin-top:6px;}
+    .num-strip{grid-template-columns:1fr 1fr;}
+    .share-row{grid-template-columns:1fr;gap:4px;}
+    .cmp-row{grid-template-columns:1fr;gap:3px;padding:13px 16px;}
+    .cmp-head{display:none;}
+    .cmp-a::before{content:"强在 · ";color:var(--ink3);}
+    .cmp-b::before{content:"威胁 · ";color:var(--ink3);}
+    .risk-row{grid-template-columns:1fr;gap:3px;}
+    .stars{text-align:left;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:28px 22px 30px;}
+    .price-row{grid-template-columns:84px 1fr 64px;}
+    .card div[style*="justify-content:space-between"]{flex-direction:column;gap:2px;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.metric,.sec-num,.pyr-row,.label-card,.num-strip div,.cmp-row.win{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Beer Brand Teardown · Day 011</div>
+      <h1>喜力<span class="mark">.</span></h1>
+      <div class="subtitle">一瓶啤酒的<br><em>「社交货币」生意</em></div>
+      <p class="lede">
+        喜力卖的不是啤酒,是<strong>「一个可以理直气壮和人待在一起的理由」</strong>。
+        绿瓶、红星、欧冠、F1——它把「喝酒」这件小事,做成了「我们是一伙的」这件大事。
+      </p>
+    </div>
+    <div class="label-wrap">
+      <div class="label-back">
+        <div class="zero">0.0</div>
+        <div class="zlab">ALCOHOL FREE</div>
+      </div>
+      <div class="label-card">
+        <div class="star">★</div>
+        <div class="brand">HEINEKEN</div>
+        <div class="lager">LAGER BEER</div>
+        <div class="label-meta"><span>5.0% VOL</span><span>330 ML</span></div>
+      </div>
+      <div class="label-note">EST. 1864 · AMSTERDAM</div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">1864</div><div class="k">创立于阿姆斯特丹</div></div>
+    <div class="metric"><div class="v">190<small>+</small></div><div class="k">覆盖国家 / 地区</div></div>
+    <div class="metric"><div class="v">30<small>+ 年</small></div><div class="k">欧冠赞助(1994 起)</div></div>
+    <div class="metric"><div class="v"><span class="hl">+20</span><small>%</small></div><div class="k">中国销量(26H1)</div></div>
+    <div class="metric"><div class="v"><span class="hl">25</span><small>%+</small></div><div class="k">华润+喜力高端份额</div></div>
+    <div class="metric"><div class="v"><span class="red">&gt;20</span><small>%</small></div><div class="k">0.0 全球无醇份额</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:150 年的绿色瓶子</span>
+      <span class="sec-en">Positioning</span>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-year">1864</div>
+        <div class="tl-name">阿姆斯特丹</div>
+        <div class="tl-desc">22 岁的 Heineken 买下一家小酒厂。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1994</div>
+        <div class="tl-name">欧冠</div>
+        <div class="tl-desc">开始赞助,一签就是 30 多年。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2016</div>
+        <div class="tl-name">F1</div>
+        <div class="tl-desc">成为 F1 全球合作伙伴。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2019</div>
+        <div class="tl-name">华润</div>
+        <div class="tl-desc">23.55 亿港元收购中国业务;喜力入股 40%。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2025</div>
+        <div class="tl-name">中国 +近两成</div>
+        <div class="tl-desc">在行业下滑中逆势增长。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2026</div>
+        <div class="tl-name">新平台</div>
+        <div class="tl-desc">「Fans Have More Friends」全球上线。</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>中国的一笔关键交易:2019 年 4 月 29 日交割——华润啤酒以 23.55 亿港元收购喜力中国业务,喜力以 243 亿港元入股华润啤酒控股股东 40%。</b>
+      一句话:华润拿到了「高端品牌」,喜力拿到了「中国渠道」。
+    </div>
+    <div class="grid-4" style="margin-top:14px;">
+      <div class="card" style="padding:16px 18px;"><div class="tag">ASSET 01</div><h3 style="font-size:14px;">绿色瓶身</h3><p style="margin-bottom:0;">货架上一眼认出的颜色。</p></div>
+      <div class="card" style="padding:16px 18px;"><div class="tag">ASSET 02</div><h3 style="font-size:14px;">红色五角星</h3><p style="margin-bottom:0;">最初象征「五大洲」。</p></div>
+      <div class="card" style="padding:16px 18px;"><div class="tag">ASSET 03</div><h3 style="font-size:14px;">A 酵母</h3><p style="margin-bottom:0;">自己的酵母,口感稳定。</p></div>
+      <div class="card" style="padding:16px 18px;"><div class="tag">ASSET 04</div><h3 style="font-size:14px;">5% 酒精</h3><p style="margin-bottom:0;">标准拉格的黄金度数。</p></div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">定位:高端啤酒的「标准答案」</span>
+      <span class="sec-en">Price Ladder</span>
+    </div>
+    <div class="price-block">
+      <div>
+        <div class="price-row"><div class="price-name">国产主流<small>走量</small></div><div class="bar-track"><div class="bar" style="width:30%;background:#B9B3A2;"></div></div><div class="price-val">5-8 元</div></div>
+        <div class="price-row"><div class="price-name">红爵 Amstel<small>下沉 / 抢量</small></div><div class="bar-track"><div class="bar" style="width:48%;"></div></div><div class="price-val">8-10 元</div></div>
+        <div class="price-row"><div class="price-name">喜力星银<small>年轻 / 清淡</small></div><div class="bar-track"><div class="bar" style="width:62%;"></div></div><div class="price-val">10-12 元</div></div>
+        <div class="price-row"><div class="price-name">喜力经典<small>高端锚点</small></div><div class="bar-track"><div class="bar" style="width:78%;"></div></div><div class="price-val">12-15 元</div></div>
+        <div class="price-row"><div class="price-name">夜场<small>利润 / 面子</small></div><div class="bar-track"><div class="bar red" style="width:96%;"></div></div><div class="price-val">15 元+</div></div>
+        <div class="price-cap">它不是一个产品卖得贵,而是<b>用一条价格带,把 8-15 元全部占住</b>。</div>
+      </div>
+      <div class="stack">
+        <div class="stack-row g1"><div class="lv">产品层</div><div class="tx"><b>标准拉格</b> — 绿瓶、红星、A 酵母、5%,口感干净、稳定、不挑人</div></div>
+        <div class="stack-row g2"><div class="lv">价格层</div><div class="tx"><b>高端啤酒的「锚」</b> — 点一瓶喜力,等于暗示「这顿不将就」</div></div>
+        <div class="stack-row g3"><div class="lv">心智层</div><div class="tx"><b>看球、夜场、请客的「默认选项」</b> — 不用想,点它不会错</div></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>2026 年,喜力的全球主张变成了一句话:「Fans Have More Friends」。</b>
+      调研 10 国 1 万名粉丝:75% 的人说爱好帮他们交到新朋友,59% 的人说球队帮他们交到最亲密的朋友。
+      在一个越来越孤独的世界里,「一起看球」是成年人最后的、低成本的社交方式。
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">人群:三种人,一个「局」</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">25-40 · 男性为主</div>
+        <h3>看球的人</h3>
+        <p>欧冠、F1、世界杯、欧洲杯。买的不是酒,是「90 分钟的仪式感」。</p>
+        <div class="note">核心场景:<b>看球夜</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">22-35</div>
+        <h3>泡吧的人</h3>
+        <p>夜场、livehouse、电音节。星银、苏尔 SOL 是入口。</p>
+        <div class="note">核心场景:<b>夜场</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">30-50</div>
+        <h3>请客的人</h3>
+        <p>商务宴请、朋友聚餐。经典款是「不出错」的选择——贵一点,但不张扬。</p>
+        <div class="note">核心场景:<b>饭局</b></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card red-card">
+        <div class="tag">增量人群 · 0.0</div>
+        <h3>不喝酒的人</h3>
+        <p>开车、健身、备孕、吃药、第二天要上班。0.0 把「不能喝」的人,也拉回了酒桌。</p>
+        <div class="note" style="border-top-color:#F2C6CD;">核心场景:<b style="color:var(--red);">无醇时刻</b></div>
+      </div>
+      <div class="card hl-card">
+        <div class="tag">增量人群 · 下沉</div>
+        <h3>下沉球迷</h3>
+        <p>2026 年,喜力把体育营销下沉到区域:苏超、汉超、东北超。在县城,「看球喝喜力」正在变成一种新的面子。</p>
+        <div class="note" style="border-top-color:#C4DCC9;">核心场景:<b>本地赛事</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">场景:六个「碰杯时刻」</span>
+      <span class="sec-en">Scenarios</span>
+    </div>
+    <div class="grid-3">
+      <div class="scene"><div class="t">欧冠 / F1 / 周末</div><h4>看球夜</h4><p>仪式感、情绪出口</p></div>
+      <div class="scene"><div class="t">22:00 — 02:00</div><h4>夜场</h4><p>气氛、身份</p></div>
+      <div class="scene"><div class="t">晚上</div><h4>烧烤 / 聚餐</h4><p>解腻、助兴</p></div>
+      <div class="scene alt"><div class="t">周末 / 假期</div><h4>音乐节</h4><p>年轻、自由</p></div>
+      <div class="scene alt"><div class="t">春节</div><h4>送礼</h4><p>体面、好意头</p></div>
+      <div class="scene"><div class="t">随时</div><h4>无醇时刻</h4><p>「我也在场」</p></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>注意最后一个场景:0.0 卖的不是「无醇」,是「不喝酒的人,也有资格举杯」。</b>
+      这让喜力从「喝酒的人」扩展到了「所有人」。
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">需求:五层,本质是「我需要一个理由」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="need">
+      <div>
+        <div class="pyr">
+          <div class="pyr-row"><span class="n">05</span>归 属</div>
+          <div class="pyr-row"><span class="n">04</span>身 份</div>
+          <div class="pyr-row"><span class="n">03</span>社 交</div>
+          <div class="pyr-row"><span class="n">02</span>微 醺</div>
+          <div class="pyr-row"><span class="n">01</span>解 渴</div>
+        </div>
+        <div class="pyr-note">越往下越基础,越往上越值钱</div>
+      </div>
+      <div class="need-side">
+        <h3>五层需求,逐层加码</h3>
+        <ul>
+          <li><b>解渴</b> — 冰的、有气泡、爽</li>
+          <li><b>微醺</b> — 一点点醉,刚好卸下防备</li>
+          <li><b>社交</b> — 碰杯,是最低成本的「我们是一伙的」</li>
+          <li><b>身份</b> — 喜力 = 高端、国际、有品味</li>
+          <li><b>归属</b> — 我是球迷、我是乐迷、我是这个城市的人</li>
+        </ul>
+        <div class="quote">
+          「我不是想喝酒,<br>我是想有个理由,和人待在一起。」
+          <small>这句话,正好是喜力 2026 全球平台的注脚</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">营销:七种武器</span>
+      <span class="sec-en">Marketing</span>
+    </div>
+    <div class="mech">
+      <div class="n">01</div>
+      <div><h4>体育:把品牌焊在「夜晚」上</h4><p>欧冠 1994 年至今(约 1.2 亿欧元/年);F1 2016 年起、续约至 2027;2026 上海大师赛「江上网球场」;本地足球苏超、汉超、东北超。</p></div>
+      <div class="chip">30+ 年</div>
+    </div>
+    <div class="mech">
+      <div class="n">02</div>
+      <div><h4>音乐:抓住年轻人的「周末」</h4><p>喜力星电音(HEINEKEN SOUNDSCAPE);2026 总冠名 VAC 电音节(珠海横琴);VAC 2025 进入 DJ MAG 全球百大音乐节;全球绑定 Coachella。</p></div>
+      <div class="chip">电音 IP</div>
+    </div>
+    <div class="mech">
+      <div class="n">03</div>
+      <div><h4>影视:007 与 F1 电影</h4><p>007 系列长期合作(1997 年《明日帝国》起);2025 年借《F1:狂飙飞车》《神奇四侠》推广 0.0。</p></div>
+      <div class="chip">大银幕</div>
+    </div>
+    <div class="mech">
+      <div class="n">04</div>
+      <div><h4>春节:「新年有星喜」</h4><p>把「红星」变成「好彩头」,把「进口品牌」变成「年货」。</p></div>
+      <div class="chip">本土化</div>
+    </div>
+    <div class="mech">
+      <div class="n">05</div>
+      <div><h4>产品本地化:为中国改口味</h4><p>2020 年推出星银(更清淡、更顺口);红爵打 8-10 元下沉;苏尔 SOL 主攻夜场和高端餐饮。</p></div>
+      <div class="chip">为中国改</div>
+    </div>
+    <div class="mech">
+      <div class="n">06</div>
+      <div><h4>0.0:第二增长曲线</h4><p>2025 年全球无醇啤酒市场约 270 亿美元、逆势 +8%;喜力 0.0 占全球 20% 以上份额;中国电商单罐不到 6 元。用 F1、电影、音乐节,把「不喝酒」也做成一件很酷的事。</p></div>
+      <div class="chip">品类第一</div>
+    </div>
+    <div class="mech">
+      <div class="n">07</div>
+      <div><h4>全球平台:Fans Have More Friends</h4><p>2026 年 1 月 28 日欧冠比赛日上线,覆盖 50 个市场;首次把足球、F1、音乐节三大赞助收拢成一个主张;纽约「寻找一起看球的人」社会实验。</p></div>
+      <div class="chip">50 个市场</div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>体育营销的本质,不是曝光,是「把品牌变成某个时刻的固定道具」。</b>
+      当你看欧冠想到喜力、看 F1 想到喜力、去电音节还是喜力——它就不再是一个选择,而是一个习惯。
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">中国战事:<br class="mbr">华润的毛细血管 × 喜力的品牌</span>
+      <span class="sec-en">China</span>
+    </div>
+    <div class="num-strip">
+      <div><div class="nv">+30<small>%</small></div><div class="nk">2025 H1 销量</div></div>
+      <div><div class="nv">+20<small>%</small></div><div class="nk">2026 H1 销量</div></div>
+      <div><div class="nv">+80<small>%</small></div><div class="nk">红爵 2026 H1</div></div>
+      <div><div class="nv">26<small>%</small></div><div class="nk">华润高端化占比</div></div>
+    </div>
+    <div style="margin-top:22px;">
+      <div class="share-cap">中国高端啤酒份额变化(示意,媒体 / 研报口径)</div>
+      <div class="share-row">
+        <div class="share-name">百威</div>
+        <div class="share-before"><span class="stag">此前</span><div class="share-track"><div class="share-fill b" style="width:100%;"></div></div><div class="share-num">50%</div></div>
+        <div class="share-after"><span class="stag">近年</span><div class="share-track"><div class="share-fill b" style="width:80%;"></div></div><div class="share-num">40%</div></div>
+      </div>
+      <div class="share-row">
+        <div class="share-name">华润 + 喜力</div>
+        <div class="share-before"><span class="stag">此前</span><div class="share-track"><div class="share-fill g" style="width:20%;"></div></div><div class="share-num">10%</div></div>
+        <div class="share-after"><span class="stag">近年</span><div class="share-track"><div class="share-fill g" style="width:50%;"></div></div><div class="share-num">25%</div></div>
+      </div>
+      <div class="share-cap" style="margin-top:10px;">百威退,喜力进。</div>
+    </div>
+    <div class="grid-4" style="margin-top:20px;">
+      <div class="card" style="padding:18px;"><div class="tag">REASON 01</div><h3 style="font-size:14.5px;">渠道</h3><p style="margin-bottom:0;">华润的餐饮、商超、夫妻店网络,把喜力从「夜场」铺到「大排档」。</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">REASON 02</div><h3 style="font-size:14.5px;">价格带</h3><p style="margin-bottom:0;">8-15 元全占住:红爵打下沉、星银打年轻、经典打高端。</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">REASON 03</div><h3 style="font-size:14.5px;">品牌</h3><p style="margin-bottom:0;">150 年、欧冠、F1,给「贵」提供了理由。</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">REASON 04</div><h3 style="font-size:14.5px;">组织</h3><p style="margin-bottom:0;">华润的地推能力,是外资品牌学不会的。</p></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>一个反常识的判断:喜力在中国的增长,主要不是「夜场」带来的,而是「大众渠道」带来的。</b>
+      啤酒营销专家方刚就说过:喜力近年的增长,是因为华润支持下进入了餐饮、商超等大众渠道。
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">对手:一场「高端化」的混战</span>
+      <span class="sec-en">Competition</span>
+    </div>
+    <div class="cmp">
+      <div class="cmp-row cmp-head"><div>对手</div><div>强在哪</div><div>对喜力的威胁</div></div>
+      <div class="cmp-row"><div class="cmp-name">百威</div><div class="cmp-a">高端夜场、超高端品牌矩阵</div><div class="cmp-b">直接对手,但份额在退</div></div>
+      <div class="cmp-row"><div class="cmp-name">青岛</div><div class="cmp-a">纯生、奥古特、国民度</div><div class="cmp-b">高端化的国产主力</div></div>
+      <div class="cmp-row"><div class="cmp-name">雪花</div><div class="cmp-a">纯生、superX、渠道</div><div class="cmp-b">同门兄弟,价格带互补</div></div>
+      <div class="cmp-row"><div class="cmp-name">燕京 U8</div><div class="cmp-a">8-10 元次高端,增长猛</div><div class="cmp-b">抢红爵的饭碗</div></div>
+      <div class="cmp-row"><div class="cmp-name">1664 / 嘉士伯</div><div class="cmp-a">法式高端、女性市场</div><div class="cmp-b">夜场与年轻女性</div></div>
+      <div class="cmp-row"><div class="cmp-name">精酿 / 新酒饮</div><div class="cmp-a">个性化、低度化</div><div class="cmp-b">抢「不喝工业啤酒」的人</div></div>
+    </div>
+    <div class="callout red" style="margin-top:14px;">
+      <b>真正的对手,不是某一个品牌,是「不喝酒的年轻人」。</b>
+      低度酒、无醇、茶饮、咖啡,都在抢同一个「夜晚」。
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">隐忧</span>
+      <span class="sec-en">Risk Register</span>
+    </div>
+    <div class="risk-row"><div class="risk-name">行业总量下滑</div><div class="risk-desc">2025 年中国啤酒产量 3,536 万千升,-1.1%</div><div class="stars">★★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">欧冠可能易主</div><div class="risk-desc">百威报价 6 年、2 亿欧元/年,喜力 30 年欧冠时代或终结</div><div class="stars">★★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">价格战</div><div class="risk-desc">高端化进入「以价换量」阶段</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">年轻人不喝酒</div><div class="risk-desc">低度酒、无醇、茶饮分流</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">品牌老化</div><div class="risk-desc">「爹味」标签,年轻人觉得不酷</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">全球销量下滑</div><div class="risk-desc">2025 年总销量 -1.6%</div><div class="stars">★★★</div></div>
+    <div class="risk-row"><div class="risk-name">0.0 认知</div><div class="risk-desc">国内无醇标准待完善,消费者教育成本高</div><div class="stars">★★★</div></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">10</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>它卖的不是啤酒,是「社交许可证」</h3>
+          <p>所有营销都在回答同一个问题:<b>「今晚,我们为什么聚在一起?」</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>中国增长是「渠道 + 品牌」的双人舞</h3>
+          <p>没有华润的毛细血管,品牌落不了地;没有喜力的品牌,华润的高端化没有「锚」。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>高端化的尽头,是「价格带管理」</h3>
+          <p>8-10、10-12、12-15、15+——<b>每一个价格带,都要有一个「说得出口」的理由。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:28px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>0.0 是第二曲线,也是防御工事</h3>
+          <p>当「不喝酒」成为趋势,0.0 让喜力仍然留在桌上。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>失去欧冠,是品牌资产的「断臂」</h3>
+          <p>30 年的绑定,不是换一个赞助商就能补上的。<b>喜力必须把「F1 + 音乐」做成新的锚。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>它真正的对手,是「不喝酒的年轻人」</h3>
+          <p>不是百威,不是青岛,是<b>「今晚不想喝」</b>这四个字。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 华润啤酒 2026 年半年报及业绩会、2025 年全年业绩;喜力集团 2025 财年数据;21 世纪经济报道、证券日报、界面新闻、方正证券 / 国泰君安研报;Marketing Dive、品牌芝士等公开报道。<br>
+    <b>说明</b> · 部分数据为企业口径或媒体估算,不同来源存在差异,已在文中标注;判断部分为个人观点,仅供讨论。<br>
+    <b>配套长文</b> · <a href="analysis.md">《喜力:一瓶啤酒的「社交货币」生意》</a>
+  </footer>
+
+</div>
+</body>
+</html>
