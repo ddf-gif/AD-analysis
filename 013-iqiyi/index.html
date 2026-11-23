@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>爱奇艺 iQIYI · 人群 · 场景 · 需求 · 营销 · 退市拆解</title>
+<style>
+  :root{
+    --bg:#F6F7F3;
+    --card:#FFFFFF;
+    --ink:#0F1A13;
+    --ink2:#45524A;
+    --ink3:#8A948C;
+    --line:#E2E7DF;
+    --line2:#D2D9CF;
+    --green:#00BE06;
+    --green-d:#009B05;
+    --green-soft:#E7F6E7;
+    --red:#E23A2E;
+    --red-soft:#FCEBE9;
+    --dark:#0E1A12;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:var(--bg);}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .page{max-width:1180px;margin:0 auto;padding:46px 40px 90px;}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.22fr .78fr;gap:44px;align-items:center;padding:14px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--green-d);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--green-d);display:block;}
+  h1{font-size:clamp(50px,6.8vw,88px);line-height:.98;letter-spacing:-.05em;font-weight:900;margin-bottom:14px;}
+  h1 .mark{color:var(--green);}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(23px,2.8vw,34px);line-height:1.42;font-weight:600;margin-bottom:22px;}
+  .subtitle em{font-style:normal;background:linear-gradient(transparent 62%,#FFD9D5 62%);padding:0 2px;}
+  .lede{font-size:15.5px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;border-bottom:3px solid #FFD9D5;padding-bottom:2px;}
+
+  /* ticker */
+  .ticker{background:var(--card);border:1px solid var(--line2);border-radius:16px;padding:18px 18px 14px;box-shadow:0 26px 60px -36px rgba(15,26,19,.4);}
+  .tk-top{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;letter-spacing:.14em;color:var(--ink3);font-weight:700;}
+  .tk-badge{color:var(--red);background:var(--red-soft);border-radius:999px;padding:2px 8px;letter-spacing:.04em;font-size:9px;}
+  .tk-price{font-size:36px;font-weight:900;letter-spacing:-.045em;margin-top:8px;font-feature-settings:"tnum";line-height:1.1;}
+  .tk-price span{font-size:11.5px;font-weight:700;color:var(--red);margin-left:8px;letter-spacing:0;}
+  .tk-sub{font-size:10px;color:var(--ink3);margin-top:2px;letter-spacing:.02em;}
+  .tk-chart{margin-top:8px;}
+  .tk-chart svg{display:block;width:100%;height:auto;}
+  .tk-foot{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:var(--ink3);border-top:1px dashed var(--line);padding-top:9px;margin-top:4px;}
+  .tk-foot b{color:var(--ink2);font-weight:700;}
+
+  /* metrics */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 14px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:23px;font-weight:900;letter-spacing:-.035em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:11.5px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .hl{color:var(--green-d);}
+  .metric .v .rd{color:var(--red);}
+  .metric .k{font-size:10.5px;color:var(--ink3);margin-top:7px;letter-spacing:.03em;}
+
+  /* sections */
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.14em;color:#fff;background:var(--green-d);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+  .mbr{display:none;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;}
+  .card .tag{display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--ink3);margin-bottom:11px;text-transform:uppercase;}
+  .card h3{font-size:16.5px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;line-height:1.4;}
+  .card p{font-size:12.5px;line-height:1.8;color:var(--ink2);margin-bottom:12px;}
+  .card .note{font-size:11.5px;color:var(--ink3);margin-top:auto;padding-top:12px;border-top:1px dashed var(--line2);}
+  .card .note b{color:var(--green-d);font-weight:700;}
+  .rd-card{background:var(--red-soft);border-color:#F3CBC6;}
+  .rd-card .tag{color:var(--red);}
+  .hl-card{background:var(--green-soft);border-color:#BFE3BF;}
+  .hl-card .tag{color:var(--green-d);}
+
+  /* timeline */
+  .tl{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);}
+  .tl-item{padding:18px 12px 0 0;border-right:1px solid var(--line);position:relative;}
+  .tl-item:last-child{border-right:none;}
+  .tl-item::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;border-radius:50%;background:var(--green-d);}
+  .tl-item:nth-child(4)::before,.tl-item:nth-child(5)::before,.tl-item:nth-child(6)::before{background:var(--red);}
+  .tl-year{font-size:11px;font-weight:800;color:var(--green-d);margin-bottom:5px;}
+  .tl-item:nth-child(n+4) .tl-year{color:var(--red);}
+  .tl-name{font-size:13px;font-weight:700;margin-bottom:5px;line-height:1.4;}
+  .tl-desc{font-size:11px;color:var(--ink2);line-height:1.65;}
+
+  /* strip */
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:14px;}
+  .strip div{background:var(--card);padding:15px 16px;}
+  .strip .sv{font-size:17px;font-weight:800;letter-spacing:-.02em;}
+  .strip .sv small{font-size:11px;color:var(--ink2);font-weight:700;}
+  .strip .sk{font-size:10.5px;color:var(--ink3);margin-top:3px;}
+
+  /* scenes */
+  .scene{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px 17px 16px;position:relative;overflow:hidden;}
+  .scene::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green);opacity:.8;}
+  .scene.alt::after{background:var(--red);}
+  .scene .t{font-size:9.5px;letter-spacing:.12em;color:var(--green-d);font-weight:700;}
+  .scene.alt .t{color:var(--red);}
+  .scene h4{font-size:14px;font-weight:700;margin:6px 0 4px;}
+  .scene p{font-size:11.5px;line-height:1.7;color:var(--ink3);}
+
+  /* needs */
+  .need{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;}
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .pyr-row{display:flex;align-items:center;justify-content:center;gap:10px;height:50px;border-radius:8px;font-size:13px;font-weight:700;color:#fff;}
+  .pyr-row span.n{font-size:9px;opacity:.7;font-weight:800;letter-spacing:.1em;}
+  .pyr-row:nth-child(1){width:44%;background:linear-gradient(120deg,#0E1A12,#33403A);}
+  .pyr-row:nth-child(2){width:58%;background:linear-gradient(120deg,#006B3F,#008F52);}
+  .pyr-row:nth-child(3){width:73%;background:linear-gradient(120deg,#009B05,#00BE06);}
+  .pyr-row:nth-child(4){width:88%;background:linear-gradient(120deg,#7BC61A,#A6D62B);color:#10210A;}
+  .pyr-row:nth-child(5){width:100%;background:linear-gradient(120deg,#D6E8B0,#E7F2CE);color:#2A361C;}
+  .pyr-note{font-size:10.5px;color:var(--ink3);letter-spacing:.06em;margin-top:10px;}
+
+  .need-side h3{font-size:15px;font-weight:700;margin-bottom:12px;}
+  .need-side ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .need-side li{font-size:12.5px;line-height:1.8;color:var(--ink2);padding-left:16px;position:relative;}
+  .need-side li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--green-d);}
+  .need-side li b{color:var(--ink);font-weight:700;}
+  .quote{margin-top:18px;border-left:2px solid var(--red);padding:10px 0 10px 16px;font-family:"Songti SC","STSong","Noto Serif CJK SC",serif;font-size:16px;line-height:1.7;color:var(--ink);}
+  .quote small{display:block;font-family:inherit;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-top:8px;}
+
+  /* mech rows */
+  .mech{display:grid;grid-template-columns:36px 1fr auto;gap:16px;align-items:start;padding:15px 0;border-bottom:1px solid var(--line);}
+  .mech:first-of-type{border-top:1px solid var(--line2);}
+  .mech .n{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--green-d);padding-top:2px;}
+  .mech h4{font-size:14px;font-weight:700;margin-bottom:3px;}
+  .mech p{font-size:12px;line-height:1.8;color:var(--ink2);}
+  .mech .chip{font-size:10.5px;color:var(--red);border:1px solid #F3CBC6;background:var(--red-soft);border-radius:999px;padding:3px 10px;white-space:nowrap;margin-top:2px;}
+
+  .callout{border-radius:12px;padding:16px 20px;font-size:12.5px;line-height:1.8;background:var(--green-soft);border:1px solid #BFE3BF;color:#24402A;}
+  .callout b{color:#0B5C14;}
+  .callout.rd{background:var(--red-soft);border-color:#F3CBC6;color:#6B1E16;}
+  .callout.rd b{color:#8A1F14;}
+
+  /* share bars */
+  .share-row{display:grid;grid-template-columns:120px 1fr 60px;gap:14px;align-items:center;padding:10px 0;}
+  .share-name{font-size:12.5px;font-weight:700;}
+  .share-track{height:20px;background:#EDF0E9;border-radius:4px;overflow:hidden;}
+  .share-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#009B05,#00BE06);}
+  .share-fill.gray{background:#B9C0B4;}
+  .share-val{font-size:11.5px;font-weight:700;color:var(--ink2);text-align:right;font-feature-settings:"tnum";}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
+  .step{padding:18px 16px;border-right:1px solid var(--line);}
+  .step:last-child{border-right:none;background:var(--red-soft);}
+  .step .sn{font-size:9.5px;letter-spacing:.14em;color:var(--ink3);font-weight:800;}
+  .step h4{font-size:13.5px;font-weight:700;margin:6px 0 4px;}
+  .step p{font-size:11px;line-height:1.7;color:var(--ink3);}
+
+  /* cmp */
+  .cmp{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
+  .cmp-row{display:grid;grid-template-columns:150px 1fr 1fr;gap:18px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:baseline;}
+  .cmp-row:last-child{border-bottom:none;}
+  .cmp-head{background:#EFF1EA;font-size:10px;letter-spacing:.14em;color:var(--ink3);font-weight:700;padding:11px 20px;}
+  .cmp-name{font-weight:700;font-size:13px;}
+  .cmp-a{color:var(--ink2);}
+  .cmp-b{color:var(--ink3);}
+
+  /* judgments */
+  .judgments{background:var(--dark);color:#fff;border-radius:24px;padding:40px 44px 42px;}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--green);}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:16px;}
+  .j-num{font-size:9.5px;letter-spacing:.16em;color:#7BE07D;font-weight:800;margin-bottom:9px;}
+  .j-item h3{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12px;line-height:1.85;color:rgba(255,255,255,.62);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  footer{margin-top:66px;padding-top:22px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--green-d);text-decoration:none;border-bottom:1px solid #BFE3BF;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:24px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .sec-title{font-size:20px;}
+    .mbr{display:inline;}
+    .grid-2,.grid-3,.grid-4,.need{grid-template-columns:1fr;}
+    .tl{grid-template-columns:1fr;border-top:none;}
+    .tl-item{border-right:none;border-top:1px solid var(--line);padding:14px 0 0 14px;}
+    .tl-item::before{left:0;top:18px;}
+    .strip{grid-template-columns:1fr 1fr;}
+    .mech{grid-template-columns:26px 1fr;}
+    .mech .chip{grid-column:2;justify-self:start;margin-top:6px;}
+    .steps{grid-template-columns:1fr 1fr;}
+    .step{border-right:none;border-bottom:1px solid var(--line);}
+    .cmp-row{grid-template-columns:1fr;gap:3px;padding:13px 16px;}
+    .cmp-head{display:none;}
+    .cmp-a::before{content:"强在 · ";color:var(--ink3);}
+    .cmp-b::before{content:"短板 · ";color:var(--ink3);}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:28px 22px 30px;}
+    .share-row{grid-template-columns:96px 1fr 54px;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.metric,.sec-num,.pyr-row,.ticker,.step,.hl-card,.rd-card{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Streaming Teardown · Day 013</div>
+      <h1>爱奇艺<span class="mark">.</span></h1>
+      <div class="subtitle">从《狂飙》<br><em>到 0.49 美元</em></div>
+      <p class="lede">
+        它输的不是某一部剧,是<strong>「重资产长视频」这套商业模式</strong>,在「免费短剧」面前的整体性失效。
+        当用户在 3 分钟里就能获得同样的「爽」,40 集 + 会员,就成了更贵的选项。
+      </p>
+    </div>
+    <div class="ticker">
+      <div class="tk-top"><span>IQ · NASDAQ</span><span class="tk-badge">连续 29 日 &lt; $1</span></div>
+      <div class="tk-price">$0.49<span>-10.96%</span></div>
+      <div class="tk-sub">2026.11.20 收盘 · 市值 $4.76 亿</div>
+      <div class="tk-chart">
+        <svg viewBox="0 0 340 160" role="img" aria-label="爱奇艺股价 2023-2026">
+          <defs>
+            <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#E23A2E" stop-opacity=".22"/>
+              <stop offset="1" stop-color="#E23A2E" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g stroke="#E8ECE4" stroke-width="1">
+            <line x1="10" y1="30" x2="330" y2="30"/>
+            <line x1="10" y1="70" x2="330" y2="70"/>
+            <line x1="10" y1="110" x2="330" y2="110"/>
+          </g>
+          <line x1="10" y1="126.7" x2="330" y2="126.7" stroke="#E23A2E" stroke-width="1" stroke-dasharray="4 4" opacity=".55"/>
+          <text x="12" y="122" font-size="7.5" fill="#E23A2E" font-family="sans-serif">$1 退市线</text>
+          <path d="M10,14.7 L40,35.7 L70,52 L100,70.7 L130,87 L160,103.3 L190,96.3 L220,110.3 L250,120.8 L280,127.8 L315,138.6 L315,150 L10,150 Z" fill="url(#fade)"/>
+          <polyline points="10,14.7 40,35.7 70,52 100,70.7 130,87 160,103.3 190,96.3 220,110.3 250,120.8 280,127.8 315,138.6" fill="none" stroke="#E23A2E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="315" cy="138.6" r="3.4" fill="#E23A2E"/>
+          <circle cx="315" cy="138.6" r="7" fill="none" stroke="#E23A2E" stroke-width="1" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="tk-foot"><span>2018 峰值 <b>$310 亿</b></span><span>→</span><span>2026 <b>$4.76 亿</b></span></div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v"><span class="rd">$0.49</span></div><div class="k">股价(2026.11.20)</div></div>
+    <div class="metric"><div class="v">4.76<small>亿</small></div><div class="k">总市值(美元)</div></div>
+    <div class="metric"><div class="v"><span class="rd">-98.9</span><small>%</small></div><div class="k">距 2018 峰值</div></div>
+    <div class="metric"><div class="v">60.10<small>亿</small></div><div class="k">Q3 营收(-10%)</div></div>
+    <div class="metric"><div class="v">39.70<small>亿</small></div><div class="k">会员收入(-6%)</div></div>
+    <div class="metric"><div class="v"><span class="hl">29</span><small>天</small></div><div class="k">收盘 &lt; $1</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:一家被股价定价的公司</span>
+      <span class="sec-en">Fall</span>
+    </div>
+    <p style="font-size:13.5px;line-height:1.95;color:var(--ink2);max-width:860px;margin-bottom:18px;">
+      2010 年成立,2018 年纳斯达克上市,2023 年《狂飙》把营收推到 319 亿元的历史高点。
+      三年后,股价 <strong style="color:var(--ink);">0.4933 美元</strong>,市值 4.76 亿美元,较巅峰蒸发超过 300 亿美元。
+    </p>
+    <div class="tl">
+      <div class="tl-item"><div class="tl-year">2010</div><div class="tl-name">成立</div><div class="tl-desc">百度孵化,长视频起跑。</div></div>
+      <div class="tl-item"><div class="tl-year">2018</div><div class="tl-name">上市</div><div class="tl-desc">纳斯达克,募资 22.5 亿美元。</div></div>
+      <div class="tl-item"><div class="tl-year">2023</div><div class="tl-name">《狂飙》</div><div class="tl-desc">营收 319 亿,历史新高。</div></div>
+      <div class="tl-item"><div class="tl-year">2024</div><div class="tl-name">下滑</div><div class="tl-desc">营收降至 292 亿,布局微短剧。</div></div>
+      <div class="tl-item"><div class="tl-year">2025</div><div class="tl-name">272.9 亿</div><div class="tl-desc">宣布 4 座线下乐园。</div></div>
+      <div class="tl-item"><div class="tl-year">2026</div><div class="tl-name">退市警戒</div><div class="tl-desc">10.13 跌破 $1,11.20 已 29 天。</div></div>
+    </div>
+    <div class="callout rd" style="margin-top:16px;">
+      <b>最扎眼的对比:2026 Q3 经营利润「转正」了,股价却跌了 17.9%。</b>
+      资本市场不是没看懂财报,是看懂了——<b>利润是「省」出来的,不是「赚」出来的。</b>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">人群:2.91 亿月活,和 1.29 亿会员的旧梦</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="tag">18-30 岁</div>
+        <h3>追剧的年轻人</h3>
+        <p>古偶、悬疑、甜宠、爽剧。要的是「上头」,不是「深刻」。</p>
+        <div class="note">核心动作:<b>开会员,追更</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">30-50 岁</div>
+        <h3>家庭大屏</h3>
+        <p>客厅、周末、一家人。大屏观看时长占比已超过一半。</p>
+        <div class="note">核心动作:<b>投屏、看长剧</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">18-35 岁 · 女性为主</div>
+        <h3>女性向受众</h3>
+        <p>恋恋剧场、古偶、真人秀。她们是会员和弹幕的主力。</p>
+        <div class="note">核心动作:<b>追 CP、发弹幕</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">35 岁 +</div>
+        <h3>中年 / 下沉</h3>
+        <p>价格敏感,免费内容优先,老剧、短剧、戏曲都能看。</p>
+        <div class="note">核心动作:<b>看免费、不续费</b></div>
+      </div>
+    </div>
+    <div class="strip">
+      <div><div class="sv">2.91<small>亿</small></div><div class="sk">MAU(2026.6,第二)</div></div>
+      <div><div class="sv">1.29<small>亿</small></div><div class="sk">2023 日均会员(峰值)</div></div>
+      <div><div class="sv">66<small>%</small></div><div class="sk">会员收入占比</div></div>
+      <div><div class="sv">50<small>%+</small></div><div class="sk">大屏观看时长占比</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>会员正在从「长期订阅」变成「按需购买」。</b>
+      有爆款就开一个月,看完就退——这不是爱奇艺一家的问题,是订阅制长视频的产品形态问题。
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">场景:看剧这件事,被拆碎了</span>
+      <span class="sec-en">Scenarios</span>
+    </div>
+    <div class="grid-3">
+      <div class="scene"><div class="t">20:00 — 23:00</div><h4>追剧</h4><p>连续注意力,2 倍速</p></div>
+      <div class="scene"><div class="t">午休 / 晚饭</div><h4>下饭</h4><p>轻内容,不需要连续</p></div>
+      <div class="scene"><div class="t">周末 / 家庭时间</div><h4>大屏</h4><p>画质、完整叙事</p></div>
+      <div class="scene alt"><div class="t">早晚高峰</div><h4>通勤</h4><p>碎片时间,竖屏短剧</p></div>
+      <div class="scene alt"><div class="t">23:00 以后</div><h4>睡前</h4><p>陪伴、催眠</p></div>
+      <div class="scene"><div class="t">追更时</div><h4>弹幕社交</h4><p>「一起看」的仪式感</p></div>
+    </div>
+    <div class="callout rd" style="margin-top:14px;">
+      <b>除了「大屏」和「追剧」,其余场景正在被短剧吃掉。</b>
+      红果短剧 2026 年 7-8 月月均总时长 8321 亿分钟,是爱奇艺 + 腾讯视频 + 优酷合计的 <b>3.8 倍</b>;9 月 MAU 4.3 亿,7 月 DAU 1.68 亿,超过四家长视频 DAU 之和。
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">需求:五层,本质是「用最少的钱,看最爽的故事」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="need">
+      <div>
+        <div class="pyr">
+          <div class="pyr-row"><span class="n">05</span>身 份</div>
+          <div class="pyr-row"><span class="n">04</span>谈 资</div>
+          <div class="pyr-row"><span class="n">03</span>陪 伴</div>
+          <div class="pyr-row"><span class="n">02</span>爽 感</div>
+          <div class="pyr-row"><span class="n">01</span>打发时间</div>
+        </div>
+        <div class="pyr-note">越往下越基础,越往上越值钱</div>
+      </div>
+      <div class="need-side">
+        <h3>五层需求,逐层加码</h3>
+        <ul>
+          <li><b>打发时间</b> — 打开就有东西看</li>
+          <li><b>爽感</b> — 反转、打脸、上头</li>
+          <li><b>陪伴</b> — 吃饭、睡前,有个声音陪着</li>
+          <li><b>谈资</b> — 同事都在聊,我不能没看过</li>
+          <li><b>身份</b> — 我看的剧,代表我的品味</li>
+        </ul>
+        <div class="quote">
+          「我买的不是长视频,<br>是 40 集里那几次上头。」
+          <small>当短剧 3 分钟给一次「上头」,长视频的「会员」就贵了</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">营销:很会做内容,不太会做生意</span>
+      <span class="sec-en">Marketing</span>
+    </div>
+    <div class="grid-2">
+      <div class="card hl-card">
+        <div class="tag">做对的三件事</div>
+        <h3>剧场厂牌 + 独播爆款 + 会员运营</h3>
+        <p>迷雾剧场、恋恋剧场、小逗剧场,用「厂牌」降低选择成本;2023《狂飙》、2025《生万物》《唐朝诡事录之长安》、2026《逐玉》《罚罪2》证明它仍有制造热剧的能力。</p>
+      </div>
+      <div class="card rd-card">
+        <div class="tag">没做成的三件事</div>
+        <h3>没有社交、没有生态、没钱买量</h3>
+        <p>腾讯有微信与阅文 IP、芒果有综艺粉、优酷有阿里,爱奇艺只有「下一部剧」;2026 Q3 销售及管理费用 7.91 亿元,同比 -15%。</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>一句话:爱奇艺的营销是「内容营销」,不是「生态营销」。</b>
+      内容营销的问题是:每一部剧,都要从零开始。
+    </div>
+    <div class="mech" style="margin-top:22px;">
+      <div class="n">01</div>
+      <div><h4>剧场厂牌</h4><p>迷雾、恋恋、小逗——把「看什么」变成「看哪个厂牌」。</p></div>
+      <div class="chip">降选择成本</div>
+    </div>
+    <div class="mech">
+      <div class="n">02</div>
+      <div><h4>独播 + 爆款</h4><p>用头部剧拉新,但爆款是概率游戏,无法承诺「每年一部《狂飙》」。</p></div>
+      <div class="chip">不可复制</div>
+    </div>
+    <div class="mech">
+      <div class="n">03</div>
+      <div><h4>会员体系</h4><p>连续包月、联合会员、大屏会员——ARPU 提升,但拉新见顶。</p></div>
+      <div class="chip">存量博弈</div>
+    </div>
+    <div class="mech">
+      <div class="n">04</div>
+      <div><h4>大屏与 IP</h4><p>大屏时长占比 50%+,4 座线下乐园、IP 衍生品——想从「看」扩展到「玩」。</p></div>
+      <div class="chip">重资产</div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">财务:一份「降本式盈利」的财报</span>
+      <span class="sec-en">Financials</span>
+    </div>
+    <div class="share-row"><div class="share-name">会员服务</div><div class="share-track"><div class="share-fill" style="width:66%;"></div></div><div class="share-val">66%</div></div>
+    <div class="share-row"><div class="share-name">在线广告</div><div class="share-track"><div class="share-fill" style="width:21%;"></div></div><div class="share-val">21%</div></div>
+    <div class="share-row"><div class="share-name">内容发行</div><div class="share-track"><div class="share-fill gray" style="width:7%;"></div></div><div class="share-val">7%</div></div>
+    <div class="share-row"><div class="share-name">其他</div><div class="share-track"><div class="share-fill gray" style="width:6%;"></div></div><div class="share-val">6%</div></div>
+    <div class="grid-4" style="margin-top:18px;">
+      <div class="card" style="padding:18px;"><div class="tag">Q3 营收</div><h3 style="font-size:20px;">60.10 亿</h3><p style="margin-bottom:0;">同比 -10%</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">会员收入</div><h3 style="font-size:20px;">39.70 亿</h3><p style="margin-bottom:0;">同比 -6%</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">内容成本</div><h3 style="font-size:20px;">35.2 亿</h3><p style="margin-bottom:0;">同比 -13%</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">归母净亏损</div><h3 style="font-size:20px;color:var(--red);">1.73 亿</h3><p style="margin-bottom:0;">仍未盈利</p></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>Non-GAAP 经营利润 2500 万元,利润率 0.4%。</b>
+      每 100 元收入,只留下 4 毛钱——这不是「盈利」,是「止血」。
+    </div>
+    <div class="cmp" style="margin-top:16px;">
+      <div class="cmp-row cmp-head"><div>年份</div><div>营收</div><div>Non-GAAP 经营利润</div></div>
+      <div class="cmp-row"><div class="cmp-name">2023</div><div class="cmp-a">319 亿</div><div class="cmp-b">36 亿(利润率 11%)</div></div>
+      <div class="cmp-row"><div class="cmp-name">2024</div><div class="cmp-a">292 亿</div><div class="cmp-b">23.62 亿</div></div>
+      <div class="cmp-row"><div class="cmp-name">2025</div><div class="cmp-a">272.9 亿</div><div class="cmp-b">6.39 亿(-73%)</div></div>
+      <div class="cmp-row"><div class="cmp-name">2026 Q3</div><div class="cmp-a">60.10 亿(-10%)</div><div class="cmp-b">0.25 亿(利润率 0.4%)</div></div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">为什么落魄:六个原因,层层叠加</span>
+      <span class="sec-en">Why</span>
+    </div>
+    <div class="mech">
+      <div class="n">01</div>
+      <div><h4>短剧的「降维打击」</h4><p>长视频:重资产预付、长周期排播、订阅变现;短剧:轻资产周转、算法分发、免费 + 广告。这不是内容之争,是模式之争。</p></div>
+      <div class="chip">代际差</div>
+    </div>
+    <div class="mech">
+      <div class="n">02</div>
+      <div><h4>会员见顶</h4><p>会员收入连续 7 个季度同比下降;2026 前三季又分别 -5%、-2%、-6%。1.29 亿日均会员,可能已是顶点。</p></div>
+      <div class="chip">不可逆</div>
+    </div>
+    <div class="mech">
+      <div class="n">03</div>
+      <div><h4>爆款依赖</h4><p>《狂飙》之后再无全民级作品。「不错」不等于「破圈」,而订阅制要求持续供给爆款。</p></div>
+      <div class="chip">概率游戏</div>
+    </div>
+    <div class="mech">
+      <div class="n">04</div>
+      <div><h4>降本循环</h4><p>收入下滑 → 砍内容成本 → 内容变轻 → 会员继续掉 → 更不敢投。省出来的利润,是拿未来换的。</p></div>
+      <div class="chip">慢性自杀</div>
+    </div>
+    <div class="mech">
+      <div class="n">05</div>
+      <div><h4>没有生态护城河</h4><p>腾讯有阅文 IP、芒果有综艺、优酷有阿里;爱奇艺背后是百度,给不了内容生态。</p></div>
+      <div class="chip">孤军</div>
+    </div>
+    <div class="mech">
+      <div class="n">06</div>
+      <div><h4>资本抛弃</h4><p>股价 -98.9%,百度持股 45.1%;1 亿美元回购已花 7640 万美元,仍托不住。</p></div>
+      <div class="chip">估值死亡</div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">退市:不是破产,是「估值死亡」</span>
+      <span class="sec-en">Delisting</span>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="sn">STEP 01</div><h4>连续 30 天 &lt; $1</h4><p>触发纳斯达克最低报价不合规</p></div>
+      <div class="step"><div class="sn">STEP 02</div><h4>收到通知</h4><p>公司公告,进入整改期</p></div>
+      <div class="step"><div class="sn">STEP 03</div><h4>180 天整改</h4><p>期间可申请第二次延期</p></div>
+      <div class="step"><div class="sn">STEP 04</div><h4>连续 10 天 ≥ $1</h4><p>恢复合规,否则退市</p></div>
+    </div>
+    <div class="callout rd" style="margin-top:14px;">
+      <b>退市 ≠ 破产。</b>
+      公司账上还有现金,业务还在运转,2026 Q3 甚至「经营利润转正」。真正的问题是:市值 4.76 亿美元,融资能力锁死,内容投入只能靠自身现金流——<b>估值死亡,会慢慢变成内容死亡。</b>
+    </div>
+    <div class="grid-4" style="margin-top:14px;">
+      <div class="card" style="padding:18px;"><div class="tag">概率:高</div><h3 style="font-size:15px;">合股</h3><p style="margin-bottom:0;">并股把股价推回 1 美元以上,最常见的「技术性解法」。</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">概率:中</div><h3 style="font-size:15px;">私有化</h3><p style="margin-bottom:0;">百度或外部资本收购,退出美股。</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">概率:中</div><h3 style="font-size:15px;">卖身</h3><p style="margin-bottom:0;">被腾讯、中国移动、字节等接手——传闻很多,落地很少。</p></div>
+      <div class="card" style="padding:18px;"><div class="tag">概率:低-中</div><h3 style="font-size:15px;">退市</h3><p style="margin-bottom:0;">流动性枯竭,品牌与人才加速流失。</p></div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">转型:三条路,都不好走</span>
+      <span class="sec-en">Pivot</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="tag">2026.4 提出</div>
+        <h3>去中心化</h3>
+        <p>从「平台采购 / 自制」转向「创作者分账 + 算法推荐」,做「以长视频为根基,去中心化与 AI 为两翼的长视频社交媒体」。</p>
+        <div class="note">难点:<b>没有社交关系链</b></div>
+      </div>
+      <div class="card hl-card">
+        <div class="tag">2026.8 All in AI</div>
+        <h3>AI 与中剧</h3>
+        <p>龚宇「一一二定律」:成本降至 1/10-1/30,创作者增 10-20 倍。Q3 上线 8 部 AI 故事片、21 部 AIGC 中剧,《灵魂摆渡》三部曲分账 1400 万。</p>
+        <div class="note">难点:<b>AI 降的是制作门槛,不是爆款门槛</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">2025 起</div>
+        <h3>线下乐园 + IP</h3>
+        <p>4 座爱奇艺乐园,IP 衍生品与沉浸式体验,把「看」变成「玩」。</p>
+        <div class="note">难点:<b>重资产、慢回收,与降本相反</b></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>一个冷数据:2026 年 9 月,抖音端 AI 剧新剧 5.18 万部,只有 1.46% 拿走了 64.6% 的播放增量。</b>
+      AI 让供给爆炸,但注意力还是那么少——<b>平台之间的竞争,最终仍是「谁能做出那 1.46%」。</b>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">10</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>输的不是内容,是模式</h3>
+          <p>「重资产 + 订阅」在「轻资产 + 免费」面前,是代际差。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>会员见顶,不可逆</h3>
+          <p>1.29 亿日均会员可能是顶点,用户正从「订阅」转向「按需」。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>降本式盈利,是慢性自杀</h3>
+          <p>0.4% 的利润率,是用未来的内容供给换的。<b>省得越狠,掉得越快。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:28px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>没有生态,就没有护城河</h3>
+          <p>腾讯有 IP、芒果有综艺、优酷有阿里;爱奇艺只有「下一部剧」。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>退市是估值问题,但会变成内容问题</h3>
+          <p>融资锁死 → 内容收缩 → 会员继续掉 → 更融不到钱。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>AI 救不了它,但可能是续命药</h3>
+          <p>AI 能把成本打下来,却救不了「没有爆款」;但现金流紧张时,<b>降本本身就是续命</b>。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · 爱奇艺 2026 年第三季度财报;财中社、界面新闻、36 氪、新浪财经;QuestMobile;老虎证券、杰富瑞研报;纳斯达克最低报价规则。<br>
+    <b>说明</b> · 股价与市值为 2026 年 11 月 20 日收盘数据;部分数据为媒体测算或第三方口径,存在差异;判断部分为个人观点,不构成投资建议。<br>
+    <b>配套长文</b> · <a href="analysis.md">《爱奇艺:从〈狂飙〉到 0.49 美元》</a>
+  </footer>
+
+</div>
+</body>
+</html>

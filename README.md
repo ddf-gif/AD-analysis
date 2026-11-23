@@ -5,7 +5,7 @@
 
 ## 进度
 
-**12 / 180**
+**13 / 180**
 
 | # | 对象 | 赛道 | 日期 | 可视化 | 长文 |
 |:--:|---|---|---|:--:|:--:|
@@ -21,6 +21,7 @@
 | 010 | **豆包** | AI 助手 / 国民级入口 | 2026-11-20 | [HTML](010-doubao/index.html) · [预览图](010-doubao/preview.png) | [analysis.md](010-doubao/analysis.md) |
 | 011 | **喜力 Heineken** | 啤酒 / 高端化 | 2026-11-21 | [HTML](011-heineken/index.html) · [预览图](011-heineken/preview.png) | [analysis.md](011-heineken/analysis.md) |
 | 012 | **海鸥速递** | 跨境物流 / IP 驱动 | 2026-11-22 | [HTML](012-seagull/index.html) · [预览图](012-seagull/preview.png) | [analysis.md](012-seagull/analysis.md) |
+| 013 | **爱奇艺** | 长视频 / 会员订阅 | 2026-11-23 | [HTML](013-iqiyi/index.html) · [预览图](013-iqiyi/preview.png) | [analysis.md](013-iqiyi/analysis.md) |
 
 ## 每篇包含什么
 
