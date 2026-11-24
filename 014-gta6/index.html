@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTA 6 · 营销 · 商业模式 · 首发拆解</title>
+<style>
+  :root{
+    --bg:#08040E;
+    --card:#120A1C;
+    --card2:#170D24;
+    --line:#2A1838;
+    --line2:#3A2350;
+    --ink:#F3ECFF;
+    --ink2:#B4A6C8;
+    --ink3:#7A6B8E;
+    --pink:#FF2E88;
+    --cyan:#00E5FF;
+    --orange:#FF8A3D;
+    --purple:#7B2CBF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:var(--bg);}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;position:relative;}
+  body::before{content:"";position:absolute;top:0;left:0;right:0;height:780px;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(680px 400px at 82% 6%,rgba(255,46,136,.18),transparent 62%),
+      radial-gradient(520px 340px at 8% 0%,rgba(0,229,255,.12),transparent 60%),
+      radial-gradient(420px 300px at 55% 22%,rgba(123,44,191,.16),transparent 65%);}
+  .page{max-width:1180px;margin:0 auto;padding:48px 40px 90px;position:relative;z-index:1;}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.24fr .76fr;gap:44px;align-items:center;padding:16px 0 46px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--pink);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--pink),var(--cyan));display:block;}
+  h1{font-size:clamp(52px,7vw,92px);line-height:.96;letter-spacing:-.05em;font-weight:900;margin-bottom:16px;}
+  h1 .mark{background:linear-gradient(120deg,#FF2E88,#FF8A3D);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .kicker{font-size:12px;letter-spacing:.3em;color:var(--ink3);margin-bottom:18px;font-weight:700;}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(23px,2.8vw,34px);line-height:1.42;font-weight:600;margin-bottom:22px;}
+  .subtitle em{font-style:normal;color:#fff;border-bottom:5px solid rgba(255,46,136,.5);padding-bottom:3px;}
+  .lede{font-size:15.5px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:#fff;font-weight:700;border-bottom:3px solid rgba(0,229,255,.5);padding-bottom:2px;}
+
+  /* VI card */
+  .vi-wrap{position:relative;width:320px;height:360px;margin:0 auto;display:flex;align-items:center;justify-content:center;}
+  .vi-card{position:relative;width:240px;height:306px;border-radius:16px;overflow:hidden;transform:rotate(-4deg);z-index:2;
+    background:linear-gradient(180deg,#1B0A33 0%,#4A0F5E 28%,#B3176E 54%,#FF2E88 70%,#FF8A3D 88%,#FFC46B 100%);
+    box-shadow:0 40px 80px -30px rgba(255,46,136,.55),0 0 0 1px rgba(255,255,255,.08) inset;}
+  .sun{position:absolute;left:50%;bottom:52px;width:140px;height:140px;border-radius:50%;transform:translateX(-50%);
+    background:linear-gradient(180deg,#FFE259,#FF6B6B);box-shadow:0 0 50px rgba(255,138,61,.8);}
+  .sun::after{content:"";position:absolute;inset:0;border-radius:50%;
+    background:repeating-linear-gradient(180deg,transparent 0 10px,rgba(70,10,50,.55) 10px 14px);}
+  .scan{position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 4px,rgba(8,4,14,.18) 4px 6px);}
+  .vi-top{position:absolute;top:14px;left:0;right:0;text-align:center;font-size:8px;letter-spacing:.34em;color:rgba(255,255,255,.85);font-weight:700;line-height:1.9;}
+  .vi-meta{display:block;font-size:7px;letter-spacing:.22em;color:var(--cyan);}
+  .vi-num{position:relative;z-index:2;width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    font-family:Georgia,"Times New Roman",serif;font-size:118px;font-weight:700;color:#fff;letter-spacing:-.06em;
+    text-shadow:0 0 18px rgba(255,46,136,.95),0 0 46px rgba(0,229,255,.35),0 4px 0 rgba(8,4,14,.35);padding-bottom:26px;}
+  .vi-foot{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:space-between;padding:0 16px;
+    font-size:8px;letter-spacing:.16em;color:#2A0714;font-weight:800;z-index:2;}
+  .vi-foot b{font-size:12px;letter-spacing:.04em;}
+  .vi-back{position:absolute;width:132px;height:168px;border-radius:12px;background:#0D0716;border:1px solid rgba(0,229,255,.45);
+    transform:rotate(9deg) translate(96px,-52px);z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+    box-shadow:0 0 26px rgba(0,229,255,.25);}
+  .vi-back .mb{font-size:38px;font-weight:900;color:var(--cyan);letter-spacing:-.04em;line-height:1;text-shadow:0 0 18px rgba(0,229,255,.7);}
+  .vi-back .mbl{font-size:7px;letter-spacing:.26em;color:var(--ink3);}
+
+  /* metrics */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid rgba(255,255,255,.22);border-bottom:1px solid var(--line);margin-bottom:66px;}
+  .metric{padding:22px 14px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:23px;font-weight:900;letter-spacing:-.035em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:11.5px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .hl{background:linear-gradient(120deg,#FF2E88,#FF8A3D);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .metric .v .cy{color:var(--cyan);}
+  .metric .k{font-size:10.5px;color:var(--ink3);margin-top:7px;letter-spacing:.03em;}
+
+  /* sections */
+  .sec{margin-bottom:68px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.14em;color:#12061A;background:linear-gradient(120deg,#FF2E88,#FF8A3D);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+  .mbr{display:none;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;}
+  .card .tag{display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--ink3);margin-bottom:11px;text-transform:uppercase;}
+  .card h3{font-size:16.5px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;line-height:1.4;}
+  .card p{font-size:12.5px;line-height:1.8;color:var(--ink2);margin-bottom:12px;}
+  .card .note{font-size:11.5px;color:var(--ink3);margin-top:auto;padding-top:12px;border-top:1px dashed var(--line2);}
+  .card .note b{color:var(--cyan);font-weight:700;}
+  .pk-card{background:linear-gradient(170deg,rgba(255,46,136,.14),rgba(255,138,61,.04));border-color:#52203C;}
+  .pk-card .tag{color:var(--pink);}
+  .cy-card{background:linear-gradient(170deg,rgba(0,229,255,.1),rgba(123,44,191,.04));border-color:#1D4A5C;}
+  .cy-card .tag{color:var(--cyan);}
+
+  /* timeline */
+  .tl{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);}
+  .tl-item{padding:18px 12px 0 0;border-right:1px solid var(--line);position:relative;}
+  .tl-item:last-child{border-right:none;}
+  .tl-item::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;border-radius:50%;background:var(--cyan);}
+  .tl-item:nth-child(3)::before,.tl-item:nth-child(6)::before{background:var(--pink);}
+  .tl-year{font-size:11px;font-weight:800;color:var(--cyan);margin-bottom:5px;}
+  .tl-name{font-size:13px;font-weight:700;margin-bottom:5px;line-height:1.4;}
+  .tl-desc{font-size:11px;color:var(--ink3);line-height:1.65;}
+
+  /* stat tiles */
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .tile .tv{font-size:26px;font-weight:900;letter-spacing:-.03em;font-feature-settings:"tnum";line-height:1.15;}
+  .tile .tv small{font-size:12px;color:var(--ink2);font-weight:700;}
+  .tile .tk{font-size:10.5px;color:var(--ink3);margin-top:4px;}
+  .tile.hot .tv{background:linear-gradient(120deg,#FF2E88,#FF8A3D);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .tile.cy .tv{color:var(--cyan);}
+
+  /* mech */
+  .mech{display:grid;grid-template-columns:36px 1fr auto;gap:16px;align-items:start;padding:15px 0;border-bottom:1px solid var(--line);}
+  .mech:first-of-type{border-top:1px solid var(--line2);}
+  .mech .n{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--pink);padding-top:2px;}
+  .mech h4{font-size:14px;font-weight:700;margin-bottom:3px;}
+  .mech p{font-size:12px;line-height:1.8;color:var(--ink2);}
+  .mech .chip{font-size:10.5px;color:var(--cyan);border:1px solid #1D4A5C;background:rgba(0,229,255,.07);border-radius:999px;padding:3px 10px;white-space:nowrap;margin-top:2px;}
+
+  /* scenes */
+  .scene{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px 17px 16px;position:relative;overflow:hidden;}
+  .scene::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--pink),var(--orange));opacity:.85;}
+  .scene.cy::after{background:linear-gradient(180deg,var(--cyan),var(--purple));}
+  .scene .t{font-size:9.5px;letter-spacing:.12em;color:var(--pink);font-weight:700;}
+  .scene.cy .t{color:var(--cyan);}
+  .scene h4{font-size:14px;font-weight:700;margin:6px 0 4px;}
+  .scene p{font-size:11.5px;line-height:1.7;color:var(--ink3);}
+
+  /* needs */
+  .need{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;}
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .pyr-row{display:flex;align-items:center;justify-content:center;gap:10px;height:50px;border-radius:8px;font-size:13px;font-weight:700;color:#12061A;}
+  .pyr-row span.n{font-size:9px;opacity:.65;font-weight:800;letter-spacing:.1em;}
+  .pyr-row:nth-child(1){width:44%;background:linear-gradient(120deg,#00E5FF,#7B2CBF);color:#fff;}
+  .pyr-row:nth-child(2){width:58%;background:linear-gradient(120deg,#FF8A3D,#FF2E88);color:#fff;}
+  .pyr-row:nth-child(3){width:73%;background:linear-gradient(120deg,#FF2E88,#FF6B9E);color:#fff;}
+  .pyr-row:nth-child(4){width:88%;background:linear-gradient(120deg,#B3176E,#FF2E88);color:#fff;}
+  .pyr-row:nth-child(5){width:100%;background:linear-gradient(120deg,#4A0F5E,#B3176E);color:#fff;}
+  .pyr-note{font-size:10.5px;color:var(--ink3);letter-spacing:.06em;margin-top:10px;}
+  .need-side h3{font-size:15px;font-weight:700;margin-bottom:12px;}
+  .need-side ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .need-side li{font-size:12.5px;line-height:1.8;color:var(--ink2);padding-left:16px;position:relative;}
+  .need-side li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--pink);}
+  .need-side li b{color:#fff;font-weight:700;}
+  .quote{margin-top:18px;border-left:2px solid var(--cyan);padding:10px 0 10px 16px;font-family:"Songti SC","STSong","Noto Serif CJK SC",serif;font-size:16px;line-height:1.7;color:#fff;}
+  .quote small{display:block;font-family:inherit;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-top:8px;}
+
+  /* layers */
+  .layers{display:flex;flex-direction:column;gap:9px;}
+  .layer{display:grid;grid-template-columns:64px 1.1fr 1fr auto;gap:16px;align-items:center;padding:16px 20px;border-radius:14px;border:1px solid var(--line);background:var(--card);}
+  .layer .ln{font-size:11px;font-weight:900;letter-spacing:.1em;color:var(--pink);}
+  .layer .lh{font-size:14.5px;font-weight:700;}
+  .layer .lh small{display:block;font-size:10.5px;color:var(--ink3);font-weight:400;margin-top:2px;}
+  .layer .lp{font-size:12px;color:var(--ink2);line-height:1.7;}
+  .layer .lv{font-size:16px;font-weight:900;letter-spacing:-.02em;color:var(--cyan);white-space:nowrap;font-feature-settings:"tnum";}
+  .layer:nth-child(1){background:linear-gradient(90deg,rgba(255,46,136,.13),var(--card));border-color:#52203C;}
+  .layer:nth-child(2){background:linear-gradient(90deg,rgba(0,229,255,.09),var(--card));border-color:#1D4A5C;}
+  .layer:nth-child(3){background:linear-gradient(90deg,rgba(123,44,191,.12),var(--card));border-color:#3A2350;}
+  .layer:nth-child(4){background:linear-gradient(90deg,rgba(255,138,61,.09),var(--card));border-color:#4A2C1E;}
+
+  /* cost bars */
+  .cost-row{display:grid;grid-template-columns:150px 1fr 90px;gap:14px;align-items:center;padding:10px 0;}
+  .cost-name{font-size:12.5px;font-weight:700;}
+  .cost-track{height:22px;background:#1A1026;border-radius:4px;overflow:hidden;}
+  .cost-fill{height:100%;border-radius:4px;}
+  .cost-fill.pk{background:linear-gradient(90deg,#B3176E,#FF2E88);}
+  .cost-fill.cy{background:linear-gradient(90deg,#0E7C8C,#00E5FF);}
+  .cost-val{font-size:11.5px;font-weight:700;color:var(--ink2);text-align:right;font-feature-settings:"tnum";}
+
+  .callout{border-radius:12px;padding:16px 20px;font-size:12.5px;line-height:1.8;background:linear-gradient(120deg,rgba(255,46,136,.1),rgba(0,229,255,.04));border:1px solid #52203C;color:var(--ink2);}
+  .callout b{color:#fff;}
+
+  .cmp{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
+  .cmp-row{display:grid;grid-template-columns:150px 1fr 1fr;gap:18px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:baseline;}
+  .cmp-row:last-child{border-bottom:none;}
+  .cmp-head{background:#0B0614;font-size:10px;letter-spacing:.14em;color:var(--ink3);font-weight:700;padding:11px 20px;}
+  .cmp-name{font-weight:700;color:#fff;font-size:13px;}
+  .cmp-a{color:var(--ink2);}
+  .cmp-b{color:var(--ink3);}
+
+  .risk-row{display:grid;grid-template-columns:150px 1fr 100px;gap:18px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+  .risk-row:first-of-type{border-top:1px solid var(--line2);}
+  .risk-name{font-weight:700;color:#fff;}
+  .risk-desc{color:var(--ink2);font-size:12px;}
+  .stars{color:var(--pink);letter-spacing:2px;font-size:11.5px;text-align:right;}
+
+  .judgments{background:linear-gradient(160deg,#160A24,#0A0512);border:1px solid #3A2350;border-radius:24px;padding:40px 44px 42px;position:relative;overflow:hidden;}
+  .judgments::after{content:"";position:absolute;right:-120px;top:-120px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(255,46,136,.18),transparent 65%);}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--cyan);color:#06181C;}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative;z-index:1;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:16px;}
+  .j-num{font-size:9.5px;letter-spacing:.16em;color:var(--pink);font-weight:800;margin-bottom:9px;}
+  .j-item h3{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12px;line-height:1.85;color:rgba(255,255,255,.62);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  footer{margin-top:66px;padding-top:22px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--cyan);text-decoration:none;border-bottom:1px solid #1D4A5C;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:26px;}
+    .vi-wrap{width:290px;height:340px;}
+    .vi-card{width:214px;height:274px;}
+    .vi-num{font-size:104px;}
+    .vi-back{width:118px;height:150px;transform:rotate(9deg) translate(82px,-46px);}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .sec-title{font-size:20px;}
+    .mbr{display:inline;}
+    .grid-2,.grid-3,.grid-4,.need,.tiles{grid-template-columns:1fr;}
+    .tl{grid-template-columns:1fr;border-top:none;}
+    .tl-item{border-right:none;border-top:1px solid var(--line);padding:14px 0 0 14px;}
+    .tl-item::before{left:0;top:18px;}
+    .mech{grid-template-columns:26px 1fr;}
+    .mech .chip{grid-column:2;justify-self:start;margin-top:6px;}
+    .layer{grid-template-columns:44px 1fr;gap:8px 12px;}
+    .layer .lp{grid-column:1 / -1;}
+    .layer .lv{grid-column:2;justify-self:start;}
+    .cmp-row{grid-template-columns:1fr;gap:3px;padding:13px 16px;}
+    .cmp-head{display:none;}
+    .cmp-a::before{content:"数据 · ";color:var(--ink3);}
+    .cmp-b::before{content:"说明 · ";color:var(--ink3);}
+    .risk-row{grid-template-columns:1fr;gap:3px;}
+    .stars{text-align:left;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:28px 22px 30px;}
+    .cost-row{grid-template-columns:92px 1fr 84px;}
+    .cost-val{font-size:10.5px;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.metric,.sec-num,.pyr-row,.vi-card,.tile,.layer,.pk-card,.cy-card{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Game Teardown · Day 014</div>
+      <h1>GTA 6<span class="mark">.</span></h1>
+      <div class="kicker">ROCKSTAR GAMES · TAKE-TWO</div>
+      <div class="subtitle">一次「文化事件」<br><em>的定价权</em></div>
+      <p class="lede">
+        它卖的不是一款游戏,是<strong>「一次必须参与的文化事件」</strong>。
+        首日 3,250 万份、37.9 亿美元——而事件,是可以自己定价的。
+      </p>
+    </div>
+    <div class="vi-wrap">
+      <div class="vi-card">
+        <div class="sun"></div>
+        <div class="scan"></div>
+        <div class="vi-top">GRAND THEFT AUTO<span class="vi-meta">99 · METACRITIC</span></div>
+        <div class="vi-num">VI</div>
+        <div class="vi-foot"><span>DAY ONE</span><b>$3.79B</b></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v"><span class="hl">$79.99</span></div><div class="k">标准版起售价</div></div>
+    <div class="metric"><div class="v">3,250<small>万</small></div><div class="k">首日销量(官方)</div></div>
+    <div class="metric"><div class="v"><span class="hl">$37.9</span><small>亿</small></div><div class="k">首日销售额</div></div>
+    <div class="metric"><div class="v"><span class="cy">4,490</span><small>万</small></div><div class="k">首周末销量(Alinea)</div></div>
+    <div class="metric"><div class="v"><span class="cy">99</span><small>分</small></div><div class="k">Metacritic</div></div>
+    <div class="metric"><div class="v"><span class="hl">$7.99</span></div><div class="k">GTA+ 月费</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:13 年,等一作</span>
+      <span class="sec-en">13 Years</span>
+    </div>
+    <div class="tl">
+      <div class="tl-item"><div class="tl-year">2013.9</div><div class="tl-name">GTA V</div><div class="tl-desc">首日 8 亿美元,3 天破 10 亿。</div></div>
+      <div class="tl-item"><div class="tl-year">2023.12</div><div class="tl-name">首支预告</div><div class="tl-desc">24 小时播放破亿,创纪录。</div></div>
+      <div class="tl-item"><div class="tl-year">2025.5</div><div class="tl-name">跳票</div><div class="tl-desc">2026.5 → 2026.11。</div></div>
+      <div class="tl-item"><div class="tl-year">2026.6</div><div class="tl-name">预购</div><div class="tl-desc">标准版 $79.99,终极版 $99.99。</div></div>
+      <div class="tl-item"><div class="tl-year">2026.9</div><div class="tl-name">27 分钟前瞻</div><div class="tl-desc">Netflix 首发,4 天 3,110 万播放。</div></div>
+      <div class="tl-item"><div class="tl-year">2026.11</div><div class="tl-name">发售</div><div class="tl-desc">PS5 / Xbox;PC 未公布。</div></div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>关键事实:GTA 6 首发只有单机。</b>
+      线上模式据彭博社报道要到 2027 年——首发收入几乎全是「一次性买断」,真正的「印钞机」还没开动。
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">首发成绩:把「娱乐史纪录」改写</span>
+      <span class="sec-en">Records</span>
+    </div>
+    <div class="tiles">
+      <div class="tile hot"><div class="tv">3,250<small> 万份</small></div><div class="tk">首日销量(官方)</div></div>
+      <div class="tile hot"><div class="tv">$37.9<small> 亿</small></div><div class="tk">首日销售额(官方)</div></div>
+      <div class="tile cy"><div class="tv">4,490<small> 万份</small></div><div class="tk">首周末销量(Alinea)</div></div>
+      <div class="tile cy"><div class="tv">$40<small> 亿+</small></div><div class="tk">首周末收入(Alinea)</div></div>
+      <div class="tile"><div class="tv">75<small>%</small></div><div class="tk">PS5 平台占比</div></div>
+      <div class="tile"><div class="tv">4,000<small> 万+</small></div><div class="tk">周日活跃用户</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>作为对比:《GTA V》首日 8 亿美元、3 天破 10 亿;《复仇者联盟 4》全球票房 27.99 亿美元。</b>
+      GTA 6 的首周末收入,约等于 2026 年全球票房前两名电影之和——<b>它已经不是「游戏行业的事」,是「娱乐行业的事」。</b>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">营销:少即是多,沉默也是广告</span>
+      <span class="sec-en">Marketing</span>
+    </div>
+    <div class="mech">
+      <div class="n">01</div>
+      <div><h4>两年半,只有两支预告</h4><p>2023.12 首支,2025.5 第二支,中间一年半沉默。每一次沉默,都在积累「下一次发声」的势能——不发则已,一发就是全球头条。</p></div>
+      <div class="chip">事件节奏</div>
+    </div>
+    <div class="mech">
+      <div class="n">02</div>
+      <div><h4>27 分钟前瞻,搬上 Netflix</h4><p>Netflix 首发,4 天 3,110 万播放、87 个国家和地区登顶;YouTube 1,770 万播放;4 天约 1,400 万小时观看。它同时是「预告片」和「教学关」。</p></div>
+      <div class="chip">破圈</div>
+    </div>
+    <div class="mech">
+      <div class="n">03</div>
+      <div><h4>把广告打到「非玩家」的地方</h4><p>户外大牌、地铁、球场,以及据报道的超级碗时段。目的不是「告知玩家」,是「让不玩的人也听说」。</p></div>
+      <div class="chip">文化渗透</div>
+    </div>
+    <div class="mech">
+      <div class="n">04</div>
+      <div><h4>定价,本身就是营销</h4><p>标准版 $79.99,主流 3A 第一次站上 80 美元;终极版 $99.99。玩家会骂,但会买;同行会看,然后跟。</p></div>
+      <div class="chip">定锚</div>
+    </div>
+    <div class="mech">
+      <div class="n">05</div>
+      <div><h4>CEO 的原话:仍需要大规模营销</h4><p>泽尔尼克说,「被知道」不够,要把「知道」转化成「热情」——所以这条 27 分钟片子,承担了一部分「教学」功能。</p></div>
+      <div class="chip">转化</div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>营销的最高级,不是「让人知道」,是「让人怕错过」。</b>
+      两年半的沉默,把每一次发声都变成了新闻——<b>沉默,是最贵的广告位。</b>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">人群:三代玩家,一个「必须玩」</span>
+      <span class="sec-en">Audience</span>
+    </div>
+    <div class="grid-3">
+      <div class="card pk-card">
+        <div class="tag">28-40 岁</div>
+        <h3>老玩家</h3>
+        <p>2013 年玩过 GTA V,等了 13 年。他们买的是「青春续集」。</p>
+        <div class="note">动机:<b>补一张迟到 13 年的票</b></div>
+      </div>
+      <div class="card">
+        <div class="tag">16-25 岁</div>
+        <h3>新玩家</h3>
+        <p>短视频/直播时代长大,被「事件」卷入。很多人第一次买 3A。</p>
+        <div class="note">动机:<b>不想被落下</b></div>
+      </div>
+      <div class="card cy-card">
+        <div class="tag">全年龄</div>
+        <h3>文化围观者</h3>
+        <p>不一定玩,但要「参与讨论」。他们贡献的是流量与话题,不是销量。</p>
+        <div class="note">动机:<b>社交入场券</b></div>
+      </div>
+    </div>
+    <div class="tiles" style="margin-top:14px;">
+      <div class="tile"><div class="tv">75<small>%</small></div><div class="tk">PS5 平台占比</div></div>
+      <div class="tile"><div class="tv">60<small>%+</small></div><div class="tk">美国 PS5 玩家首日进入</div></div>
+      <div class="tile"><div class="tv">4,000<small> 万+</small></div><div class="tk">首发周日活跃用户</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>这不是「一个选择」,是「默认动作」。</b>
+      当 60% 的主机玩家在同一天打开同一款游戏,它就已经不是商品,是<b>集体仪式</b>。
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">场景:首发夜,是一种仪式</span>
+      <span class="sec-en">Scenarios</span>
+    </div>
+    <div class="grid-3">
+      <div class="scene"><div class="t">11.19 凌晨</div><h4>首发夜</h4><p>熬夜、请假、直播</p></div>
+      <div class="scene"><div class="t">周末</div><h4>周末沉浸</h4><p>一次玩 8-10 小时</p></div>
+      <div class="scene cy"><div class="t">全天</div><h4>直播围观</h4><p>看别人玩,也是消费</p></div>
+      <div class="scene cy"><div class="t">持续数周</div><h4>社交谈资</h4><p>「你玩到哪了」</p></div>
+      <div class="scene"><div class="t">2027 起</div><h4>线上模式</h4><p>长期留存与内购</p></div>
+      <div class="scene"><div class="t">未来</div><h4>PC / 次世代</h4><p>再卖一次</p></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>注意最后两行:首发是「一次性收入」,线上才是「长期收入」。</b>
+      GTA 6 的商业故事,2027 年才真正开始。
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">需求:五层,本质是「自由」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="need">
+      <div>
+        <div class="pyr">
+          <div class="pyr-row"><span class="n">05</span>身 份</div>
+          <div class="pyr-row"><span class="n">04</span>谈 资</div>
+          <div class="pyr-row"><span class="n">03</span>社 交</div>
+          <div class="pyr-row"><span class="n">02</span>自 由</div>
+          <div class="pyr-row"><span class="n">01</span>爽 感</div>
+        </div>
+        <div class="pyr-note">越往下越基础,越往上越值钱</div>
+      </div>
+      <div class="need-side">
+        <h3>五层需求,逐层加码</h3>
+        <ul>
+          <li><b>爽感</b> — 枪战、飙车、犯罪幻想</li>
+          <li><b>自由</b> — 想干嘛干嘛,这是 GTA</li>
+          <li><b>社交</b> — 和朋友一起玩、一起看</li>
+          <li><b>谈资</b> — 全网都在聊,我不能缺席</li>
+          <li><b>身份</b> — 「首发玩家」是一种身份标签</li>
+        </ul>
+        <div class="quote">
+          「GTA 卖的从来不是任务,<br>是一个可以无法无天的世界。」
+          <small>自由,是它最贵的那个字</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">商业模式:四层收入,层层加码</span>
+      <span class="sec-en">Business Model</span>
+    </div>
+    <div class="layers">
+      <div class="layer">
+        <div class="ln">L1</div>
+        <div class="lh">买断<small>一次性</small></div>
+        <div class="lp">标准版 $79.99、终极版 $99.99。主流 3A 首次站上 80 美元。</div>
+        <div class="lv">$80-100</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L2</div>
+        <div class="lh">订阅 GTA+<small>每月 $7.99</small></div>
+        <div class="lp">游戏库 + 游戏内福利 + 折扣;会员规模同比增长约两倍。</div>
+        <div class="lv">$7.99/月</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L3</div>
+        <div class="lh">线上内购<small>鲨鱼卡</small></div>
+        <div class="lp">GTA Online 的核心收入;GTA 6 Online 预计 2027 年上线,重置一轮内购周期。</div>
+        <div class="lv">长期</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L4</div>
+        <div class="lh">长尾<small>PC / 次世代 / 重制</small></div>
+        <div class="lp">PC 版未公布,晚一年上等于再卖一次;次世代、周年重制、DLC 都是增量。</div>
+        <div class="lv">再卖一次</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>争议点:它在「用单机养订阅」。</b>
+      GTA 6 单机里的专属汽车、车库、消费折扣,被绑定在 GTA+ 上——<b>买了 $100 终极版,部分福利还要续费。</b>
+      这是 Take-Two 把一次性用户变成持续用户的关键一步,也是最容易翻车的一步。
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">单位经济:10-20 亿成本,对 40 亿首周末</span>
+      <span class="sec-en">Unit Economics</span>
+    </div>
+    <div class="cost-row"><div class="cost-name">开发成本(估算)</div><div class="cost-track"><div class="cost-fill pk" style="width:45%;"></div></div><div class="cost-val">10-20 亿美元</div></div>
+    <div class="cost-row"><div class="cost-name">营销预算(估)</div><div class="cost-track"><div class="cost-fill pk" style="width:30%;"></div></div><div class="cost-val">「同样惊人」</div></div>
+    <div class="cost-row"><div class="cost-name">首周末收入</div><div class="cost-track"><div class="cost-fill cy" style="width:100%;"></div></div><div class="cost-val">40 亿美元+</div></div>
+    <div class="callout" style="margin-top:14px;">
+      <b>它可能在上线 4 天内,就收回了开发 + 营销成本,并开始盈利。</b>
+      这就是「文化事件」的杠杆:固定成本极高,但边际成本几乎为零。
+    </div>
+    <div class="cmp" style="margin-top:16px;">
+      <div class="cmp-row cmp-head"><div>指标</div><div>数据</div><div>说明</div></div>
+      <div class="cmp-row"><div class="cmp-name">FY2026 净收入</div><div class="cmp-a">66.54 亿美元(+18.2%)</div><div class="cmp-b">GTA 系列占 12.4%</div></div>
+      <div class="cmp-row"><div class="cmp-name">FY2027 预订额指引</div><div class="cmp-a">80-82 亿美元</div><div class="cmp-b">一款游戏拉高一家公司</div></div>
+      <div class="cmp-row"><div class="cmp-name">2026 Q3 预订额</div><div class="cmp-a">33.5-35 亿美元</div><div class="cmp-b">接近翻倍</div></div>
+      <div class="cmp-row"><div class="cmp-name">GTA+ 会员</div><div class="cmp-a">同比增长约 2 倍</div><div class="cmp-b">订阅是第二增长曲线</div></div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">风险:纪录背后,也有裂缝</span>
+      <span class="sec-en">Risk</span>
+    </div>
+    <div class="risk-row"><div class="risk-name">线上模式延期</div><div class="risk-desc">2027 年才上线,首发只有单机,长期收入后置</div><div class="stars">★★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">单机内购争议</div><div class="risk-desc">单机福利绑定 GTA+ 会员,玩家不满</div><div class="stars">★★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">口碑争议</div><div class="risk-desc">99 分被质疑「媒体放水」,部分评测指出缺点仍给满分</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">监管与内容</div><div class="risk-desc">暴力、犯罪题材,历来是舆论焦点</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">平台限制</div><div class="risk-desc">仅 PS5 / Xbox,装机量有限;PC 缺席</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">成本黑洞</div><div class="risk-desc">10-20 亿美元开发 + 巨额营销,失败代价极高</div><div class="stars">★★★</div></div>
+    <div class="risk-row"><div class="risk-name">行业虹吸</div><div class="risk-desc">首发期挤压其他游戏档期,也透支「下一作」的期待</div><div class="stars">★★★</div></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">10</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>它卖的不是游戏,是「文化事件」</h3>
+          <p>事件可以定价,游戏只能打折。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>营销的最高级,是「少」</h3>
+          <p>两年半两支预告,把每一次发声都变成新闻。<b>沉默,是最贵的广告位。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>$80 是一次「行业定价权」测试</h3>
+          <p>玩家骂,但买;同行看,然后跟。<b>GTA 6 之后,80 美元会成为新常态。</b></p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:28px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>首发只是「入场费」,线上才是「长期饭票」</h3>
+          <p>2027 年 GTA 6 Online 上线,才是这门生意真正的开始。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>它在「用单机养订阅」</h3>
+          <p>把单机福利绑进 GTA+,是变成持续用户的关键一步,也最容易翻车。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>它的真正对手,是「下一款 GTA」</h3>
+          <p>能打败 GTA 的,只有 Rockstar 自己。<b>13 年一作,是护城河,也是风险。</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · Take-Two / Rockstar 官方公告;Alinea Analytics、Sensor Tower;Metacritic;彭博社;Take-Two 2026 财年财报;界面、明报、IT 之家、17173、9game 等公开报道。<br>
+    <b>说明</b> · 首日/首周末数据存在官方口径与第三方估算差异,已在文中标注;开发成本与营销预算为外界估算,Rockstar 未确认;判断部分为个人观点,不构成投资建议。<br>
+    <b>配套长文</b> · <a href="analysis.md">《GTA 6:一次「文化事件」的定价权》</a>
+  </footer>
+
+</div>
+</body>
+</html>
