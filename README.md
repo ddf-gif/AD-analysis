@@ -5,7 +5,7 @@
 
 ## 进度
 
-**14 / 180**
+**15 / 180**
 
 | # | 对象 | 赛道 | 日期 | 可视化 | 长文 |
 |:--:|---|---|---|:--:|:--:|
@@ -23,6 +23,7 @@
 | 012 | **海鸥速递** | 跨境物流 / IP 驱动 | 2026-11-22 | [HTML](012-seagull/index.html) · [预览图](012-seagull/preview.png) | [analysis.md](012-seagull/analysis.md) |
 | 013 | **爱奇艺** | 长视频 / 会员订阅 | 2026-11-23 | [HTML](013-iqiyi/index.html) · [预览图](013-iqiyi/preview.png) | [analysis.md](013-iqiyi/analysis.md) |
 | 014 | **GTA 6** | 3A 游戏 / 文化事件 | 2026-11-24 | [HTML](014-gta6/index.html) · [预览图](014-gta6/preview.png) | [analysis.md](014-gta6/analysis.md) |
+| 015 | **LibTV** | AI 视频 / 创作工具 | 2026-11-25 | [HTML](015-libtv/index.html) · [预览图](015-libtv/preview.png) | [analysis.md](015-libtv/analysis.md) |
 
 ## 每篇包含什么
 

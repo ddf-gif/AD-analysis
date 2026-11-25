@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LibTV · 需求 · 场景 · 价值 · 商业模式拆解</title>
+<style>
+  :root{
+    --bg:#F5F3EE;
+    --card:#FFFFFF;
+    --ink:#141119;
+    --ink2:#4A4555;
+    --ink3:#8C8798;
+    --line:#E6E2D9;
+    --line2:#D7D1C4;
+    --violet:#6C4CF1;
+    --violet-soft:#EEE9FE;
+    --cyan:#0FB5C9;
+    --pink:#F04E8A;
+    --dark:#12101A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:var(--bg);}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .page{max-width:1180px;margin:0 auto;padding:46px 40px 90px;}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.22fr .78fr;gap:44px;align-items:center;padding:14px 0 44px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);font-weight:700;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--violet);display:block;}
+  h1{font-size:clamp(52px,7vw,90px);line-height:.98;letter-spacing:-.05em;font-weight:900;margin-bottom:14px;}
+  h1 .mark{background:linear-gradient(120deg,#6C4CF1,#0FB5C9);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .kicker{font-size:12px;letter-spacing:.26em;color:var(--ink3);margin-bottom:18px;font-weight:700;}
+  .subtitle{font-family:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;font-size:clamp(23px,2.8vw,34px);line-height:1.42;font-weight:600;margin-bottom:22px;}
+  .subtitle em{font-style:normal;background:linear-gradient(transparent 62%,#DCD2FF 62%);padding:0 2px;}
+  .lede{font-size:15.5px;line-height:1.95;color:var(--ink2);max-width:580px;}
+  .lede strong{color:var(--ink);font-weight:700;border-bottom:3px solid #DCD2FF;padding-bottom:2px;}
+
+  /* node canvas */
+  .canvas-wrap{display:flex;justify-content:center;}
+  .canvas{position:relative;width:318px;height:340px;border-radius:16px;background:#FBFAF6;border:1px solid var(--line2);
+    transform:rotate(-1.5deg);box-shadow:0 30px 60px -34px rgba(20,17,25,.4);
+    background-image:radial-gradient(#DDD7C8 1px,transparent 1px);background-size:16px 16px;}
+  .node{position:absolute;background:#fff;border:1px solid var(--line2);border-radius:9px;padding:7px 9px;width:104px;
+    box-shadow:0 6px 14px -10px rgba(20,17,25,.5);z-index:2;}
+  .node span{display:block;font-size:7.5px;letter-spacing:.12em;color:var(--ink3);font-weight:700;}
+  .node b{display:block;font-size:10.5px;font-weight:700;margin-top:1px;letter-spacing:.01em;}
+  .node.on{border-color:var(--violet);background:var(--violet-soft);}
+  .node.on span{color:var(--violet);}
+  .n1{left:18px;top:24px;}
+  .n2{left:178px;top:66px;}
+  .n3{left:34px;top:142px;}
+  .n4{left:186px;top:190px;}
+  .n5{left:60px;top:258px;width:120px;border-color:var(--cyan);background:#E8F7F9;}
+  .n5 span{color:var(--cyan);}
+  .wires{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
+  .canvas-tag{position:absolute;right:12px;bottom:8px;font-size:7px;letter-spacing:.18em;color:var(--ink3);}
+
+  /* metrics */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 14px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:22px;font-weight:900;letter-spacing:-.035em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:11px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .hl{color:var(--violet);}
+  .metric .v .cy{color:var(--cyan);}
+  .metric .k{font-size:10.5px;color:var(--ink3);margin-top:7px;letter-spacing:.03em;}
+
+  /* sections */
+  .sec{margin-bottom:66px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;}
+  .sec-num{font-size:11px;font-weight:800;letter-spacing:.14em;color:#fff;background:var(--violet);border-radius:999px;padding:3px 9px;}
+  .sec-title{font-size:22px;font-weight:700;letter-spacing:-.01em;}
+  .sec-en{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+  .mbr{display:none;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;}
+  .card .tag{display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--ink3);margin-bottom:11px;text-transform:uppercase;}
+  .card h3{font-size:16.5px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;line-height:1.4;}
+  .card p{font-size:12.5px;line-height:1.8;color:var(--ink2);margin-bottom:12px;}
+  .card .note{font-size:11.5px;color:var(--ink3);margin-top:auto;padding-top:12px;border-top:1px dashed var(--line2);}
+  .card .note b{color:var(--violet);font-weight:700;}
+  .hl-card{background:var(--violet-soft);border-color:#D6CBFB;}
+  .hl-card .tag{color:var(--violet);}
+  .cy-card{background:#E8F7F9;border-color:#BDE8EE;}
+  .cy-card .tag{color:var(--cyan);}
+
+  /* layers */
+  .layers{display:flex;flex-direction:column;gap:9px;}
+  .layer{display:grid;grid-template-columns:56px 1.05fr 1fr auto;gap:16px;align-items:center;padding:16px 20px;border-radius:14px;border:1px solid var(--line);background:var(--card);}
+  .layer .ln{font-size:11px;font-weight:900;letter-spacing:.1em;color:var(--violet);}
+  .layer .lh{font-size:14.5px;font-weight:700;}
+  .layer .lh small{display:block;font-size:10.5px;color:var(--ink3);font-weight:400;margin-top:2px;}
+  .layer .lp{font-size:12px;color:var(--ink2);line-height:1.75;}
+  .layer .lv{font-size:14px;font-weight:900;letter-spacing:-.01em;color:var(--cyan);white-space:nowrap;font-feature-settings:"tnum";}
+  .layer:nth-child(1){background:linear-gradient(90deg,rgba(108,76,241,.1),var(--card));border-color:#D6CBFB;}
+  .layer:nth-child(2){background:linear-gradient(90deg,rgba(15,181,201,.08),var(--card));border-color:#BDE8EE;}
+  .layer:nth-child(3){background:linear-gradient(90deg,rgba(240,78,138,.07),var(--card));border-color:#F3C6D8;}
+  .layer:nth-child(4){background:linear-gradient(90deg,rgba(108,76,241,.05),var(--card));border-color:#D6CBFB;}
+
+  /* timeline */
+  .tl{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);}
+  .tl-item{padding:18px 12px 0 0;border-right:1px solid var(--line);position:relative;}
+  .tl-item:last-child{border-right:none;}
+  .tl-item::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;border-radius:50%;background:var(--violet);}
+  .tl-item:nth-child(2)::before,.tl-item:nth-child(4)::before{background:var(--cyan);}
+  .tl-year{font-size:11px;font-weight:800;color:var(--violet);margin-bottom:5px;}
+  .tl-name{font-size:13px;font-weight:700;margin-bottom:5px;line-height:1.4;}
+  .tl-desc{font-size:11px;color:var(--ink2);line-height:1.65;}
+
+  /* needs */
+  .need{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;}
+  .pyr{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .pyr-row{display:flex;align-items:center;justify-content:center;gap:10px;height:50px;border-radius:8px;font-size:13px;font-weight:700;color:#fff;}
+  .pyr-row span.n{font-size:9px;opacity:.7;font-weight:800;letter-spacing:.1em;}
+  .pyr-row:nth-child(1){width:44%;background:linear-gradient(120deg,#0FB5C9,#0E8FA0);}
+  .pyr-row:nth-child(2){width:58%;background:linear-gradient(120deg,#6C4CF1,#8B6CF6);}
+  .pyr-row:nth-child(3){width:73%;background:linear-gradient(120deg,#8B6CF6,#A78BFA);}
+  .pyr-row:nth-child(4){width:88%;background:linear-gradient(120deg,#B7A6FA,#CFC4FC);color:#2A1F5C;}
+  .pyr-row:nth-child(5){width:100%;background:linear-gradient(120deg,#E4DDFE,#F0EBFF);color:#2A1F5C;}
+  .pyr-note{font-size:10.5px;color:var(--ink3);letter-spacing:.06em;margin-top:10px;}
+  .need-side h3{font-size:15px;font-weight:700;margin-bottom:12px;}
+  .need-side ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .need-side li{font-size:12.5px;line-height:1.8;color:var(--ink2);padding-left:16px;position:relative;}
+  .need-side li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--violet);}
+  .need-side li b{color:var(--ink);font-weight:700;}
+  .quote{margin-top:18px;border-left:2px solid var(--cyan);padding:10px 0 10px 16px;font-family:"Songti SC","STSong","Noto Serif CJK SC",serif;font-size:16px;line-height:1.7;color:var(--ink);}
+  .quote small{display:block;font-family:inherit;font-size:10.5px;letter-spacing:.12em;color:var(--ink3);margin-top:8px;}
+
+  /* scenes */
+  .scene{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px 17px 16px;position:relative;overflow:hidden;}
+  .scene::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--violet),var(--cyan));opacity:.85;}
+  .scene .t{font-size:9.5px;letter-spacing:.12em;color:var(--violet);font-weight:700;}
+  .scene h4{font-size:14px;font-weight:700;margin:6px 0 4px;}
+  .scene p{font-size:11.5px;line-height:1.7;color:var(--ink3);}
+
+  /* mech */
+  .mech{display:grid;grid-template-columns:36px 1fr auto;gap:16px;align-items:start;padding:15px 0;border-bottom:1px solid var(--line);}
+  .mech:first-of-type{border-top:1px solid var(--line2);}
+  .mech .n{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--violet);padding-top:2px;}
+  .mech h4{font-size:14px;font-weight:700;margin-bottom:3px;}
+  .mech p{font-size:12px;line-height:1.8;color:var(--ink2);}
+  .mech .chip{font-size:10.5px;color:var(--cyan);border:1px solid #BDE8EE;background:#E8F7F9;border-radius:999px;padding:3px 10px;white-space:nowrap;margin-top:2px;}
+
+  .callout{border-radius:12px;padding:16px 20px;font-size:12.5px;line-height:1.8;background:var(--violet-soft);border:1px solid #D6CBFB;color:#2E2360;}
+  .callout b{color:#1E1550;}
+  .callout.cy{background:#E8F7F9;border-color:#BDE8EE;color:#0B4A54;}
+  .callout.cy b{color:#083A42;}
+
+  .cmp{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
+  .cmp-row{display:grid;grid-template-columns:150px 1fr 1fr;gap:18px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:baseline;}
+  .cmp-row:last-child{border-bottom:none;}
+  .cmp-head{background:#EFEBE2;font-size:10px;letter-spacing:.14em;color:var(--ink3);font-weight:700;padding:11px 20px;}
+  .cmp-name{font-weight:700;font-size:13px;}
+  .cmp-a{color:var(--ink2);}
+  .cmp-b{color:var(--ink3);}
+
+  .risk-row{display:grid;grid-template-columns:150px 1fr 100px;gap:18px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+  .risk-row:first-of-type{border-top:1px solid var(--line2);}
+  .risk-name{font-weight:700;}
+  .risk-desc{color:var(--ink2);font-size:12px;}
+  .stars{color:var(--pink);letter-spacing:2px;font-size:11.5px;text-align:right;}
+
+  .judgments{background:var(--dark);color:#fff;border-radius:24px;padding:40px 44px 42px;position:relative;overflow:hidden;}
+  .judgments::after{content:"";position:absolute;right:-100px;top:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(108,76,241,.35),transparent 65%);}
+  .judgments .sec-head{margin-bottom:30px;}
+  .judgments .sec-num{background:var(--cyan);}
+  .judgments .sec-title{color:#fff;}
+  .judgments .sec-en{color:rgba(255,255,255,.35);}
+  .j-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative;z-index:1;}
+  .j-item{border-top:1px solid rgba(255,255,255,.16);padding-top:16px;}
+  .j-num{font-size:9.5px;letter-spacing:.16em;color:#B7A6FA;font-weight:800;margin-bottom:9px;}
+  .j-item h3{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.45;letter-spacing:-.01em;}
+  .j-item p{font-size:12px;line-height:1.85;color:rgba(255,255,255,.62);}
+  .j-item p b{color:#fff;font-weight:600;}
+
+  footer{margin-top:66px;padding-top:22px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink3);line-height:1.9;}
+  footer b{color:var(--ink2);font-weight:600;}
+  footer a{color:var(--violet);text-decoration:none;border-bottom:1px solid #D6CBFB;}
+
+  @media (max-width:980px){
+    .page{padding:28px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:26px;}
+    .canvas{width:290px;height:320px;}
+    .node{width:96px;}
+    .node span{font-size:6px;letter-spacing:.06em;}
+    .node b{font-size:10px;}
+    .canvas-tag{display:none;}
+    .n2{left:170px;}
+    .n4{left:176px;}
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(n+3){border-top:1px solid var(--line);}
+    .sec-en{display:none;}
+    .sec-title{font-size:20px;}
+    .mbr{display:inline;}
+    .grid-2,.grid-3,.grid-4,.need{grid-template-columns:1fr;}
+    .tl{grid-template-columns:1fr;border-top:none;}
+    .tl-item{border-right:none;border-top:1px solid var(--line);padding:14px 0 0 14px;}
+    .tl-item::before{left:0;top:18px;}
+    .layer{grid-template-columns:44px 1fr;gap:8px 12px;}
+    .layer .lp{grid-column:1 / -1;}
+    .layer .lv{grid-column:2;justify-self:start;}
+    .mech{grid-template-columns:26px 1fr;}
+    .mech .chip{grid-column:2;justify-self:start;margin-top:6px;}
+    .cmp-row{grid-template-columns:1fr;gap:3px;padding:13px 16px;}
+    .cmp-head{display:none;}
+    .cmp-a::before{content:"";}
+    .cmp-b::before{content:"";}
+    .cmp.vs .cmp-a::before{content:"传统 · ";color:var(--ink3);}
+    .cmp.vs .cmp-b::before{content:"AI · ";color:var(--ink3);}
+    .cmp.players .cmp-a::before{content:"强在 · ";color:var(--ink3);}
+    .cmp.players .cmp-b::before{content:"短板 · ";color:var(--ink3);}
+    .risk-row{grid-template-columns:1fr;gap:3px;}
+    .stars{text-align:left;}
+    .j-grid{grid-template-columns:1fr;gap:22px;}
+    .judgments{padding:28px 22px 30px;}
+  }
+  @media print{
+    body{background:#fff;}
+    .page{max-width:none;padding:0;}
+    .judgments,.metric,.sec-num,.pyr-row,.canvas,.node,.layer,.hl-card,.cy-card{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .sec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">AI Video Teardown · Day 015</div>
+      <h1>LibTV<span class="mark">.</span></h1>
+      <div class="kicker">哩布哩布 · 演语科技</div>
+      <div class="subtitle">把「抽卡」<br><em>变成「导演」</em></div>
+      <p class="lede">
+        它卖的不是「视频生成」,是<strong>「一段能交付的片子」</strong>。
+        把模型的不确定性,封装成导演的确定性——这才是它真正值钱的地方。
+      </p>
+    </div>
+    <div class="canvas-wrap">
+      <div class="canvas">
+        <svg class="wires" viewBox="0 0 318 340" preserveAspectRatio="none">
+          <path d="M122 46 H150 V88 H178" fill="none" stroke="#CFC8DA" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <path d="M178 100 H150 V164 H138" fill="none" stroke="#CFC8DA" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <path d="M138 164 H162 V212 H186" fill="none" stroke="#CFC8DA" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <path d="M186 222 H150 V280 H180" fill="none" stroke="#CFC8DA" stroke-width="1.2" stroke-dasharray="4 4"/>
+        </svg>
+        <div class="node n1"><span>01 · SCRIPT</span><b>剧本 / 大纲</b></div>
+        <div class="node n2 on"><span>02 · SHOT</span><b>分镜 4 宫格</b></div>
+        <div class="node n3"><span>03 · CHARACTER</span><b>角色三视图</b></div>
+        <div class="node n4"><span>04 · RENDER</span><b>多机位 9 宫格</b></div>
+        <div class="node n5"><span>05 · DELIVER</span><b>成片 · 交付</b></div>
+        <div class="canvas-tag">INFINITE CANVAS · NODE WORKFLOW</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">2026.3</div><div class="k">LibTV 上线</div></div>
+    <div class="metric"><div class="v">3,000<small>万+</small></div><div class="k">LiblibAI 累计用户</div></div>
+    <div class="metric"><div class="v"><span class="hl">100</span><small>+</small></div><div class="k">专业 Skill</div></div>
+    <div class="metric"><div class="v">20<small>+</small></div><div class="k">独家功能</div></div>
+    <div class="metric"><div class="v"><span class="cy">¥0.10</span><small>起/秒</small></div><div class="k">视频生成成本</div></div>
+    <div class="metric"><div class="v"><span class="hl">$20</span><small>亿</small></div><div class="k">母公司估值</div></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">它是什么:一个「AI 制片厂」</span>
+      <span class="sec-en">What</span>
+    </div>
+    <p style="font-size:13.5px;line-height:1.95;color:var(--ink2);max-width:860px;margin-bottom:18px;">
+      2026 年 3 月 18 日,哩布哩布上线 LibTV。它不是一个「输入一句话、输出一段视频」的生成器,而是一个
+      <strong style="color:var(--ink);">专业视频创作平台</strong>:无限画布 + 节点式工作流 + 模型聚合 + 100+ 导演 Skill + Agent 接口。
+    </p>
+    <div class="layers">
+      <div class="layer">
+        <div class="ln">L1</div>
+        <div class="lh">模型层<small>别人的模型</small></div>
+        <div class="lp">可灵 3.0 / Seedance 2.5 / Wan 3.0 / H3 / MAGI-2 / HappyHorse 1.0。</div>
+        <div class="lv">租</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L2</div>
+        <div class="lh">工作流<small>自己的</small></div>
+        <div class="lp">无限画布、节点、角色一致性、多机位、灯光、镜头控制。</div>
+        <div class="lv">建</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L3</div>
+        <div class="lh">Skill<small>自己的</small></div>
+        <div class="lp">100+ 专业 Skill:商业广告、叙事短剧、MV、爆款复刻……每个 Skill 封装一位导演的判断。</div>
+        <div class="lv">封</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L4</div>
+        <div class="lh">Agent<small>自己的</small></div>
+        <div class="lp">OpenAPI + Skill Hub + libtv-skills(遵循 OpenClaw 规范),让 AI 直接调用视频能力。</div>
+        <div class="lv">接</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>模型是租来的,工作流是自建的。</b>
+      这是理解 LibTV 的第一把钥匙:它不赌「模型最强」,它赌「工作流最顺」。
+    </div>
+    <div class="tl" style="margin-top:22px;">
+      <div class="tl-item"><div class="tl-year">2026.3.18</div><div class="tl-name">上线</div><div class="tl-desc">无限画布 + 双入口。</div></div>
+      <div class="tl-item"><div class="tl-year">2026.4.28</div><div class="tl-name">HappyHorse 1.0</div><div class="tl-desc">首发登陆 LibTV。</div></div>
+      <div class="tl-item"><div class="tl-year">2026.6</div><div class="tl-name">B+ 轮</div><div class="tl-desc">近 3 亿美元,估值 20 亿美元+。</div></div>
+      <div class="tl-item"><div class="tl-year">2026.7</div><div class="tl-name">Agent</div><div class="tl-desc">100+ Skill,一句话出 10 集大纲。</div></div>
+      <div class="tl-item"><div class="tl-year">2026.11</div><div class="tl-name">联名</div><div class="tl-desc">王者荣耀联名,播放 1.6 亿。</div></div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">需求:五层,本质是「确定性」</span>
+      <span class="sec-en">Needs</span>
+    </div>
+    <div class="need">
+      <div>
+        <div class="pyr">
+          <div class="pyr-row"><span class="n">05</span>确定性</div>
+          <div class="pyr-row"><span class="n">04</span>效 率</div>
+          <div class="pyr-row"><span class="n">03</span>一致性</div>
+          <div class="pyr-row"><span class="n">02</span>可 控</div>
+          <div class="pyr-row"><span class="n">01</span>出 片</div>
+        </div>
+        <div class="pyr-note">越往下越基础,越往上越值钱</div>
+      </div>
+      <div class="need-side">
+        <h3>五层需求,逐层加码</h3>
+        <ul>
+          <li><b>出片</b> — 先有一段能看的视频</li>
+          <li><b>可控</b> — 镜头、灯光、机位、表演,能调</li>
+          <li><b>一致性</b> — 20 集不换脸、不换景、不换光</li>
+          <li><b>效率</b> — 一条片子从 7 天到 1 天</li>
+          <li><b>确定性</b> — 能交片、能过审、能复用</li>
+        </ul>
+        <div class="quote">
+          「我需要的不是一段视频,<br>是一个能交片的片子。」
+          <small>生成是概率,交付是工程</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">场景:六种「片子」</span>
+      <span class="sec-en">Scenarios</span>
+    </div>
+    <div class="grid-3">
+      <div class="scene"><div class="t">短剧 / 漫剧</div><h4>一张角色图,20 集不换脸</h4><p>从 7-15 天/集,到 1-2 天/集</p></div>
+      <div class="scene"><div class="t">广告 TVC</div><h4>数十万 → 几千到几万</h4><p>当天出片,改到满意</p></div>
+      <div class="scene"><div class="t">电商带货</div><h4>一张产品图,多条素材</h4><p>批量生成,快速测试</p></div>
+      <div class="scene"><div class="t">音乐 MV</div><h4>概念图 → 分镜 → 成片</h4><p>一个人完成一支 MV</p></div>
+      <div class="scene"><div class="t">自媒体口播</div><h4>脚本 → 数字人 → 成片</h4><p>日更不再是体力活</p></div>
+      <div class="scene"><div class="t">影视预演</div><h4>分镜直接变动态 Previz</h4><p>开拍前先「看一遍」</p></div>
+    </div>
+    <div class="callout cy" style="margin-top:14px;">
+      <b>最典型的场景是短剧。</b>
+      剧情推演 4 宫格、画面推演(3 秒后 / 5 秒前)、多机位 9/25 宫格——它把「下一镜」从灵感,变成了可计算的东西。
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">价值:三笔账</span>
+      <span class="sec-en">Value</span>
+    </div>
+    <div class="cmp vs">
+      <div class="cmp-row cmp-head"><div>维度</div><div>传统制作</div><div>AI(LibTV 类)</div></div>
+      <div class="cmp-row"><div class="cmp-name">广告 TVC</div><div class="cmp-a">数十万 / 条,1-2 个月</div><div class="cmp-b">几千-几万 / 条,几天</div></div>
+      <div class="cmp-row"><div class="cmp-name">短剧</div><div class="cmp-a">数万-数十万 / 集</div><div class="cmp-b">数千 / 集,1-2 天</div></div>
+      <div class="cmp-row"><div class="cmp-name">素材迭代</div><div class="cmp-a">重拍 = 重花钱</div><div class="cmp-b">换节点 / 改提示词</div></div>
+      <div class="cmp-row"><div class="cmp-name">边际成本</div><div class="cmp-a">每次拍摄都要钱</div><div class="cmp-b">按秒计费,¥0.10 起</div></div>
+    </div>
+    <div class="grid-3" style="margin-top:14px;">
+      <div class="card"><div class="tag">成本账</div><h3>降一个数量级</h3><p>TikTok CEO 周受资:品牌视频广告成本,已从数百上千美元降到 1-10 美元。</p></div>
+      <div class="card"><div class="tag">周期账</div><h3>从「月」到「天」</h3><p>创意 1 天 + 生成 1 天 + 精修 2 天,一周内交付。</p></div>
+      <div class="card hl-card"><div class="tag">确定性账 · 最值钱</div><h3>敢不敢交给客户</h3><p>角色一致、场景一致、风格一致,才是「能交付」的前提。</p></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>成本决定「能不能做」,周期决定「来不来得及」,确定性决定「敢不敢交给客户」。</b>
+      前两个是效率,第三个才是生意。
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">商业模式:四层收入</span>
+      <span class="sec-en">Business Model</span>
+    </div>
+    <div class="layers">
+      <div class="layer">
+        <div class="ln">L1</div>
+        <div class="lh">订阅<small>月卡 / 年卡 + 积分</small></div>
+        <div class="lp">年会员最高赠送 15 个月,双 11 期间 6,699-6,999 元档;19.9 元「3 日高级会员 + 1,200 积分」拉新。</div>
+        <div class="lv">会员</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L2</div>
+        <div class="lh">按秒计费<small>积分消耗</small></div>
+        <div class="lp">Seedance 2.5 单秒最低约 0.16 元;2.5 Flash 约 0.10 元;MAGI-2 年卡折算每秒最低约 5 分钱。</div>
+        <div class="lv">¥0.10-0.16/秒</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L3</div>
+        <div class="lh">企业 / API / Agent<small>OpenAPI + Skill Hub</small></div>
+        <div class="lp">生图、生视频、会话管理;libtv-skills 遵循 OpenClaw 规范,Agent 可一键接入。</div>
+        <div class="lv">B 端</div>
+      </div>
+      <div class="layer">
+        <div class="ln">L4</div>
+        <div class="lh">生态<small>模型 / 素材 / 课程</small></div>
+        <div class="lp">多模型聚合、模板素材、LibTV 第一门 AI 视频课、联名 IP(王者荣耀)。</div>
+        <div class="lv">生态</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px;">
+      <b>单位经济的核心:毛利 = 售价(按秒) − 模型成本(按秒) − 算力/带宽。</b>
+      它的毛利空间,取决于两件事:能不能拿到更便宜的模型价,能不能用工作流卖出溢价。
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">变革:五件正在发生的事</span>
+      <span class="sec-en">Change</span>
+    </div>
+    <div class="mech">
+      <div class="n">01</div>
+      <div><h4>生产关系:导演从「执行者」变成「决策者」</h4><p>过去导演的价值在调度资源;现在资源是算力,导演的价值在判断——选哪个镜头、哪种光、哪版表演。一个人,就是一家制片厂。</p></div>
+      <div class="chip">一人制片厂</div>
+    </div>
+    <div class="mech">
+      <div class="n">02</div>
+      <div><h4>成本结构:从「人力密集」到「算力密集」</h4><p>固定成本下降,可变成本上升。对小团队是利好,对大公司是组织重构。</p></div>
+      <div class="chip">成本结构</div>
+    </div>
+    <div class="mech">
+      <div class="n">03</div>
+      <div><h4>内容供给:从「稀缺」到「过剩」</h4><p>当一条 TVC 只要 1-10 美元,内容会像工业品一样被生产。但注意力是稀缺的:短剧投流巨量约 73%、腾讯约 17%、快手约 8%;流量成本同比 +100%,千次播放收益从约 60 元跌到 15-30 元。</p></div>
+      <div class="chip">生产≠分发</div>
+    </div>
+    <div class="mech">
+      <div class="n">04</div>
+      <div><h4>Agent 原生:视频成为「可调用的能力」</h4><p>一句话 → 10 集大纲 → 分镜 → 成片,成为一条链;100+ Skill 把「导演经验」变成「可调用的函数」。人给判断,Agent 给产能。</p></div>
+      <div class="chip">人机协同</div>
+    </div>
+    <div class="mech">
+      <div class="n">05</div>
+      <div><h4>平台竞争:模型商品化,工作流生态化</h4><p>当所有平台都能调用可灵、Seedance,模型就不再是壁垒。壁垒变成工作流、Skill、生态。</p></div>
+      <div class="chip">壁垒转移</div>
+    </div>
+    <div class="callout cy" style="margin-top:16px;">
+      <b>AI 解决了「生产」,没有解决「分发」。</b>
+      内容工业化之后,瓶颈从「拍不出来」变成「投不出去」——这可能是 2026 年视频行业最大的反讽。
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">竞争:它和谁抢</span>
+      <span class="sec-en">Competition</span>
+    </div>
+    <div class="cmp players">
+      <div class="cmp-row cmp-head"><div>玩家</div><div>强在哪</div><div>短板</div></div>
+      <div class="cmp-row"><div class="cmp-name">即梦(字节)</div><div class="cmp-a">流量、模型、剪映生态</div><div class="cmp-b">更偏大众创作,专业工作流弱</div></div>
+      <div class="cmp-row"><div class="cmp-name">可灵(快手)</div><div class="cmp-a">模型能力强、商业化早</div><div class="cmp-b">工具链偏「生成」,缺制片流程</div></div>
+      <div class="cmp-row"><div class="cmp-name">海螺(MiniMax)</div><div class="cmp-a">生成质量、创作者口碑</div><div class="cmp-b">生态与工作流仍在补</div></div>
+      <div class="cmp-row"><div class="cmp-name">Runway / Veo</div><div class="cmp-a">技术前沿、全球市场</div><div class="cmp-b">本土化、价格、生态弱</div></div>
+      <div class="cmp-row"><div class="cmp-name">LibTV</div><div class="cmp-a">工作流 + Skill + Agent + 社区</div><div class="cmp-b">模型依赖第三方,品牌仍在建立</div></div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <b>它的对手不是「某个模型」,是「模型厂商自己做的工具」。</b>
+      即梦、可灵、海螺,随时可以把工作流做成「免费标配」。
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">风险</span>
+      <span class="sec-en">Risk</span>
+    </div>
+    <div class="risk-row"><div class="risk-name">模型依赖</div><div class="risk-desc">核心模型来自可灵、Seedance 等,议价权在别人手里</div><div class="stars">★★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">同质化</div><div class="risk-desc">节点式工作流正在成为行业标配</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">版权与合规</div><div class="risk-desc">角色一致性、名人肖像、训练数据,都是雷区</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">算力成本</div><div class="risk-desc">按秒计费,毛利被算力价格牵着走</div><div class="stars">★★★★</div></div>
+    <div class="risk-row"><div class="risk-name">口碑</div><div class="risk-desc">会员积分、退款等投诉(黑猫)会影响复购</div><div class="stars">★★★</div></div>
+    <div class="risk-row"><div class="risk-name">行业内卷</div><div class="risk-desc">短剧投流成本上涨,客户预算收缩</div><div class="stars">★★★</div></div>
+    <div class="risk-row"><div class="risk-name">大厂挤压</div><div class="risk-desc">字节、快手若把工作流免费化,独立平台压力巨大</div><div class="stars">★★★★</div></div>
+  </section>
+
+  <!-- 09 -->
+  <section class="sec">
+    <div class="judgments">
+      <div class="sec-head">
+        <span class="sec-num">09</span>
+        <span class="sec-title">六个判断</span>
+        <span class="sec-en">Judgments</span>
+      </div>
+      <div class="j-grid">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 01</div>
+          <h3>它卖的不是「生成」,是「确定性」</h3>
+          <p>生成是概率,交付是工程。<b>能交片,才值钱。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 02</div>
+          <h3>模型会商品化,工作流不会</h3>
+          <p>当所有平台都能调用同一批模型,壁垒就只剩「怎么用」。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 03</div>
+          <h3>Agent 入口,是最被低估的护城河</h3>
+          <p>视频第一次成为 Agent 的工具,而 LibTV 把「导演经验」封装成了可调用的 Skill。</p>
+        </div>
+      </div>
+      <div class="j-grid" style="margin-top:28px;">
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 04</div>
+          <h3>「一人制片厂」成立,「一人发行」不成立</h3>
+          <p>生产端被 AI 抹平,分发端仍是巨头的战场。<b>投流,才是短剧真正的门槛。</b></p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 05</div>
+          <h3>它的对手,是模型厂商自己的工具</h3>
+          <p>即梦、可灵、海螺,随时可以把工作流做成「免费标配」。</p>
+        </div>
+        <div class="j-item">
+          <div class="j-num">JUDGMENT 06</div>
+          <h3>终局:做「AI 制片厂的操作系统」,或被吞掉</h3>
+          <p>做成了,它是视频时代的「Adobe」;做不成,它只是模型厂商的一个「分销渠道」。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>数据来源</b> · LibTV 官网、百度百科、极客公园、C114;新榜、品玩;21 世纪经济报道(演语科技 B+ 轮、估值、ARR);同花顺(短剧投流);观点网(TikTok CEO 周受资);黑猫投诉。<br>
+    <b>说明</b> · 价格与会员政策为 2026 年 11 月公开信息,促销期会有变化;用户数、ARR、估值为企业口径或媒体报道;判断部分为个人观点,不构成投资建议。<br>
+    <b>配套长文</b> · <a href="analysis.md">《LibTV:把「抽卡」变成「导演」》</a>
+  </footer>
+
+</div>
+</body>
+</html>
