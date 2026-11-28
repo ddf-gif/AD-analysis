@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>三角洲行动 · 把硬核射击做成国民级消费品 | 018</title>
+<style>
+  :root{
+    --bg:#0A0E0B;
+    --bg2:#0E1410;
+    --card:#111A13;
+    --card2:#0C120E;
+    --line:#1E2A21;
+    --line2:#2A3A2E;
+    --ink:#E8F0E4;
+    --ink2:#A8B8AB;
+    --ink3:#6C7F71;
+    --acid:#B8F24A;
+    --acid-d:#8FCB22;
+    --amber:#F2B23E;
+    --red:#FF5C38;
+    --cyan:#5BE3C8;
+    --shadow:0 24px 50px -30px rgba(0,0,0,.9);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:var(--bg);}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(184,242,74,.07), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.014) 0 1px, transparent 1px 3px);
+  }
+  .page{max-width:1180px;margin:0 auto;padding:34px 40px 80px;}
+
+  /* ---------- top bar ---------- */
+  .hud{display:flex;align-items:center;gap:14px;font-size:10.5px;letter-spacing:.16em;color:var(--ink3);
+    text-transform:uppercase;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:40px;}
+  .hud .dot{width:6px;height:6px;border-radius:50%;background:var(--acid);box-shadow:0 0 10px var(--acid);}
+  .hud .sp{flex:1;}
+  .hud b{color:var(--ink2);font-weight:700;}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:46px;align-items:center;padding-bottom:46px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.24em;color:var(--acid);
+    font-weight:700;margin-bottom:20px;text-transform:uppercase;}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--acid);display:block;}
+  h1{font-size:clamp(36px,4.5vw,58px);line-height:1.06;letter-spacing:-.04em;font-weight:900;margin-bottom:14px;}
+  h1 .mark{color:var(--acid);}
+  h1 .thin{font-weight:300;color:var(--ink2);}
+  .kicker{font-size:11.5px;letter-spacing:.3em;color:var(--ink3);margin-bottom:16px;font-weight:700;}
+  .subtitle{font-size:clamp(21px,2.4vw,29px);line-height:1.45;font-weight:600;margin-bottom:20px;letter-spacing:-.01em;}
+  .subtitle em{font-style:normal;color:var(--acid);border-bottom:2px solid rgba(184,242,74,.35);padding-bottom:2px;}
+  .lede{font-size:15px;line-height:1.95;color:var(--ink2);max-width:590px;}
+  .lede strong{color:var(--ink);font-weight:700;border-bottom:2px solid rgba(184,242,74,.4);}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;}
+  .hero-tags span{font-size:10.5px;letter-spacing:.1em;color:var(--ink2);border:1px solid var(--line2);
+    border-radius:999px;padding:4px 11px;background:rgba(255,255,255,.02);}
+
+  /* ---------- radar ---------- */
+  .radar-wrap{display:flex;justify-content:center;align-items:center;}
+  .radar{position:relative;width:330px;height:330px;}
+  .radar svg{width:100%;height:100%;display:block;}
+  .sweep{transform-origin:165px 165px;animation:spin 7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .rlabel{position:absolute;background:rgba(10,14,11,.92);border:1px solid var(--line2);border-radius:8px;
+    padding:6px 9px;font-size:10px;line-height:1.3;letter-spacing:.04em;color:var(--ink2);white-space:nowrap;box-shadow:var(--shadow);}
+  .rlabel b{display:block;font-size:11px;color:var(--ink);font-weight:800;letter-spacing:0;}
+  .rlabel.r1{top:2px;right:-6px;border-color:rgba(184,242,74,.4);}
+  .rlabel.r2{bottom:44px;left:-18px;border-color:rgba(242,178,62,.4);}
+  .rlabel.r3{bottom:-6px;right:16px;border-color:rgba(91,227,200,.4);}
+  .rcore{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;}
+  .rcore b{display:block;font-size:32px;font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--acid);
+    text-shadow:0 0 26px rgba(184,242,74,.35);}
+  .rcore span{display:block;font-size:9px;letter-spacing:.22em;color:var(--ink3);margin-top:5px;}
+
+  /* ---------- metrics ---------- */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--acid);border-bottom:1px solid var(--line);margin-bottom:64px;}
+  .metric{padding:22px 14px 20px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .v{font-size:23px;font-weight:900;letter-spacing:-.04em;line-height:1.15;font-feature-settings:"tnum";}
+  .metric .v small{font-size:11px;font-weight:700;margin-left:1px;color:var(--ink2);}
+  .metric .v .hl{color:var(--acid);}
+  .metric .v .am{color:var(--amber);}
+  .metric .k{font-size:10.5px;color:var(--ink3);margin-top:7px;letter-spacing:.03em;}
+
+  /* ---------- sections ---------- */
+  .sec{margin-bottom:62px;}
+  .sec-head{display:flex;align-items:baseline;gap:13px;margin-bottom:24px;border-bottom:1px solid var(--line);padding-bottom:12px;}
+  .sec-num{font-size:10.5px;font-weight:800;letter-spacing:.14em;color:#0A0E0B;background:var(--acid);border-radius:3px;padding:2px 7px;}
+  .sec-title{font-size:21px;font-weight:800;letter-spacing:-.01em;}
+  .sec-en{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);margin-left:auto;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;
+    position:relative;overflow:hidden;}
+  .card::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:linear-gradient(90deg,var(--acid),transparent 70%);opacity:.5;}
+  .card .tag{display:inline-block;font-size:9.5px;letter-spacing:.16em;color:var(--ink3);margin-bottom:9px;text-transform:uppercase;}
+  .card h3{font-size:16px;font-weight:800;margin-bottom:7px;line-height:1.4;}
+  .card p{font-size:13px;line-height:1.8;color:var(--ink2);}
+  .card p + p{margin-top:7px;}
+  .card .big{font-size:26px;font-weight:900;color:var(--acid);letter-spacing:-.03em;line-height:1;}
+  .card .big small{font-size:11px;color:var(--ink3);font-weight:700;margin-left:4px;letter-spacing:0;}
+
+  /* timeline */
+  .tl{position:relative;margin-top:8px;padding-left:22px;}
+  .tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:linear-gradient(var(--acid),var(--line));}
+  .tl-row{position:relative;display:grid;grid-template-columns:88px 1fr 150px;gap:16px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line);}
+  .tl-row:last-child{border-bottom:none;}
+  .tl-row::before{content:"";position:absolute;left:-21px;top:50%;transform:translateY(-50%);width:9px;height:9px;border-radius:50%;
+    background:var(--bg);border:1.5px solid var(--line2);}
+  .tl-row.hot::before{background:var(--acid);border-color:var(--acid);box-shadow:0 0 12px rgba(184,242,74,.7);}
+  .tl-date{font-size:11.5px;letter-spacing:.06em;color:var(--ink3);font-weight:700;}
+  .tl-what{font-size:13.5px;color:var(--ink);}
+  .tl-what b{font-weight:800;}
+  .tl-val{font-size:12.5px;text-align:right;color:var(--ink2);font-variant-numeric:tabular-nums;}
+  .tl-val b{font-size:16px;font-weight:900;color:var(--acid);letter-spacing:-.02em;}
+  .bar{height:5px;background:#17211A;border-radius:3px;overflow:hidden;margin-top:6px;}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acid-d),var(--acid));border-radius:3px;}
+
+  /* mode cards */
+  .mode{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:22px;}
+  .mode-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+  .mode h3{font-size:19px;font-weight:900;letter-spacing:-.01em;}
+  .mode .en{font-size:9.5px;letter-spacing:.18em;color:var(--ink3);text-transform:uppercase;margin-top:2px;}
+  .mode .pill{font-size:9.5px;letter-spacing:.08em;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;color:var(--ink2);white-space:nowrap;}
+  .mode ul{list-style:none;margin-top:10px;}
+  .mode li{font-size:12.5px;color:var(--ink2);padding:5px 0 5px 16px;position:relative;border-bottom:1px dashed rgba(255,255,255,.05);}
+  .mode li:last-child{border-bottom:none;}
+  .mode li::before{content:"▸";position:absolute;left:0;color:var(--acid);font-size:10px;top:6px;}
+  .mode .formula{margin-top:14px;font-size:11.5px;color:var(--ink3);border-top:1px solid var(--line);padding-top:10px;}
+  .mode .formula b{color:var(--amber);}
+
+  /* tiers */
+  .tier{border-left:2px solid var(--line2);padding:16px 0 16px 20px;margin-left:2px;position:relative;}
+  .tier::before{content:"";position:absolute;left:-5px;top:22px;width:8px;height:8px;border-radius:50%;background:var(--line2);}
+  .tier.on{border-left-color:var(--acid);}
+  .tier.on::before{background:var(--acid);box-shadow:0 0 10px rgba(184,242,74,.6);}
+  .tier .lab{font-size:10px;letter-spacing:.18em;color:var(--ink3);text-transform:uppercase;margin-bottom:5px;}
+  .tier h3{font-size:17px;font-weight:800;margin-bottom:6px;}
+  .tier h3 span{color:var(--ink3);text-decoration:line-through;font-weight:500;font-size:14px;margin-right:8px;}
+  .tier p{font-size:13px;color:var(--ink2);line-height:1.8;}
+
+  /* personas */
+  .persona .who{font-size:12.5px;color:var(--acid);font-weight:700;margin-bottom:6px;}
+  .persona .meta{font-size:11px;color:var(--ink3);margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);}
+
+  /* scenes */
+  .scene{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:15px 14px;}
+  .scene .no{font-size:10px;color:var(--acid);font-weight:800;letter-spacing:.1em;}
+  .scene h4{font-size:13.5px;font-weight:700;margin:5px 0 5px;line-height:1.4;}
+  .scene p{font-size:11.5px;color:var(--ink3);line-height:1.65;}
+
+  /* pyramid */
+  .pyr{display:flex;flex-direction:column;gap:7px;align-items:center;margin:6px 0 8px;}
+  .pyr div{background:linear-gradient(180deg,rgba(184,242,74,.16),rgba(184,242,74,.05));
+    border:1px solid rgba(184,242,74,.28);border-radius:6px;padding:10px 14px;text-align:center;
+    color:var(--ink);font-size:12.5px;font-weight:700;}
+  .pyr div span{display:block;font-size:10px;font-weight:500;color:var(--ink3);margin-top:2px;letter-spacing:.02em;}
+  .pyr div.l1{width:44%;}
+  .pyr div.l2{width:58%;}
+  .pyr div.l3{width:72%;}
+  .pyr div.l4{width:86%;}
+  .pyr div.l5{width:100%;background:linear-gradient(180deg,var(--acid),#8FCB22);border-color:var(--acid);color:#0A0E0B;}
+  .pyr div.l5 span{color:#26310F;font-weight:700;}
+
+  /* mechanics */
+  .mech{display:grid;grid-template-columns:56px 1fr 220px;gap:16px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line);}
+  .mech:last-child{border-bottom:none;}
+  .mech .n{font-size:20px;font-weight:900;color:var(--line2);letter-spacing:-.04em;font-variant-numeric:tabular-nums;}
+  .mech .m h4{font-size:14.5px;font-weight:800;margin-bottom:3px;}
+  .mech .m p{font-size:12.5px;color:var(--ink2);line-height:1.7;}
+  .mech .eff{font-size:11.5px;color:var(--ink3);line-height:1.6;border-left:2px solid var(--acid);padding-left:10px;}
+  .mech .eff b{color:var(--acid);display:block;font-size:10px;letter-spacing:.14em;margin-bottom:2px;}
+
+  /* table */
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .tbl th{text-align:left;font-size:10px;letter-spacing:.14em;color:var(--ink3);font-weight:700;text-transform:uppercase;
+    padding:9px 10px;border-bottom:1px solid var(--line2);white-space:nowrap;}
+  .tbl td{padding:11px 10px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top;line-height:1.6;}
+  .tbl td:first-child{color:var(--ink);font-weight:700;white-space:nowrap;}
+  .tbl tr:last-child td{border-bottom:none;}
+  .tbl .hl{color:var(--acid);font-weight:800;}
+  .tbl .neg{color:var(--red);font-weight:700;}
+  .tbl .am{color:var(--amber);font-weight:700;}
+
+  /* paradox */
+  .para{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .para .card{border-color:rgba(255,92,56,.28);}
+  .para .card::before{background:linear-gradient(90deg,var(--red),transparent 70%);}
+  .para h3{color:#FFB9A8;}
+  .para .flow{font-size:11.5px;color:var(--ink3);margin-top:10px;line-height:1.9;}
+  .para .flow b{color:var(--ink2);}
+
+  /* risk */
+  .risk-row{display:grid;grid-template-columns:24px 132px 1fr 76px;gap:14px;align-items:center;
+    padding:13px 0;border-bottom:1px solid var(--line);}
+  .risk-row:last-child{border-bottom:none;}
+  .risk-row .i{font-size:11px;color:var(--ink3);font-variant-numeric:tabular-nums;font-weight:700;}
+  .risk-row .n{font-size:13.5px;font-weight:800;}
+  .risk-row .d{font-size:12.5px;color:var(--ink2);line-height:1.65;}
+  .risk-row .lv{font-size:10px;letter-spacing:.1em;text-align:center;border-radius:3px;padding:3px 0;border:1px solid;}
+  .lv.h{color:var(--red);border-color:rgba(255,92,56,.45);background:rgba(255,92,56,.08);}
+  .lv.m{color:var(--amber);border-color:rgba(242,178,62,.4);background:rgba(242,178,62,.07);}
+
+  /* judgments */
+  .judgments{background:linear-gradient(180deg,rgba(184,242,74,.06),rgba(184,242,74,.01));
+    border:1px solid rgba(184,242,74,.22);border-radius:16px;padding:30px 28px;margin-bottom:56px;}
+  .judgments .jh{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;}
+  .judgments .jh h2{font-size:22px;font-weight:900;letter-spacing:-.02em;}
+  .judgments .jh span{font-size:10px;letter-spacing:.2em;color:var(--ink3);margin-left:auto;}
+  .jgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 26px;}
+  .jitem{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.07);}
+  .jitem .jn{font-size:11px;font-weight:900;color:var(--acid);letter-spacing:.06em;padding-top:2px;}
+  .jitem h4{font-size:14px;font-weight:800;margin-bottom:4px;line-height:1.4;}
+  .jitem p{font-size:12px;color:var(--ink2);line-height:1.7;}
+
+  /* footer */
+  .foot{border-top:1px solid var(--line);padding-top:24px;font-size:11px;color:var(--ink3);line-height:1.9;}
+  .foot .src{display:grid;grid-template-columns:1fr 1fr;gap:2px 28px;margin-bottom:18px;}
+  .foot .src span{font-size:10.5px;color:var(--ink3);}
+  .foot .src span b{color:var(--ink2);font-weight:700;}
+  .foot .links a{color:var(--acid);text-decoration:none;border-bottom:1px solid rgba(184,242,74,.3);}
+  .foot .disc{margin-top:10px;font-size:10.5px;color:#54655A;}
+
+  .quote{border-left:2px solid var(--acid);padding:2px 0 2px 16px;margin:18px 0;font-size:13.5px;color:var(--ink2);line-height:1.85;}
+  .quote b{color:var(--ink);}
+  .note{font-size:11.5px;color:var(--ink3);line-height:1.75;margin-top:12px;}
+
+  @media (max-width:980px){
+    .page{padding:26px 20px 60px;}
+    .hero{grid-template-columns:1fr;gap:30px;padding-bottom:34px;}
+    .radar{width:280px;height:280px;}
+    .metrics{grid-template-columns:repeat(3,1fr);}
+    .metric:nth-child(3n){border-right:none;}
+    .metric:nth-child(-n+3){border-bottom:1px solid var(--line);}
+    .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+    .para{grid-template-columns:1fr;}
+    .jgrid{grid-template-columns:1fr;}
+    .tl-row{grid-template-columns:76px 1fr;gap:10px;}
+    .tl-val{grid-column:2;text-align:left;font-size:11.5px;}
+    .mech{grid-template-columns:40px 1fr;gap:10px;}
+    .mech .eff{grid-column:2;border-left:none;border-top:1px dashed var(--line);padding:7px 0 0;}
+    .risk-row{grid-template-columns:22px 1fr 60px;gap:10px;}
+    .risk-row .d{grid-column:2 / span 2;font-size:12px;}
+    .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .tbl{min-width:560px;}
+    h1{font-size:38px;}
+    .mbr{display:inline;}
+    .foot .src{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .hud{font-size:9px;letter-spacing:.1em;}
+    .hud .hide-s{display:none;}
+    .metrics{grid-template-columns:1fr 1fr;}
+    .metric:nth-child(3n){border-right:1px solid var(--line);}
+    .metric:nth-child(2n){border-right:none;}
+    .metric:nth-child(-n+4){border-bottom:1px solid var(--line);}
+    .metric:nth-child(n+5){border-bottom:none;}
+    .tl-row{grid-template-columns:70px 1fr;}
+    .sec-title{font-size:19px;}
+    .sec-en{display:none;}
+    .judgments{padding:22px 18px;}
+    .tbl-wrap{overflow-x:visible;}
+    .tbl{min-width:0;font-size:11px;}
+    .tbl th,.tbl td{padding:8px 6px;}
+    .tbl td:first-child{white-space:normal;}
+  }
+  @media (max-width:420px){
+    h1 .mbr{display:inline;}
+    .metric .v{font-size:20px;}
+  }
+  @media print{
+    html,body{background:#fff !important;color:#111 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .page{max-width:100%;padding:0;}
+    .sec{margin-bottom:34px;}
+    .card,.mode,.scene,.judgments{break-inside:avoid;}
+    .bar i,.metric .v .hl{color:#2F5A00;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hud">
+    <span class="dot"></span>
+    <span><b>AD ANALYSIS</b> / 018</span>
+    <span class="sp"></span>
+    <span>2026-11-28</span>
+    <span class="hide-s">·</span>
+    <span class="hide-s">TACTICAL SHOOTER</span>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <div class="eyebrow">018 / 180 · 腾讯天美 J3</div>
+      <div class="kicker">DELTA FORCE · 战术射击</div>
+      <h1>把「硬核」<br class="mbr">做成<span class="mark">国民级</span></h1>
+      <p class="subtitle">三角洲行动<br><em>卖的不是枪法,是「输得起」的冒险</em></p>
+      <p class="lede">
+        它不是「更硬的 FPS」,而是把入场费打到零:免费、三端互通、双模式、死了不归零。
+        <strong>26 个月,DAU 从 0 到 5,800 万</strong>——这是国产射击第一次跑出「平台曲线」。
+      </p>
+      <div class="hero-tags">
+        <span>搜打撤 + 大战场</span>
+        <span>PC / 移动 / 主机</span>
+        <span>F2P 不卖数值</span>
+        <span>S12 微光赛季</span>
+      </div>
+    </div>
+
+    <div class="radar-wrap">
+      <div class="radar">
+        <svg viewBox="0 0 330 330" aria-hidden="true">
+          <defs>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#B8F24A" stop-opacity=".18"/>
+              <stop offset="70%" stop-color="#B8F24A" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="sw" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#B8F24A" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#B8F24A" stop-opacity=".55"/>
+            </linearGradient>
+          </defs>
+          <circle cx="165" cy="165" r="158" fill="url(#glow)"/>
+          <circle cx="165" cy="165" r="150" fill="none" stroke="#1E2A21" stroke-width="1"/>
+          <circle cx="165" cy="165" r="112" fill="none" stroke="#1E2A21" stroke-width="1"/>
+          <circle cx="165" cy="165" r="74" fill="none" stroke="#1E2A21" stroke-width="1"/>
+          <circle cx="165" cy="165" r="36" fill="none" stroke="#2A3A2E" stroke-width="1" stroke-dasharray="3 5"/>
+          <line x1="15" y1="165" x2="315" y2="165" stroke="#1E2A21" stroke-width="1"/>
+          <line x1="165" y1="15" x2="165" y2="315" stroke="#1E2A21" stroke-width="1"/>
+          <g class="sweep">
+            <path d="M165 165 L165 15 A150 150 0 0 1 275 61 Z" fill="url(#sw)" opacity=".5"/>
+          </g>
+          <circle cx="238" cy="104" r="3.5" fill="#B8F24A"/>
+          <circle cx="98" cy="206" r="3.5" fill="#F2B23E"/>
+          <circle cx="212" cy="236" r="3.5" fill="#5BE3C8"/>
+          <circle cx="118" cy="92" r="2" fill="#4A5C4F"/>
+          <circle cx="248" cy="196" r="2" fill="#4A5C4F"/>
+          <path d="M165 150 v-13 M165 180 v13 M150 165 h-13 M180 165 h13" stroke="#B8F24A" stroke-width="1.6" opacity=".8"/>
+          <circle cx="165" cy="165" r="2.5" fill="#B8F24A"/>
+        </svg>
+        <div class="rcore"><b>5,800万</b><span>国服 DAU</span></div>
+        <div class="rlabel r1"><b>烽火地带</b>搜打撤 · 20 min</div>
+        <div class="rlabel r2"><b>全面战场</b>32v32 · 载具</div>
+        <div class="rlabel r3"><b>黑鹰坠落</b>PvE 战役</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- METRICS -->
+  <section class="metrics">
+    <div class="metric"><div class="v"><span class="hl">5,800</span><small>万</small></div><div class="k">国服 DAU(2026.10)</div></div>
+    <div class="metric"><div class="v"><span class="hl">26</span><small>个月</small></div><div class="k">从 0 到 5,800 万</div></div>
+    <div class="metric"><div class="v"><span class="hl">12</span><small>赛季</small></div><div class="k">S12「微光」2026.11</div></div>
+    <div class="metric"><div class="v"><span class="am">5</span><small>亿美元</small></div><div class="k">2025 累计收入(移动口径)</div></div>
+    <div class="metric"><div class="v"><span class="am">26.23</span><small>%</small></div><div class="k">射击占移动收入(2026H1)</div></div>
+    <div class="metric"><div class="v"><span class="hl">50</span><small>万美元</small></div><div class="k">DFI 2026 总奖金</div></div>
+  </section>
+
+  <!-- 01 时间线 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">26 个月,四级跳</h2><span class="sec-en">Timeline</span></div>
+    <div class="tl">
+      <div class="tl-row"><div class="tl-date">2024.09</div><div class="tl-what">国服上线(PC + 移动),首月注册 <b>500 万</b><div class="bar"><i style="width:9%"></i></div></div><div class="tl-val"><b>500万</b> 注册</div></div>
+      <div class="tl-row"><div class="tl-date">2025.04</div><div class="tl-what">DAU 破 <b>1,200 万</b>;海外移动端上线,10 天 1,060 万下载<div class="bar"><i style="width:21%"></i></div></div><div class="tl-val"><b>1,200万</b> DAU</div></div>
+      <div class="tl-row"><div class="tl-date">2025.07</div><div class="tl-what">3 个月 <b>+66%</b>,平均 DAU 破 2,000 万(腾讯 2025 Q2 财报)<div class="bar"><i style="width:34%"></i></div></div><div class="tl-val"><b>2,000万</b> DAU</div></div>
+      <div class="tl-row"><div class="tl-date">2025.08</div><div class="tl-what">海外主机 PS5 / Xbox 上线,成为首款中国自研<b>三端互通</b>射击游戏<div class="bar"><i style="width:34%"></i></div></div><div class="tl-val">三端互通</div></div>
+      <div class="tl-row"><div class="tl-date">2025.09</div><div class="tl-what">一周年,DAU 跨过 <b>3,000 万</b><div class="bar"><i style="width:52%"></i></div></div><div class="tl-val"><b>3,000万</b> DAU</div></div>
+      <div class="tl-row"><div class="tl-date">2026.01</div><div class="tl-what">DAU <b>4,100 万</b>;Sensor Tower:2025 收入同比 <b>+29 倍</b><div class="bar"><i style="width:71%"></i></div></div><div class="tl-val"><b>4,100万</b> DAU</div></div>
+      <div class="tl-row"><div class="tl-date">2026.03</div><div class="tl-what">DAU <b>5,000 万</b>,腾讯财报同期披露强劲表现<div class="bar"><i style="width:86%"></i></div></div><div class="tl-val"><b>5,000万</b> DAU</div></div>
+      <div class="tl-row hot"><div class="tl-date">2026.10</div><div class="tl-what">二周年,国服 DAU <b>5,800 万</b>;Q3 财报确认历史新高<div class="bar"><i style="width:100%"></i></div></div><div class="tl-val"><b>5,800万</b> DAU</div></div>
+    </div>
+    <p class="note">注:DAU 口径均为官方/企业披露;首月为「注册」,其余为「日活」,不可直接相加比较。</p>
+  </section>
+
+  <!-- 02 双模式 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">一个入口,两种时间颗粒</h2><span class="sec-en">Two Modes</span></div>
+    <div class="grid-2">
+      <div class="mode">
+        <div class="mode-top"><div><h3>烽火地带</h3><div class="en">Operations · 搜打撤</div></div><span class="pill">赌注型</span></div>
+        <ul>
+          <li>带装备进图,搜物资、打人机/打人、撤离带走</li>
+          <li>死了掉装备,但有保险、安全箱、制式补给兜底</li>
+          <li>单局 15-20 分钟,情绪峰值在「出红瞬间」</li>
+          <li>核心循环:风险 → 收益 → 炫耀</li>
+        </ul>
+        <div class="formula">情绪公式:<b>紧张 × 惊喜 × 损失厌恶</b></div>
+      </div>
+      <div class="mode">
+        <div class="mode-top"><div><h3>全面战场</h3><div class="en">Warfare · 大战场</div></div><span class="pill">爽局型</span></div>
+        <ul>
+          <li>32v32,载具、点位、火力压制</li>
+          <li>死了就复活,拼的是配合与地图理解</li>
+          <li>单局 25-30 分钟,承接「没手感」的日子</li>
+          <li>核心循环:爽 → 再来一局</li>
+        </ul>
+        <div class="formula">情绪公式:<b>爽感 × 团队 × 低门槛</b></div>
+      </div>
+    </div>
+    <div class="quote">塔科夫只有「赌」,三角洲还有「爽」。<b>两个模式共用干员、枪械、仓库</b>——一份资产,两种消费场景。</div>
+  </section>
+
+  <!-- 03 定位 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">定位:三层拆开看</h2><span class="sec-en">Positioning</span></div>
+    <div class="grid-2" style="gap:30px">
+      <div>
+        <div class="tier on"><div class="lab">产品层</div><h3><span>塔科夫平替</span>双模式合体</h3><p>一个客户端里,同时装下「赌注型」的烽火地带与「爽局型」的全面战场。它抢的不是塔科夫的硬核用户,是「想玩但不敢玩」的那 90%。</p></div>
+        <div class="tier on"><div class="lab">价格层</div><h3><span>40-50 美元买断</span>0 元入场</h3><p>把「硬核」从门票制改成商场制:用户不需要决定「要不要玩」,只需要决定「要不要充」。代价是单用户收入下一个量级。</p></div>
+      </div>
+      <div>
+        <div class="tier on"><div class="lab">心智层</div><h3><span>更真实的战争</span>可承受的冒险</h3><p>死了有保险,输了有保底,赢了能带走,赛季不清档。它卖的不是「硬核」,是「硬核的安全感」。</p></div>
+        <div class="tier"><div class="lab">用户层</div><h3>不是「硬核玩家」</h3><p>而是「想要硬核体验的普通人」——这群人的规模,是塔科夫用户的十倍。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 人群 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">五类人,五种「被淘汰出来」的理由</h2><span class="sec-en">Audience</span></div>
+    <div class="grid-3">
+      <div class="card persona"><span class="tag">Core</span><div class="who">端游老兵</div><h3>CS / 战地 / COD 迁移</h3><p>从竞技疲劳、外挂、年货厌倦里逃出来。要枪感、要公平、要不卖数值。</p><div class="meta">痛点:手游化操作 · 技能不够纯粹</div></div>
+      <div class="card persona"><span class="tag">Growth</span><div class="who">塔科夫云玩家</div><h3>看过,不敢玩</h3><p>被「硬核 + 昂贵 + 高门槛」劝退。三角洲用保险、安全箱、跑刀接住了他们。</p><div class="meta">这是最大的一块增量</div></div>
+      <div class="card persona"><span class="tag">Breadth</span><div class="who">手游泛射击</div><h3>和平精英溢出</h3><p>玩了五六年吃鸡,想要新东西。双端互通让手机也能「摸金」。</p><div class="meta">要新鲜感,不要学习成本</div></div>
+      <div class="card persona"><span class="tag">Time</span><div class="who">学生 / 年轻上班族</div><h3>碎片时间</h3><p>一局 15-25 分钟,午休、通勤、睡前都能开。通行证 48/68 元是「月卡级」心理价位。</p><div class="meta">时间碎片化 · 情绪高浓度</div></div>
+      <div class="card persona"><span class="tag">Eco</span><div class="who">内容生产者</div><h3>主播 / 陪玩 / 搬砖</h3><p>靠「出货叙事」吃饭:一发入魂、红皮、绝密局。也是护航、代练、卖金的源头。</p><div class="meta">DAU 的一部分,舆论风险的一部分</div></div>
+      <div class="card"><span class="tag">Insight</span><div class="who">共同点</div><h3>他们都不是硬核玩家</h3><p>而是「想要硬核体验的普通人」。这句话,决定了产品的一切设计。</p><div class="meta">规模差十倍</div></div>
+    </div>
+  </section>
+
+  <!-- 05 场景 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">八个具体时刻</h2><span class="sec-en">Scenes</span></div>
+    <div class="grid-4">
+      <div class="scene"><div class="no">01</div><h4>21:30 下班</h4><p>不想动脑,单排跑刀,进去摸一圈就撤。</p></div>
+      <div class="scene"><div class="no">02</div><h4>周末四人开黑</h4><p>全员六套猛攻,输了互骂,赢了截图发群。</p></div>
+      <div class="scene"><div class="no">03</div><h4>地铁通勤</h4><p>手机端收菜、清日常、领邮件。</p></div>
+      <div class="scene"><div class="no">04</div><h4>深夜单排</h4><p>仓库只剩最后一套:要么翻本,要么归零。</p></div>
+      <div class="scene"><div class="no">05</div><h4>出红瞬间</h4><p>手抖、屏息、找撤离点——产品的情绪峰值。</p></div>
+      <div class="scene"><div class="no">06</div><h4>赛季初</h4><p>通行证冲级、新干员解锁、赛季皮肤。</p></div>
+      <div class="scene"><div class="no">07</div><h4>大战场</h4><p>开直升机、抢点、被载具碾——爽点兜底。</p></div>
+      <div class="scene"><div class="no">08</div><h4>赛事周</h4><p>DFI 观赛 + Twitch Drops,看 15 分钟领凭证。</p></div>
+    </div>
+    <p class="note">前四个是「日常」,第五个是「传播」,第七个是「留存」,第八个是「生态」。</p>
+  </section>
+
+  <!-- 06 需求 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">需求:五层金字塔</h2><span class="sec-en">Needs</span></div>
+    <div class="pyr">
+      <div class="l1">表层<span>枪感 / 画面 / 命中反馈</span></div>
+      <div class="l2">中层<span>仓库 / 干员 / 改装 / 通行证</span></div>
+      <div class="l3">深层<span>带什么进图、走哪条路、何时撤</span></div>
+      <div class="l4">社交层<span>开黑 / 语音 / 背叛 / 炫耀</span></div>
+      <div class="l5">本质:用最小代价,体验一次「可能失去一切」的冒险<span>风险抽奖</span></div>
+    </div>
+    <div class="quote">泡泡玛特卖的是「情绪抽奖」,三角洲卖的是「<b>风险抽奖</b>」——区别是,前者的赌注是 69 元,后者的赌注是你昨天攒的一仓库。</div>
+  </section>
+
+  <!-- 07 机制 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">六道减法</h2><span class="sec-en">Mechanics</span></div>
+    <div class="mech"><div class="n">01</div><div class="m"><h4>价格减法:0 元入场</h4><p>对比 40-50 美元的买断制,它把「试错成本」降到零。</p></div><div class="eff"><b>EFFECT</b>不决定玩不玩,只决定充不充</div></div>
+    <div class="mech"><div class="n">02</div><div class="m"><h4>设备减法:三端互通</h4><p>一个账号,PC / 手机 / 主机同进度,跨端匹配同池。</p></div><div class="eff"><b>EFFECT</b>把「玩什么设备」也删掉</div></div>
+    <div class="mech"><div class="n">03</div><div class="m"><h4>学习减法:死亡不归零</h4><p>保险找回、安全箱保底、制式装备再进场、跑刀零成本。</p></div><div class="eff"><b>EFFECT</b>删掉塔科夫最痛的一条</div></div>
+    <div class="mech"><div class="n">04</div><div class="m"><h4>时间减法:单局 15-25 分钟</h4><p>烽火地带 15-20 分钟,全面战场 25-30 分钟。</p></div><div class="eff"><b>EFFECT</b>适配打工人时间,而非硬核时间</div></div>
+    <div class="mech"><div class="n">05</div><div class="m"><h4>失败减法:匹配与「黑屋」</h4><p>新手保护、连败保护;高收益玩家进更高强度对局,算法调控胜率与爆率。</p></div><div class="eff"><b>EFFECT</b>短期稳留存,长期伤信任</div></div>
+    <div class="mech"><div class="n">06</div><div class="m"><h4>社交减法:语音 / 公开麦 / 组队</h4><p>大厅组队、语音开黑、公开麦;陪玩、护航、代练由此长出来。</p></div><div class="eff"><b>EFFECT</b>降门槛,也放大灰色产业</div></div>
+    <div class="quote">六道减法,每一道都在扩大用户基数,也都在<b>稀释「硬核感」</b>——这是它与核心玩家的永恒拉扯。</div>
+  </section>
+
+  <!-- 08 商业模式 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">商业模式:一个「反 ARPU」的国民级产品</h2><span class="sec-en">Business</span></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>收入项</th><th>形态</th><th>价格带</th><th>性质</th></tr></thead>
+        <tbody>
+          <tr><td>通行证</td><td>赛季制,单模式 / 豪华版</td><td>约 48 元 / 68-72 元</td><td>主要现金流</td></tr>
+          <tr><td>皮肤</td><td>直售 + 抽奖(曼德尔砖)</td><td>几十到数百元</td><td>高毛利,靠内容产能</td></tr>
+          <tr><td>安全箱</td><td>赛季内 2×3 格扩容</td><td>含在付费通行证</td><td><span class="am">灰色地带</span></td></tr>
+          <tr><td>联名</td><td>吴彦祖、海底捞等</td><td>—</td><td>拉新 / 破圈</td></tr>
+          <tr><td>赛事</td><td>DFI 2025 杭州 / 2026 瑞典</td><td>总奖金 50 万美元</td><td>品牌投入期</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-3" style="margin-top:18px">
+      <div class="card"><span class="tag">Unit Economics</span><div class="big">0.2-0.5<small>元 / DAU / 日</small></div><p style="margin-top:8px">按国内免费射击品类 ARPDAU 区间估算:日流水约 1,200 万-2,900 万元,年流水 40 亿-100 亿元。</p></div>
+      <div class="card"><span class="tag">Benchmark</span><div class="big">1/4<small>王者单年</small></div><p style="margin-top:8px">三角洲 2025 累计 5 亿美元(移动口径),约等于《王者荣耀》单年 20 亿美元的四分之一。</p></div>
+      <div class="card"><span class="tag">Strategy</span><div class="big">入口<small>而非利润</small></div><p style="margin-top:8px">腾讯买的是「射击品类王座」与跨端生态位,当期利润被刻意让渡。</p></div>
+    </div>
+    <div class="note">估算说明:ARPDAU 区间参考国内免费射击品类;真实值受赛季、皮肤档期影响,波动很大,仅用于量级判断。</div>
+
+    <div class="para" style="margin-top:22px">
+      <div class="card"><span class="tag">Paradox 01</span><h3>公平与深度,不可兼得</h3><div class="flow">不卖数值 → 付费天花板低 → 只能靠 DAU 规模<br>要 DAU → 必须降门槛 → 硬核玩家流失<br>硬核流失 → 技术鄙视链弱化 → 内容传播力下降</div></div>
+      <div class="card"><span class="tag">Paradox 02</span><h3>算法调控,与「赌局公平」</h3><div class="flow">黑屋 / 爆率 / 赛季削弱 = 用算法管理留存曲线<br>但搜打撤的核心体验是「我赌赢了」<br>当玩家发现「赢是算法给的」,赌局就变成老虎机</div></div>
+    </div>
+    <div class="quote">它用「不卖数值」换来了口碑,又用「<b>算法调控</b>」把口碑一点点抵押出去。</div>
+  </section>
+
+  <!-- 09 竞争 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">竞争:腾讯的全谱系与左右互搏</h2><span class="sec-en">Competition</span></div>
+    <div class="grid-3" style="margin-bottom:18px">
+      <div class="card"><span class="tag">Category</span><div class="big">26.23<small>%</small></div><p style="margin-top:8px">2026 上半年,射击类占收入前 100 移动游戏的 26.23%,首次超过 MOBA(18.96%)。</p></div>
+      <div class="card"><span class="tag">PC Revival</span><div class="big">+27.92<small>%</small></div><p style="margin-top:8px">同期客户端游戏实销 452.88 亿元,同比 +27.92%,跨端是主要推力。</p></div>
+      <div class="card"><span class="tag">Headroom</span><div class="big">20 → 35<small>%</small></div><p style="margin-top:8px">中国射击占大盘约 20%,全球约 35%——品类还有一倍空间。</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>产品</th><th>定位</th><th>与三角洲的关系</th><th>关键数据</th></tr></thead>
+        <tbody>
+          <tr><td>和平精英</td><td>战术竞技,大 DAU</td><td>同门,分流吃鸡用户</td><td>—</td></tr>
+          <tr><td>暗区突围</td><td>更硬核的搜打撤</td><td>同门,承接硬核玩家</td><td>—</td></tr>
+          <tr><td>无畏契约</td><td>竞技 FPS</td><td>同门,承接电竞人群</td><td>端手游注册均破亿</td></tr>
+          <tr><td>ARC Raiders</td><td>买断制 PvE 搜打撤</td><td>全球爆款,腾讯代理国服《弧光猎人》</td><td>1,500 万份 / 半年近 50 亿元 / 70 万在线</td></tr>
+          <tr><td>战地 6 / COD</td><td>3A 大战场</td><td>PC / 主机端直接竞争</td><td>—</td></tr>
+          <tr><td>二游厂商新 FPS</td><td>2027 前后</td><td>潜在变量</td><td>米哈游 / 鹰角 / 莉莉丝等在研</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="quote">腾讯的逻辑不是「一款游戏赢」,是<b>「每个细分都插一面旗」</b>。三角洲是中间那面最大的旗。</div>
+
+    <div class="tbl-wrap" style="margin-top:6px">
+      <table class="tbl">
+        <thead><tr><th>海外指标</th><th>数据</th><th>口径</th></tr></thead>
+        <tbody>
+          <tr><td>Steam 24h 峰值</td><td class="hl">约 9.85 万</td><td>Steam Dashboard(第三方)</td></tr>
+          <tr><td>Steam 记录峰值</td><td class="hl">14.7 万(2026-09-06)</td><td>同上</td></tr>
+          <tr><td>Steam 当前在线</td><td>约 4.7 万,全球第 26</td><td>同上,2026-11-28</td></tr>
+          <tr><td>海外移动首月</td><td>10 天 1,060 万下载</td><td>官方口径(2025-04)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="quote">国内 5,800 万 DAU · Steam 峰值 14.7 万。<b>海外是「品牌与增量」,还不是「基本盘」。</b></div>
+  </section>
+
+  <!-- 10 风险 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">10</span><h2 class="sec-title">隐忧:六个可能死掉的地方</h2><span class="sec-en">Risks</span></div>
+    <div class="risk-row"><div class="i">01</div><div class="n">内容消耗</div><div class="d">平均 2 个月一个赛季,地图/干员/玩法迭代压力;同质化后 DAU 见顶。</div><div class="lv h">高</div></div>
+    <div class="risk-row"><div class="i">02</div><div class="n">信任赤字</div><div class="d">黑屋、暗改爆率、皮肤后削弱干员——社区的高频抱怨,直指「赌局公平」。</div><div class="lv h">高</div></div>
+    <div class="risk-row"><div class="i">03</div><div class="n">外挂 / 护航</div><div class="d">灰色产业链破坏公平;封禁是持久战,打而不死。</div><div class="lv h">高</div></div>
+    <div class="risk-row"><div class="i">04</div><div class="n">未成年人充值</div><div class="d">媒体曾报道 11 岁女孩 2 个月充值 3,722 元;退款纠纷与舆情。</div><div class="lv m">中</div></div>
+    <div class="risk-row"><div class="i">05</div><div class="n">竞品分流</div><div class="d">ARC Raiders 国服、战地 6、二游厂商新 FPS,2027 前后集中入场。</div><div class="lv m">中</div></div>
+    <div class="risk-row"><div class="i">06</div><div class="n">全球化不确定</div><div class="d">海外收入占比低;主机/Steam 表现与国内量级不匹配。</div><div class="lv m">中</div></div>
+    <div class="quote">最危险的不是「不好玩」,是<b>「玩家觉得这局不是自己打的」</b>。</div>
+  </section>
+
+  <!-- JUDGMENTS -->
+  <section class="judgments">
+    <div class="jh"><h2>六个判断</h2><span>JUDGMENTS</span></div>
+    <div class="jgrid">
+      <div class="jitem"><div class="jn">01</div><div><h4>它赢在「减法」,不在「加法」</h4><p>免费、三端、保险、保底、短对局——每一步都在拆门槛。这不是更硬核的射击,是更便宜的冒险。</p></div></div>
+      <div class="jitem"><div class="jn">02</div><div><h4>5,800 万 DAU 是入口,不是收入</h4><p>以第三方口径,它一年累计收入约等于王者单年的四分之一。腾讯买的是品类王座,不是当期利润。</p></div></div>
+      <div class="jitem"><div class="jn">03</div><div><h4>「搜打撤」的终局是风险定价</h4><p>谁能把「输得起」做到极致,谁就能拿走泛用户。塔科夫卖真实,三角洲卖容错——容错才是大众市场的硬通货。</p></div></div>
+      <div class="jitem"><div class="jn">04</div><div><h4>黑屋是止痛药,也是毒药</h4><p>短期稳住留存曲线,长期透支赌局公平。当玩家研究「怎么不进黑屋」而不是「怎么打好这局」,产品的魂就换了。</p></div></div>
+      <div class="jitem"><div class="jn">05</div><div><h4>腾讯的左右互搏是护城河</h4><p>和平、暗区、无畏、三角洲、ARC 国服——它不怕自己打自己,它怕的是别人来打。</p></div></div>
+      <div class="jitem"><div class="jn">06</div><div><h4>真正的对手是「时间」</h4><p>26 个月 12 个赛季,内容产能决定它能「长青」多久。射击品类的护城河从来不是玩法,是持续供给内容的能力。</p></div></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="src">
+      <span><b>腾讯 2026 Q3 财报</b> · 本土游戏 476 亿(+11%)、DAU 破 5,800 万(企业口径)</span>
+      <span><b>中国日报网 2026-03-20</b> · DAU 曲线 500 万→5,000 万(官方口径)</span>
+      <span><b>17173 2026-10-08</b> · 二周年国服 DAU 5,800 万(官方口径)</span>
+      <span><b>中国日报·东方网 2025-08-21</b> · 主机上线、海外 10 天 1,060 万下载(官方口径)</span>
+      <span><b>Sensor Tower / IT 之家 2026-01-06</b> · 2025 收入 +29 倍、累计 5 亿美元(仅 iOS + Google Play)</span>
+      <span><b>中国游戏产业报告 / 钛媒体 2026-07-31</b> · 射击占移动收入 26.23%(行业报告)</span>
+      <span><b>Steam Dashboard 2026-11-28</b> · 峰值 14.7 万、当前 4.7 万(第三方监测)</span>
+      <span><b>台湾电竞新闻 2026-11-28</b> · DFI 2026 瑞典、12 队、50 万美元(赛事方口径)</span>
+      <span><b>游戏日报 2026-06-12</b> · ARC Raiders 1,500 万份、半年近 50 亿元(媒体估算)</span>
+      <span><b>九游 2026-11-11</b> · S12 通行证价格带、安全箱机制(媒体整理)</span>
+    </div>
+    <div class="links">
+      配套长文:<a href="analysis.md">analysis.md</a> · 完整拆解(人群 / 场景 / 需求 / 模式 / 判断)
+      <span style="margin-left:14px">系列:<a href="../README.md">180 个广告 / 产品拆解</a></span>
+    </div>
+    <div class="disc">数据口径混杂:DAU 为企业/官方披露;收入仅 Sensor Tower 移动端口径可横向比较;年流水 40-100 亿元为本文估算。个人研究记录,不构成投资建议。</div>
+  </footer>
+
+</div>
+</body>
+</html>

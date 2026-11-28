@@ -7,7 +7,7 @@
 
 ## 进度
 
-**17 / 180**
+**18 / 180**
 
 | # | 对象 | 赛道 | 日期 | 可视化 | 长文 |
 |:--:|---|---|---|:--:|:--:|
@@ -28,6 +28,7 @@
 | 015 | **LibTV** | AI 视频 / 创作工具 | 2026-11-25 | [HTML](015-libtv/index.html) · [预览图](015-libtv/preview.png) | [analysis.md](015-libtv/analysis.md) |
 | 016 | **红果短剧** | 免费短剧 / IAA | 2026-11-26 | [HTML](016-hongguo/index.html) · [预览图](016-hongguo/preview.png) | [analysis.md](016-hongguo/analysis.md) |
 | 017 | **退役动力电池回收** | 新能源 / 循环经济 | 2026-11-27 | [HTML](017-battery-recycle/index.html) · [预览图](017-battery-recycle/preview.png) | [analysis.md](017-battery-recycle/analysis.md) |
+| 018 | **三角洲行动** | 战术射击 / 搜打撤 | 2026-11-28 | [HTML](018-delta-force/index.html) · [预览图](018-delta-force/preview.png) | [analysis.md](018-delta-force/analysis.md) |
 
 ## 每篇包含什么
 
